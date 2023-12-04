@@ -1,16 +1,12 @@
 <template>
   <v-app>
     <div class="layout-container">
-      <Navbar />
+      <!-- <Navbar /> -->
 
       <div class="right-section">
         <TopNavBar />
         <div class="content">
           <slot></slot>
-          <!-- Add any other common elements or footers here -->
-          <h1>hello</h1>
-          <h1>hello</h1>
-          <h1>hello</h1>
           <router-view />
         </div>
       </div>

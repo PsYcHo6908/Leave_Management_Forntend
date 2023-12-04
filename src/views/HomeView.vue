@@ -1,5 +1,5 @@
 <template>
-  <main class="px-8 py-6 bg-gray-100">
+  <!-- <main class="px-8 py-6 bg-gray-100">
               <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
                   <div class="main-left col-span-1">
                       <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
@@ -418,7 +418,7 @@
                       </div>
                   </div>
               </div>
-          </main>
+          </main> -->
     
   </template>
   
