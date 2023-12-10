@@ -1,16 +1,19 @@
 <template>
   <v-app>
-    <div class="layout-container">
-      <!-- <Navbar /> -->
+    <!-- <div class="layout-container">
+      
 
       <div class="right-section">
-        <TopNavBar />
+        
         <div class="content">
           <slot></slot>
+          
+          
           <router-view />
         </div>
       </div>
-    </div>
+    </div> -->
+    <router-view />
   </v-app>
 </template>
 
@@ -35,7 +38,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Athiti', 'Avenir', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: 'Prompt', sans-serif;
   height: 100vh;
 }
 
