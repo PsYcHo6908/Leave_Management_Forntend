@@ -4,14 +4,46 @@
     <div class="img1">
       <img src="../assets/logo-1.png" width="200" height="250" />
     </div>
-    <div class="rec">
+    <div class="rec2">
       <form class="block1" v-on:submit.prevent="submitform">
-        <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
+        <label for="firstname" class="name1">ชื่อ</label>
+        <label for="lastname" class="name1">นามสกุล</label>
+        <input
+          type="text"
+          v-model="formData.firstname"
+          id="inputname"
+          name="inputname"
+          placeholder=""
+          />
+        <input
+          type="text"
+          v-model="formData.lastname"
+          id="inputname"
+          name="inputname"
+          placeholder=""
+          />
+        <label for="studentId">รหัสนิสิต</label>
+        <input
+          type="text"
+          v-model="formData.studentId"
+          id="studentId"
+          name="studentId"
+          placeholder=""
+          />
+        <label for="email">อีเมล</label>
+        <input
+          type="text"
+          v-model="formData.email"
+          id="email"
+          name="email"
+          placeholder=""
+          />
+        <label for="user">username</label>
         <input
           type="text"
           v-model="formData.username"
-          id="fname"
-          name="firstname"
+          id="user"
+          name="user"
           placeholder=""
         />
 
@@ -20,7 +52,7 @@
           :type="passwordVisible ? 'text' : 'password'"
           v-model="formData.password"
           id="passwordInput"
-          name="lastname"
+          name="passwordInput"
           placeholder=""
         />
         <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
@@ -38,7 +70,11 @@ export default {
   data: () => ({
     formData: {
       username: '',
-      password: ''
+      password: '',
+      firstname: '',
+      lastname: '',
+      studentId: '',
+      email: '',
     },
     passwordVisible: false
   }),
@@ -56,9 +92,9 @@ export default {
 </script>
 <style>
 @media screen and (min-width: 1900px) {
-  .rec {
+  .rec2 {
     width: 30%;
-    height: 45%;
+    height: 68%;
     background-color: rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;
@@ -112,6 +148,14 @@ export default {
   }
   .v-container {
     max-width: 1900px !important;
+  }
+  input#inputname {
+    width: 48%;
+    margin-right: 2%;
+  }
+  label.name1 {
+    display: inline-flex;
+    width: 50%;
   }
 }
 </style>
