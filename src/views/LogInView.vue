@@ -1,26 +1,25 @@
 "
 <template>
-  <div class="background">
-    <img src="../assets/SignUp-1.jpg" width="100%" height="100%" />
-  </div>
-  <div class="img1">
-    <img src="../assets/logo-1.png" width="200" height="250" />
-  </div>
-  <div class="rec">
-    <form class="block1">
-      <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
-      <input type="text" id="fname" name="firstname" placeholder="" />
+  <v-container class="hero">
+    <div class="img1">
+      <img src="../assets/logo-1.png" width="200" height="250" />
+    </div>
+    <div class="rec">
+      <form class="block1" v-on:submit.prevent="printHello">
+        <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
+        <input type="text" id="fname" name="firstname" placeholder="" />
 
-      <label for="lname">รหัสผ่าน</label>
-      <input type="password" id="lname" name="lastname" placeholder="" />
-      <button class="eye-icon">
-        <img src="../assets/view.png" width="25" height="25" />
-      </button>
-      <button class="logInButton">เข้าสู่ระบบ</button>
-    </form>
-    <!-- <div class="box1"></div>
+        <label for="lname">รหัสผ่าน</label>
+        <input type="password" id="lname" name="lastname" placeholder="" />
+        <button class="eye-icon">
+          <img src="../assets/view.png" width="25" height="25" />
+        </button>
+        <button class="logInButton">เข้าสู่ระบบ</button>
+      </form>
+      <!-- <div class="box1"></div>
       <div class="box2"></div> -->
-  </div>
+    </div>
+  </v-container>
 </template>
 <script>
 export default {
@@ -58,22 +57,9 @@ export default {
     border-radius: 40px;
     z-index: 1;
   }
-  .box1 {
-    width: 50%;
-    height: 20%;
-    background-color: rebeccapurple;
-    margin: auto;
-  }
-  .box2 {
-    width: 50%;
-    height: 20%;
-    background-color: blue;
-    margin: auto;
-  }
   .img1 {
-    margin: 3% auto;
-    margin-bottom: 2%;
-    z-index: 1;
+    margin: 3% 44.6% !important;
+    margin-bottom: 2% !important;
   }
   form.block1 {
     margin: auto 5%;
@@ -107,6 +93,15 @@ export default {
   button.eye-icon {
     position: absolute;
     margin: 1.3% -2% 0;
+  }
+  .hero {
+    background: url('../assets/SignUp-1.jpg');
+    background-size: cover;
+    height: 100vh;
+    position: absolute;
+  }
+  .v-container {
+    max-width: 1900px !important;
   }
 }
 </style>
