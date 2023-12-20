@@ -26,6 +26,11 @@
         <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
           <img src="../assets/view.png" width="25" height="25" />
         </button>
+        <template v-if="errors.length > 0">
+            <div class="bg-red-300 text-white rounded-lg p-6">
+                <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+            </div>
+        </template>
         <button class="logInButton">เข้าสู่ระบบ</button>
       </form>
       <!-- <div class="box1"></div>
@@ -34,21 +39,67 @@
   </v-container>
 </template>
 <script>
+import { useToastStore } from '@/stores/toast'
+import { useUserStore } from '@/stores/user'
+import axios from 'axios'
 export default {
+  setup() {
+      const userStore = useUserStore()
+      const toastStore = useToastStore()
+      return {
+          userStore,
+          toastStore
+      }
+  },
   data: () => ({
     formData: {
       username: '',
       password: ''
     },
-    passwordVisible: false
+    passwordVisible: false,
+    errors: []
   }),
   methods: {
-    submitform() {
-      console.log('Username:', this.formData.username)
-      console.log('Password:', this.formData.password)
+    async submitform() {
+      this.errors = []
+
+      if (this.formData.username === '') {
+          this.errors.push('Your username is missing')
+      }
+
+      if (this.formData.password === '') {
+          this.errors.push('Your password is missing')
+      }
+
+      if (this.errors.length === 0) {
+          await axios
+              .post('/api/login/', this.formData)
+              .then(response => {
+                  this.userStore.setToken(response.data)
+                  console.log(response.data)
+                  axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
+              })
+              .catch(error => {
+                  console.log('error', error)
+                  this.errors.push('The formData or password is incorrect! Or the user is not activated!')
+              })
+      }
+
+      if (this.errors.length === 0) {
+          await axios
+              .get('/api/me/')
+              .then(response => {
+                  this.userStore.setUserInfo(response.data)
+                  console.log('testttttt')
+                  console.log(localStorage.getItem('user.fname'))
+                  this.$router.push('/feed')
+              })
+              .catch(error => {
+                  console.log('error', error)
+              })
+      }
     },
     togglePasswordVisibility() {
-      console.log('777JewSuay')
       this.passwordVisible = !this.passwordVisible
     }
   }

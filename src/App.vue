@@ -14,18 +14,38 @@
       </div>
     </div> -->
     <router-view />
+    <Toast />
   </v-app>
 </template>
 
 <script>
-import Navbar from './components/navbar.vue'
+import { useUserStore } from '@/stores/user'
+import axios from 'axios'
 import TopNavBar from './components/TopNavBar.vue'
+import Navbar from './components/navbar.vue'
 
 export default {
+  setup() {
+    const userStore = useUserStore()
+    return {
+        userStore
+    }
+  },
   name: 'App',
   components: {
     Navbar,
     TopNavBar
+  },
+  beforeCreate() {
+      this.userStore.initStore()
+
+      const token = this.userStore.user.access
+
+      if (token) {
+          axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      } else {
+          axios.defaults.headers.common["Authorization"] = "";
+      }
   },
   data() {
     return {}
