@@ -58,6 +58,17 @@
         <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
           <img src="../assets/view.png" width="25" height="25" />
         </button>
+        <label for="password">ยืนยันรหัสผ่าน</label>
+        <input
+          :type="passwordVisible2 ? 'text' : 'password'"
+          v-model="formData.passwordconfirm"
+          id="passwordInput"
+          name="passwordInput"
+          placeholder=""
+        />
+        <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility2">
+          <img src="../assets/view.png" width="25" height="25" />
+        </button>
         <button class="logInButton">เข้าสู่ระบบ</button>
       </form>
       <!-- <div class="box1"></div>
@@ -71,12 +82,14 @@ export default {
     formData: {
       username: '',
       password: '',
+      passwordconfirm: '',
       firstname: '',
       lastname: '',
       studentId: '',
       email: '',
     },
-    passwordVisible: false
+    passwordVisible: false,
+    passwordVisible2: false
   }),
   methods: {
     submitform() {
@@ -86,6 +99,10 @@ export default {
     togglePasswordVisibility() {
       console.log('777JewSuay')
       this.passwordVisible = !this.passwordVisible
+    },
+    togglePasswordVisibility2() {
+      console.log('777JewSuay')
+      this.passwordVisible2 = !this.passwordVisible2
     }
   }
 }
