@@ -39,7 +39,7 @@ export default {
 
 <style>
 @media screen and (min-width: 1900px) {
-    .menu-right {
+.menu-right {
     display: flex;
 }
 .text-xl {

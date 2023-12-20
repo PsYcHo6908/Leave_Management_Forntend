@@ -11,45 +11,45 @@
       </div>
       <div class="content">
         <slot></slot>
-        <div class="block1">
+        <div class="leaveblock1">
           <div class="content-head">ชื่อ</div>
           <div class="content-name">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
         </div>
-        <div class="block1">
+        <div class="leaveblock1">
           <div class="content-head">รหัสนิสิต</div>
           <div class="content-id">6310451286</div>
         </div>
-        <div class="block0">
-          <div class="block1">
+        <div class="leaveblock0">
+          <div class="leaveblock1">
             <div class="content-head">รายชื่อวิชา</div>
             <v-select :items="subjects" label=""></v-select>
           </div>
-          <div class="block2">
+          <div class="leaveblock2">
             <div class="content-head">หมู่เรียน</div>
             <v-select :items="section" label=""></v-select>
           </div>
         </div>
-        <div class="block0">
-          <div class="block1">
+        <div class="leaveblock0">
+          <div class="leaveblock1">
             <div class="content-head">วันที่</div>
             <v-select :items="subjects" label=""></v-select>
           </div>
-          <div class="block2">
+          <div class="leaveblock2">
             <div class="content-head">เวลา</div>
             <v-select :items="section" label=""></v-select>
           </div>
         </div>
-        <div class="block0">
-          <div class="block1">
+        <div class="leaveblock0">
+          <div class="leaveblock1">
             <div class="content-head">ประเภทการลา</div>
             <v-select :items="leave" label=""></v-select>
           </div>
-          <div class="block2">
+          <div class="leaveblock2">
             <div class="content-head">หลักฐานการลา</div>
             <button class="attach">Browse...</button>
           </div>
         </div>
-        <div class="block1">
+        <div class="leaveblock1">
           <div class="content-head">คำอธิบาย</div>
           <v-text-field
             label="Underlined"
@@ -103,16 +103,16 @@ body {
   font-weight: 600;
   margin-left: 5%;
 }
-.block0 {
+.leaveblock0 {
   display: flex;
 }
-.block1 {
+.leaveblock1 {
   display: flex;
   gap: 5%;
   margin-bottom: 1.5%;
   width: 50%;
 }
-.block2 {
+.leaveblock2 {
   display: flex;
   gap: 5%;
   margin-bottom: 1.5%;
