@@ -5,7 +5,7 @@
       <img src="../assets/logo-1.png" width="200" height="250" />
     </div>
     <div class="rec">
-      <form class="block1" v-on:submit.prevent="submitform">
+      <form class="block1_login" v-on:submit.prevent="submitform">
         <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
         <input
           type="text"
@@ -122,9 +122,68 @@ export default {
     margin: 3% 44.6% !important;
     margin-bottom: 2% !important;
   }
-  form.block1 {
+  form.block1_login {
     margin: auto 5%;
   }
+  input[type='text'],
+  input[type='password'] {
+    width: 100%;
+    padding: 8px 20px;
+    margin: 16px 0;
+    display: inline-block;
+    border: 1px solid #bdbcc4;
+    border-radius: 50px;
+    box-sizing: border-box;
+    background-color: #bdbcc4;
+  }
+  label {
+    /* padding: 0 0 30% 0; top right bottom left */
+    font-size: 18px;
+    font-family: 'Prompt', sans-serif;
+  }
+  .logInButton {
+    color: white;
+    font-size: 20px;
+    border: 1px solid #03a96b;
+    background-color: #03a96b;
+    width: 80%;
+    padding: 2% 0%;
+    border-radius: 25px;
+    margin: 10%;
+  }
+  button.eye-icon {
+    position: absolute;
+    margin: 1.3% -2% 0;
+  }
+  .background1 {
+    background: url('../assets/SignUp-1.jpg');
+    background-size: cover;
+    height: 100vh;
+    position: absolute;
+  }
+  .v-container {
+    max-width: 1900px !important;
+  }
+}
+@media screen and (max-width: 1440px) {
+  .rec {
+    width: 30%;
+    height: 45%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 0%;
+    border-radius: 40px;
+    z-index: 1;
+  }
+  .img1 {
+    margin: 3% 44.6% !important;
+    margin-bottom: 2% !important;
+  }
+  form.block1_login {
+    margin: auto 5%;
+}
   input[type='text'],
   input[type='password'] {
     width: 100%;

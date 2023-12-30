@@ -175,4 +175,72 @@ export default {
     width: 50%;
   }
 }
+@media screen and (max-width: 1440px) {
+  .rec2 {
+    width: 40%;
+    height: 75%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: -2%;
+    border-radius: 40px;
+    z-index: 1;
+  }
+  .img1 {
+    margin: 3% 44.6% !important;
+    margin-bottom: 2% !important;
+  }
+  form.block1 {
+    margin: 5%;
+  }
+  input[type='text'],
+  input[type='password'] {
+    width: 100%;
+    padding: 8px 20px;
+    margin: 16px 0;
+    display: inline-block;
+    border: 1px solid #bdbcc4;
+    border-radius: 50px;
+    box-sizing: border-box;
+    background-color: #bdbcc4;
+  }
+  label {
+    /* padding: 0 0 30% 0; top right bottom left */
+    font-size: 18px;
+    font-family: 'Prompt', sans-serif;
+  }
+  .logInButton {
+    color: white;
+    font-size: 20px;
+    border: 1px solid #03a96b;
+    background-color: #03a96b;
+    width: 80%;
+    padding: 2% 0%;
+    border-radius: 25px;
+    margin: 10%;
+    margin-top: 3%;
+  }
+  button.eye-icon {
+    position: absolute;
+    margin: 1.7% -3% 0;
+}
+  .background1 {
+    background: url('../assets/SignUp-1.jpg');
+    background-size: cover;
+    height: 100vh;
+    position: absolute;
+  }
+  .v-container {
+    max-width: 1900px !important;
+  }
+  input#inputname {
+    width: 48%;
+    margin-right: 2%;
+  }
+  label.name1 {
+    display: inline-flex;
+    width: 50%;
+  }
+}
 </style>

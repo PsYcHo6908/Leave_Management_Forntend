@@ -4,7 +4,7 @@
 
     <div class="right-section">
       <TopNavBar />
-      <div class="content px-8 py-6">
+      <div class="content px-1 py-1">
         <slot></slot>
 
         <div class="head">แจ้งลา</div>
@@ -77,53 +77,58 @@ export default {
 }
 </script>
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Athiti', 'Avenir', 'Helvetica', 'Arial', 'sans-serif';
-  height: 100vh;
-}
+@media screen and (min-width: 1900px) {
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Athiti', 'Avenir', 'Helvetica', 'Arial', 'sans-serif';
+    height: 100vh;
+  }
 
-.layout-container {
-  display: flex;
-}
+  .layout-container {
+    display: flex;
+  }
 
-.right-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.content {
-  padding: 20px; /* Adjust as needed */
-  flex: 1;
-}
-.head {
-  font-size: 26px;
-  font-family: 'Prompt';
-  font-weight: 600;
-  margin-left: 5%;
-}
-.leaveblock0 {
-  display: flex;
-}
-.leaveblock1 {
-  display: flex;
-  gap: 5%;
-  margin-bottom: 1.5%;
-  width: 50%;
-}
-.leaveblock2 {
-  display: flex;
-  gap: 5%;
-  margin-bottom: 1.5%;
-  width: 50%;
-  margin-left: -25%;
-}
-.v-input__control {
-  width: 35% !important;
-}
-.attach {
+  .right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    padding: 20px; /* Adjust as needed */
+    flex: 1;
+  }
+  .head {
+    font-size: 26px;
+    font-family: 'Prompt';
+    font-weight: 600;
+    margin-left: 5%;
+  }
+  .leaveblock0 {
+    display: flex;
+  }
+  .leaveblock1 {
+    display: flex;
+    gap: 5%;
+    margin-bottom: 1.5%;
+    width: 50%;
+  }
+  .leaveblock2 {
+    display: flex;
+    gap: 5%;
+    margin-bottom: 1.5%;
+    width: 50%;
+    margin-left: -25%;
+  }
+  .v-input__control {
+    width: 35% !important;
+  }
+  .attach {
     border: solid 1px #02bc77;
     padding: 1% 2%;
+  }
+  .py-10 {
+    width: 113%;
+}
 }
 </style>
