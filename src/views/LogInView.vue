@@ -109,6 +109,64 @@ export default {
 }
 </script>
 <style>
+.rec {
+    width: 30%;
+    height: 44% !important; 
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 0%;
+    border-radius: 40px;
+    z-index: 1;
+  }
+  .img1 {
+    margin: 3% 44.6%;
+    margin-bottom: 2%;
+  }
+  form.block1_login {
+    margin: auto 5% !important;
+  }
+  input[type='text'],
+  input[type='password'] {
+    width: 95% !important;
+    padding: 1px !important;
+    margin: 16px 2% !important;
+    display: inline-block;
+    border: 1px solid #bdbcc4;
+    border-radius: 50px;
+    box-sizing: border-box;
+    background-color: #bdbcc4;
+  }
+  label {
+    /* padding: 0 0 30% 0; top right bottom left */
+    font-size: 16px !important;
+    font-family: 'Prompt', sans-serif;
+  }
+  .logInButton {
+    color: white;
+    font-size: 18px !important;
+    border: 1px solid #03a96b;
+    background-color: #03a96b;
+    width: 80%;
+    padding: 2% 0%;
+    border-radius: 25px;
+    margin: 10%;
+    margin-top: 9% !important;
+  }
+  button.eye-icon {
+    position: absolute;
+    margin: 1.3% -2% 0;
+  }
+  .background1 {
+    background: url('../assets/SignUp-1.jpg');
+    background-size: cover;
+    height: 100vh;
+    position: absolute;
+  }
+  .v-container {
+    max-width: 1900px !important;
+  }
 @media screen and (min-width: 1900px) {
   .rec {
     width: 30%;

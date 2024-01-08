@@ -5,6 +5,8 @@ import LogInView from '../views/LogInView.vue'
 import SignupStudentView from '../views/SignupStudentView.vue'
 import SignupTeacherView from '../views/SignupTeacherView.vue'
 import TestJew from '../views/TestJew.vue'
+import RequestView from '../views/RequestView.vue'
+import TestRequestView from '../views/TestRequestView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +40,16 @@ const router = createRouter({
       path: '/leavePaper',
       name: 'LeavePaperView',
       component: LeavePaperView
+    },
+    {
+      path: '/request',
+      name: 'RequestView',
+      component: RequestView
+    },
+    {
+      path: '/testRequest',
+      name: 'testRequestView',
+      component: TestRequestView
     },
     {
       path: '/about',
