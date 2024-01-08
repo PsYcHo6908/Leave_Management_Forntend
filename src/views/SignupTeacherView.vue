@@ -30,7 +30,7 @@
           name="prefix"
           placeholder=""
         />
-        <label for="studentId">รหัสนิสิต</label>
+        <label for="studentId">รหัสอาจารย์</label>
         <input
           type="text"
           v-model="formData.user_id"
@@ -151,7 +151,7 @@ export default {
       }
 
       if (this.errors.length === 0) {
-        this.formData.role = 'student'
+        this.formData.role = 'teacher'
         // console.log(this.formData.email + ' 110')
         axios
           .post('/api/signup/', this.formData)
