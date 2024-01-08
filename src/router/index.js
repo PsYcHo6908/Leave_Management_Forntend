@@ -5,6 +5,7 @@ import LogInView from '../views/LogInView.vue'
 import SignupStudentView from '../views/SignupStudentView.vue'
 import SignupTeacherView from '../views/SignupTeacherView.vue'
 import TestJew from '../views/TestJew.vue'
+import TestParn from '../views/TestParn.vue'
 import RequestView from '../views/RequestView.vue'
 import TestRequestView from '../views/TestRequestView.vue'
 
@@ -40,6 +41,11 @@ const router = createRouter({
       path: '/leavePaper',
       name: 'LeavePaperView',
       component: LeavePaperView
+    },
+    {
+      path: '/testParn',
+      name: 'TestParn',
+      component: TestParn
     },
     {
       path: '/request',
