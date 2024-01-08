@@ -68,7 +68,7 @@
           </v-col>
         </v-row>
         <!-- Date and Time Pickers Row -->
-        <v-row>
+        <!-- <v-row>
           <v-col cols="12">
             <div class="leaveblock0">
               <div class="leaveblock1">
@@ -77,7 +77,7 @@
               </div>
             </div>
           </v-col>
-        </v-row>
+        </v-row> -->
 
         <v-btn class="submit" @click="submitForm">ส่ง</v-btn>
       </div>
