@@ -22,6 +22,14 @@
           name="inputname"
           placeholder=""
         />
+        <label for="prefix" class="name1">ตำแหน่ง</label>
+        <input
+          type="text"
+          v-model="formData.prefix"
+          id="prefix"
+          name="prefix"
+          placeholder=""
+        />
         <label for="studentId">รหัสนิสิต</label>
         <input
           type="text"
@@ -106,7 +114,8 @@ export default {
       lname: '',
       user_id: '',
       email: '',
-      role: ''
+      role: '',
+      prefix: ''
     },
     errors: [],
     passwordVisible: false,
@@ -162,6 +171,7 @@ export default {
               this.formData.role = ''
               this.formData.username = ''
               this.formData.user_id = ''
+              this.formData.prefix = ''
             } else {
               console.error(response.data.message)
               const data = JSON.parse(response.data.message)
@@ -203,7 +213,7 @@ export default {
     margin-bottom: 2% !important;
   }
   form.block1 {
-    margin: auto 5%;
+    margin: auto 5% 0%;
   }
   input[type='text'],
   input[type='password'] {
@@ -302,7 +312,7 @@ export default {
   button.eye-icon {
     position: absolute;
     margin: 1.7% -3% 0;
-}
+  }
   .background1 {
     background: url('../assets/SignUp-1.jpg');
     background-size: cover;

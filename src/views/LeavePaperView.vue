@@ -4,7 +4,7 @@
 
     <div class="right-section">
       <TopNavBar />
-      <div class="content px-1 py-1">
+      <div class="content-Page">
         <slot></slot>
 
         <div class="head">แจ้งลา</div>
@@ -22,27 +22,27 @@
         <div class="leaveblock0">
           <div class="leaveblock1">
             <div class="content-head">รายชื่อวิชา</div>
-            <v-select :items="subjects" label=""></v-select>
+            <v-select :items="subjects"></v-select>
           </div>
           <div class="leaveblock2">
             <div class="content-head">หมู่เรียน</div>
-            <v-select :items="section" label=""></v-select>
+            <v-select :items="section"></v-select>
           </div>
         </div>
         <div class="leaveblock0">
           <div class="leaveblock1">
             <div class="content-head">วันที่</div>
-            <v-select :items="subjects" label=""></v-select>
+            <v-select :items="subjects"></v-select>
           </div>
           <div class="leaveblock2">
             <div class="content-head">เวลา</div>
-            <v-select :items="section" label=""></v-select>
+            <sele :items="section"></sele>
           </div>
         </div>
         <div class="leaveblock0">
           <div class="leaveblock1">
             <div class="content-head">ประเภทการลา</div>
-            <v-select :items="leave" label=""></v-select>
+            <v-select :items="leave"></v-select>
           </div>
           <div class="leaveblock2">
             <div class="content-head">หลักฐานการลา</div>
@@ -95,14 +95,17 @@ export default {
     flex-direction: column;
   }
   .content {
-    padding: 20px; /* Adjust as needed */
+    padding: 20px;
     flex: 1;
+    border-top: solid 15px #03A96B;
+    border-radius: 15px;
   }
   .head {
-    font-size: 26px;
+    font-size: 30px;
     font-family: 'Prompt';
     font-weight: 600;
-    margin-left: 5%;
+    margin-left: 2%;
+    padding: 2% 0%;
   }
   .leaveblock0 {
     display: flex;
@@ -112,6 +115,8 @@ export default {
     gap: 5%;
     margin-bottom: 1.5%;
     width: 50%;
+    font-size: 24px;
+    font-family: 'Prompt';
   }
   .leaveblock2 {
     display: flex;
@@ -119,6 +124,11 @@ export default {
     margin-bottom: 1.5%;
     width: 50%;
     margin-left: -25%;
+    font-size: 24px;
+    font-family: 'Prompt';
+  }
+  .content-head {
+    font-weight: 600;
   }
   .v-input__control {
     width: 35% !important;
