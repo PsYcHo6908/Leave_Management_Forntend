@@ -143,7 +143,7 @@ export default {
 
       if (this.errors.length === 0) {
         this.formData.role = 'student'
-        console.log(this.formData.email + ' 110')
+        // console.log(this.formData.email + ' 110')
         axios
           .post('/api/signup/', this.formData)
           .then((response) => {
