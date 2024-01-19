@@ -103,6 +103,21 @@
             </div>
           </v-col>
         </v-row> -->
+                <!-- Additional Input Row 1 col -->
+        <v-row>
+          <v-col cols="12" md="6">
+            <div class="leaveblock0">
+              <div class="leaveblock1">
+                <div class="content-head mt-3">ประเภทการลา</div>
+                <v-select v-model="leaveTypesValue" :items="leaveTypes" style="width: 100%;"></v-select>
+              </div>
+            </div>
+          </v-col>
+          <!-- Date and Time Pickers in the same row -->
+          <v-col cols="12" md="6">
+            <v-date-picker></v-date-picker>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <v-btn class="submit" @click="submitForm">ส่ง</v-btn>
@@ -135,8 +150,9 @@ export default {
       attachment: null,
       description: '',
       additionalInput: '',
-      newDropdownValue: ''
-    }
+      newDropdownValue: '',
+      leaveTypesValue: '',
+    };
   },
   components: {
     Navbar,
