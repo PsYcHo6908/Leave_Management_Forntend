@@ -1,54 +1,82 @@
 <template>
-    <div class="layout-container">
-      <Navbar />
-  
-      <div class="right-section">
-        <TopNavBar />
-        <div class="content-Page">
-          <slot></slot>
-  
-          <div class="head">แจ้งลา</div>
-        </div>
-        <div class="content">
-          <v-data-table-server
-            v-model:items-per-page="itemsPerPage"
-            :headers="headers"
-            :items-length="totalItems"
-            :items="serverItems"
+  <div class="layout-container">
+    <Navbar />
+
+    <div class="right-section">
+      <TopNavBar />
+      <div class="content-Page">
+        <slot></slot>
+
+        <div class="head-request">แจ้งลา</div>
+        <v-select
+          :items="items"
+          label="ปีการศึกษา"
+          style="width: 100%"
+        ></v-select>
+        <v-select
+          :items="leaveType"
+          label="ประเภทการลา"
+          style="width: 100%"
+        ></v-select>
+        <v-card-text>
+          <v-text-field
             :loading="loading"
-            item-value="name"
-            @update:options="loadItems"
-          >
-            <!-- Add a new column for the buttons -->
-            <template v-slot:item="{ item }">
-              <tr>
-                <td>{{ item.name }}</td>
-                <td>{{ item.calories }}</td>
-                <td>{{ item.fat }}</td>
-                <td>{{ item.carbs }}</td>
-                <td>{{ item.protein }}</td>
-                <td>{{ item.iron }}</td>
-  
-                <!-- Approve button -->
-                <td>
-                  <v-btn @click="approveRecord(item)" color="green" dark>
-                    Approve
-                  </v-btn>
-                </td>
-  
-                <!-- Reject button -->
-                <td>
-                  <v-btn @click="rejectRecord(item)" color="red" dark>
-                    Reject
-                  </v-btn>
-                </td>
-              </tr>
-            </template>
-          </v-data-table-server>
-        </div>
+            density="compact"
+            variant="solo"
+            label="Search templates"
+            append-inner-icon="mdi-magnify"
+            single-line
+            hide-details
+            @click:append-inner="onClick"
+            style="width: 100%;"
+          ></v-text-field>
+        </v-card-text>
+        <v-select
+          :items="status-req"
+          label="สถานะ"
+          style="width: 100%"
+        ></v-select>
+      </div>
+      <div class="content">
+        <v-data-table-server
+          v-model:items-per-page="itemsPerPage"
+          :headers="headers"
+          :items-length="totalItems"
+          :items="serverItems"
+          :loading="loading"
+          item-value="name"
+          @update:options="loadItems"
+        >
+          <!-- Add a new column for the buttons -->
+          <template v-slot:item="{ item }">
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>{{ item.calories }}</td>
+              <td>{{ item.fat }}</td>
+              <td>{{ item.carbs }}</td>
+              <td>{{ item.protein }}</td>
+              <td>{{ item.iron }}</td>
+
+              <!-- Approve button -->
+              <td>
+                <v-btn @click="approveRecord(item)" color="green" dark>
+                  Approve
+                </v-btn>
+              </td>
+
+              <!-- Reject button -->
+              <td>
+                <v-btn @click="rejectRecord(item)" color="red" dark>
+                  Reject
+                </v-btn>
+              </td>
+            </tr>
+          </template>
+        </v-data-table-server>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 <script>
 import Navbar from '../components/navbar.vue'
 import TopNavBar from '../components/TopNavBar.vue'
@@ -179,6 +207,9 @@ export default {
       { title: 'ประเภทการลา', key: 'iron', align: 'end' },
       { title: '', key: 'iron', align: 'end' }
     ],
+    loaded: false,
+    loading: false,
+    leaveType: ['ลาป่วย', 'ลากิจ'],
     serverItems: [],
     loading: true,
     totalItems: 0
@@ -199,12 +230,20 @@ export default {
     // New methods for handling approve and reject actions
     approveRecord(record) {
       // Your approve logic goes here
-      console.log('Approving record:', record);
+      console.log('Approving record:', record)
     },
     rejectRecord(record) {
       // Your reject logic goes here
-      console.log('Rejecting record:', record);
+      console.log('Rejecting record:', record)
     },
+    onClick () {
+        this.loading = true
+
+        setTimeout(() => {
+          this.loading = false
+          this.loaded = true
+        }, 2000)
+      },
   },
   components: {
     Navbar,
@@ -212,4 +251,18 @@ export default {
   }
 }
 </script>
-<style></style>
+<style>
+@media screen and (min-width: 1900px) {
+  .content-Page {
+    display: flex;
+  }
+  .head-request {
+    font-size: 30px;
+    font-family: 'Prompt';
+    font-weight: 600;
+    margin-left: 2%;
+    padding: 2% 0%;
+    width: 100%;
+  }
+}
+</style>
