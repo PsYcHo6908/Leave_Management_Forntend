@@ -6,7 +6,7 @@
       <div class="content-Page">
         <slot></slot>
         <v-row>
-          <v-col cols="12" md="6">แจ้งลา</v-col>
+          <v-col cols="12" >แจ้งลา</v-col>
         </v-row>
       </div>
       <div class="content">
@@ -67,6 +67,17 @@
             </div>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-date-picker ></v-date-picker>
+          </v-col>
+          <v-col cols="12" md="6">
+            <div class="leaveblock1">
+              <div class="content-head mt-3">Additional Input</div>
+              <v-text-field v-model="additionalInput" label="Additional Input" placeholder="Type something..." class="mt-3" style="width: 100%;"></v-text-field>
+            </div>
+          </v-col>
+        </v-row>
         <!-- Date and Time Pickers Row -->
         <!-- <v-row>
           <v-col cols="12">
@@ -78,8 +89,11 @@
             </div>
           </v-col>
         </v-row> -->
-
-        <v-btn class="submit" @click="submitForm">ส่ง</v-btn>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-btn class="submit" @click="submitForm">ส่ง</v-btn>
+          </v-col>
+        </v-row>
       </div>
     </div>
   </div>

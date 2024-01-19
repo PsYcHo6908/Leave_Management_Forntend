@@ -6,6 +6,7 @@ import SignupStudentView from '../views/SignupStudentView.vue'
 import SignupTeacherView from '../views/SignupTeacherView.vue'
 import TestJew from '../views/TestJew.vue'
 import TestParn from '../views/TestParn.vue'
+import TestParn2 from '../views/TestParn2.vue'
 import RequestView from '../views/RequestView.vue'
 import TestRequestView from '../views/TestRequestView.vue'
 
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/testParn',
       name: 'TestParn',
       component: TestParn
+    },
+    {
+      path: '/testParn2',
+      name: 'TestParn2',
+      component: TestParn2
     },
     {
       path: '/request',
