@@ -62,16 +62,35 @@
               <div class="leaveblock1">
                 <div class="content-head mt-3">ประเภทการลา</div>
                 <v-select
-                v-model="leaveTypesValue"
-                :items="leaveTypes"
-                style="width: 100%"
-              ></v-select>
+                  v-model="leaveTypesValue"
+                  :items="leaveTypes"
+                  style="width: 100%"
+                ></v-select>
               </div>
             </div>
           </v-col>
           <!-- Date and Time Pickers in the same row -->
           <v-col cols="12" md="6">
-            <v-date-picker></v-date-picker>
+            <div class="leaveblock0">
+              <div class="leaveblock2">
+                <div class="content-head mt-3">หลักฐานการลา</div>
+                <v-file-input
+                  v-model="files"
+                  placeholder="Upload your documents"
+                  label="File input"
+                  multiple
+                  prepend-icon="mdi-paperclip"
+                >
+                  <template v-slot:selection="{ fileNames }">
+                    <template v-for="fileName in fileNames" :key="fileName">
+                      <v-chip size="small" label color="primary" class="me-2">
+                        {{ fileName }}
+                      </v-chip>
+                    </template>
+                  </template>
+                </v-file-input>
+              </div>
+            </div>
           </v-col>
         </v-row>
 
@@ -81,41 +100,29 @@
           </v-col>
           <v-col cols="12" md="6">
             <div class="leaveblock1">
-              <div class="content-head mt-3">Additional Input</div>
-              <v-text-field
-                v-model="additionalInput"
-                label="Additional Input"
-                placeholder="Type something..."
-                class="mt-3"
-                style="width: 100%"
-              ></v-text-field>
+              <form action="/action_page.php">
+                <label for="appt">Select a time:</label>
+                <input type="time" id="appt" name="appt" />
+                <input type="submit" />
+              </form>
             </div>
           </v-col>
         </v-row>
-        <!-- Date and Time Pickers Row -->
-        <!-- <v-row>
+
+        <!-- description row -->
+        <v-row>
           <v-col cols="12">
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="content-head mt-3">วันที่</div>
-                <v-date-picker v-model="selectedDate" show-current="true" style="width: 100%;"></v-date-picker>
+                <div class="content-head">คำอธิบาย</div>
+                <v-textarea
+                  class="custom-textarea"
+                  rows="4"
+                  placeholder="กรุณาป้อนคำอธิบายที่นี่"
+                  style="width: 100%"
+                ></v-textarea>
               </div>
             </div>
-          </v-col>
-        </v-row> -->
-                <!-- Additional Input Row 1 col -->
-        <v-row>
-          <v-col cols="12" md="6">
-            <div class="leaveblock0">
-              <div class="leaveblock1">
-                <div class="content-head mt-3">ประเภทการลา</div>
-                <v-select v-model="leaveTypesValue" :items="leaveTypes" style="width: 100%;"></v-select>
-              </div>
-            </div>
-          </v-col>
-          <!-- Date and Time Pickers in the same row -->
-          <v-col cols="12" md="6">
-            <v-date-picker></v-date-picker>
           </v-col>
         </v-row>
         <v-row>
@@ -131,8 +138,8 @@
 <!-- ... rest of the component ... -->
 
 <script>
-import Navbar from '../components/navbar.vue'
-import TopNavBar from '../components/TopNavBar.vue'
+import Navbar from '../../components/navbar.vue'
+import TopNavBar from '../../components/TopNavBar.vue'
 
 export default {
   data() {
@@ -152,7 +159,8 @@ export default {
       additionalInput: '',
       newDropdownValue: '',
       leaveTypesValue: '',
-    };
+      files: []
+    }
   },
   components: {
     Navbar,
@@ -164,11 +172,19 @@ export default {
       console.log('Student ID:', this.studentId)
       console.log('New Dropdown Value:', this.newDropdownValue)
       console.log('Additional Input:', this.additionalInput)
+      console.log('files:', this.files)
     }
   }
 }
 </script>
 
 <style scoped>
-/* Add scoped styles here */
+.custom-textarea input {
+  border-color: red; /* Change this to your desired color /
+  transition: border-color 0.3s ease; / Add a smooth transition effect /
+}
+
+.custom-textarea input:focus {
+  border-color: green; / Change this to your desired focus color */
+}
 </style>
