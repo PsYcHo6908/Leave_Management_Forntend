@@ -2,13 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LeavePaperView from '../views/LeavePaperView.vue'
 import LogInView from '../views/LogInView.vue'
+import RequestView from '../views/RequestView.vue'
 import SignupStudentView from '../views/SignupStudentView.vue'
 import SignupTeacherView from '../views/SignupTeacherView.vue'
+import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
 import TestParn from '../views/test/TestParn.vue'
 import TestParn2 from '../views/test/TestParn2.vue'
-import RequestView from '../views/RequestView.vue'
-import TestRequestView from '../views/TestRequestView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +70,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/testChangePassword',
+      name: 'testChangePassword',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/test/TestChangePassword.vue')
     }
   ]
 })
