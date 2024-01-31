@@ -8,14 +8,11 @@ export const useUserStore = defineStore({
         user: {
             isAuthenticated: false,
             id: null,
-            fname: null,
-            lname: null,
             user_id: null,
             username: null,
             email: null,
             access: null,
-            refresh: null,
-            avatar: null
+            refresh: null
         }
     }),
 
@@ -33,10 +30,7 @@ export const useUserStore = defineStore({
                 this.user.id = localStorage.getItem('user.id')
                 this.user.user_id = localStorage.getItem('user.user_id')
                 this.user.username = localStorage.getItem('user.username')
-                this.user.fname = localStorage.getItem('user.fname')
-                this.user.lname = localStorage.getItem('user.lname')
                 this.user.email = localStorage.getItem('user.email')
-                this.user.avatar = localStorage.getItem('user.avatar')
                 this.user.isAuthenticated = true
 
                 this.refreshToken()
@@ -44,7 +38,6 @@ export const useUserStore = defineStore({
                 console.log('Initialized user:', this.user)
             }
         },
-
         setToken(data) {
             console.log('setToken', data)
 
@@ -67,20 +60,15 @@ export const useUserStore = defineStore({
             this.user.id = null
             this.user.user_id = null
             this.user.username = null
-            this.user.fname = null
-            this.user.lname = null
             this.user.email = null
-            this.user.avatar = null
 
             localStorage.setItem('user.access', '')
             localStorage.setItem('user.refresh', '')
             localStorage.setItem('user.id', '')
             localStorage.setItem('user.user_id', '')
             localStorage.setItem('user.username', '')
-            localStorage.setItem('user.fname', '')
-            localStorage.setItem('user.lname', '')
             localStorage.setItem('user.email', '')
-            localStorage.setItem('user.avatar', '')
+
         },
 
         setUserInfo(user) {
@@ -89,18 +77,13 @@ export const useUserStore = defineStore({
             this.user.id = user.id
             this.user.user_id = user.user_id
             this.user.username = user.username
-            this.user.fname = user.fname
-            this.user.lname = user.lname
             this.user.email = user.email
-            this.user.avatar = user.avatar
+
 
             localStorage.setItem('user.id', this.user.id)
             localStorage.setItem('user.user_id', this.user.user_id)
             localStorage.setItem('user.username', this.user.username)
-            localStorage.setItem('user.fname', this.user.fname)
-            localStorage.setItem('user.lname', this.user.lname)
             localStorage.setItem('user.email', this.user.email)
-            localStorage.setItem('user.avatar', this.user.avatar)
 
             console.log('User', this.user)
         },

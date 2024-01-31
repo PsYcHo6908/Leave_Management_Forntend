@@ -13,6 +13,7 @@ import TestParn2 from '../views/test/TestParn2.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Product
     {
       path: '/',
       name: 'home',
@@ -48,6 +49,7 @@ const router = createRouter({
       name: 'TestParn',
       component: TestParn
     },
+    // TESTS 
     {
       path: '/testParn2',
       name: 'TestParn2',
@@ -66,18 +68,17 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
     {
       path: '/testChangePassword',
       name: 'testChangePassword',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/test/TestChangePassword.vue')
+    },
+    {
+      path: '/sandbox',
+      name: 'sandbox',
+      component: () => import('../views/test/Sandbox.vue')
     }
   ]
 })

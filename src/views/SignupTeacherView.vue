@@ -112,7 +112,6 @@ export default {
       password2: '',
       fname: '',
       lname: '',
-      user_id: '',
       email: '',
       role: '',
       prefix: ''

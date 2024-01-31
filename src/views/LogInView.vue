@@ -26,12 +26,15 @@
         <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
           <img src="../assets/view.png" width="25" height="25" />
         </button>
+        
         <template v-if="errors.length > 0">
           <div class="bg-red-300 text-white rounded-lg p-6">
             <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
           </div>
         </template>
+
         <button class="logInButton">เข้าสู่ระบบ</button>
+        
       </form>
       <!-- <div class="box1"></div>
       <div class="box2"></div> -->
@@ -94,7 +97,7 @@ export default {
           .then((response) => {
             this.userStore.setUserInfo(response.data)
             console.log('testttttt')
-            console.log(localStorage.getItem('user.fname'))
+            // console.log(localStorage.getItem('user.fname'))
             this.$router.push('/feed')
           })
           .catch((error) => {

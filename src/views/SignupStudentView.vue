@@ -1,4 +1,3 @@
-"
 <template>
   <v-container class="background1">
     <div class="img1">
@@ -104,9 +103,9 @@ export default {
       password2: '',
       fname: '',
       lname: '',
-      user_id: '',
       email: '',
-      role: ''
+      role: '',
+      prefix: ''
     },
     errors: [],
     passwordVisible: false,
@@ -162,6 +161,7 @@ export default {
               this.formData.role = ''
               this.formData.username = ''
               this.formData.user_id = ''
+              this.formData.prefix = ''
             } else {
               console.error(response.data.message)
               const data = JSON.parse(response.data.message)

@@ -1,5 +1,6 @@
+<!-- navbar.vue -->
 <template>
-  <v-card style="min-height: 100vh" :style="{ width: leftSectionWidth , height: '100%'}" @mouseover="expandNavbar" @mouseleave="collapseNavbar">
+  <v-card style="min-height: 100vh ;" :style="{ width: leftSectionWidth , height: '100%', zIndex: 1000}" @mouseover="expandNavbar" @mouseleave="collapseNavbar">
     <v-layout style="height: 100%;">
       <v-navigation-drawer
         expand-on-hover

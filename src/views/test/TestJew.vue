@@ -1,5 +1,5 @@
 <template>
-  <img src="../assets/SignUp-1.jpg" width="500" height="500" />
+  <img src="../../assets/SignUp-1.jpg" width="500" height="500" />
   <div>
     <v-img class="mx-auto my-6" max-width="228" :src="imagePath"></v-img>
 
