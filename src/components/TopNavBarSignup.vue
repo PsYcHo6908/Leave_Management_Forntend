@@ -1,5 +1,5 @@
 <template>
-  <nav class="px-10 py-10 border-gray-200 bg-emerald-500 text-white top-0 z-10">
+  <nav class="px-10 py-10 border-gray-200 bg-emerald-500 text-white top-0 z-50">
     <div class="max-w-7xl mx-auto">
       <div class="flex items-center justify-between">
         <div class="menu-left">
@@ -8,18 +8,16 @@
 
         <div class="menu-center flex space-x-12"></div>
 
-        <div class="menu-right flex items-center space-x-4">
+        <div class="menu-right flex items-center space-x-2">
           <button class="bell">
             <img src="../assets/bell.png" width="20" height="20">
           </button>
 
-          <div class="id">6310451286</div>
+          <button class="login">Login</button>
 
-          <div class="name">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
-
-          <button class="logout">
+          <!-- <button class="logout">
             <img src="../assets/power.png" width="20" height="20">
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -27,11 +25,10 @@
 </template>
 <script>
 export default {
-  name: 'TopNavBar'
+  name: 'TopNavBarSignup'
 
 }
 </script>
-
 <style>
 .text-xl {
   font-family: 'Prompt', sans-serif;
@@ -47,14 +44,14 @@ export default {
     margin-left: 25%;
   }
 
-  .id {
+  .name {
     width: 100%;
     font-size: 20px;
     margin-right: -60%;
     font-family: 'Prompt', sans-serif;
   }
 
-  .name {
+  .login {
     width: 95%;
     margin-right: -30%;
     font-size: 20px;

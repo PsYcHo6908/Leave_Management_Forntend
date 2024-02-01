@@ -1,324 +1,293 @@
 <template>
-  <v-container class="background1">
-    <div class="img1">
-      <img src="../assets/logo-1.png" width="200" height="250" />
-    </div>
-    <div class="rec2">
-      <form class="block1" v-on:submit.prevent="submitform">
-        <label for="firstname" class="name1">ชื่อ</label>
-        <label for="lastname" class="name1">นามสกุล</label>
-        <input
-          type="text"
-          v-model="formData.fname"
-          id="inputname"
-          name="inputname"
-          placeholder=""
-        />
-        <input
-          type="text"
-          v-model="formData.lname"
-          id="inputname"
-          name="inputname"
-          placeholder=""
-        />
-        <label for="studentId">รหัสนิสิต</label>
-        <input
-          type="text"
-          v-model="formData.user_id"
-          id="studentId"
-          name="studentId"
-          placeholder=""
-        />
-        <label for="email">อีเมล</label>
-        <input
-          type="text"
-          v-model="formData.email"
-          id="email"
-          name="email"
-          placeholder=""
-        />
-        <label for="user">username</label>
-        <input
-          type="text"
-          v-model="formData.username"
-          id="user"
-          name="user"
-          placeholder=""
-        />
+  <div class="right-section">
+    <TopNavBarSignup />
+      <div class="content-Page">
+        <slot></slot>
+        <v-container  fluid>
+          <v-row align="center">
+            <v-col cols="12" md="6" offset-md="3" >
+              <div class="img1">
+                <img src="../assets/logo-1.png" />
+              </div>
+              <v-card  
+                class="mx-auto pa-12 pb-8"  
+                rounded="xl" 
+                color="rgba(255, 255, 255, 0.5)"
+                style="padding: 20px;"
+                >
+                <v-card-title 
+                  style="color: #757575; padding: 0px; border: 30;"
+                  >
+                  Student Registation
+                </v-card-title>
+                <v-form @submit.prevent="submitform">
 
-        <label for="password">รหัสผ่าน</label>
-        <input
-          :type="passwordVisible ? 'text' : 'password'"
-          v-model="formData.password1"
-          id="passwordInput"
-          name="passwordInput"
-          placeholder=""
-        />
-        <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
-          <img src="../assets/view.png" width="25" height="25" />
-        </button>
-        <label for="password">ยืนยันรหัสผ่าน</label>
-        <input
-          :type="confirmpasswordVisible ? 'text' : 'password'"
-          v-model="formData.password2"
-          id="passwordInput"
-          name="passwordInput"
-          placeholder=""
-        />
-        <!-- notification -->
-        <button
-          class="eye-icon"
-          v-on:click.prevent="toggleConfirmPasswordVisibility"
-        >
-          <img src="../assets/view.png" width="25" height="25" />
-        </button>
-        <template v-if="errors.length > 0">
-          <div class="bg-red-300 text-white rounded-lg p-6">
-            <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
-          </div>
-        </template>
-        <button class="logInButton">เข้าสู่ระบบ</button>
-      </form>
-      <!-- <div class="box1"></div>
-      <div class="box2"></div> -->
+                  <!-- Username prefix -->
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">username</div>
+                      <v-text-field
+                      type="text"
+                      v-model="formData.username"
+                      variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">prefix</div>
+                      <v-text-field
+                      type="text"
+                      v-model="formData.prefix"
+                      variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- name lastname -->
+                  <v-row>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">ชื่อ</div>
+
+                      <v-text-field
+                      type="text"
+                      v-model="formData.fname"
+                      variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">นามสกุล</div>
+                      <v-text-field
+                      type="text"
+                      v-model="formData.lname"
+                      variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- รหัสนิสิต อีเมล -->
+                  <v-row>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">รหัสนิสิต</div>
+                      <v-text-field
+                      v-model="formData.user_id"
+                      variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">อีเมล</div>
+                      <v-text-field
+                        v-model="formData.email"
+                        :rules="[rules.required, rules.email]"
+                        variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- faculty department -->
+                  <v-row>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">คณะ</div>
+                      <v-select
+                          v-model="formData.faculty"
+                          :items="faculties"
+                          style="width: 100%"
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">ภาควิชา</div>
+                        <v-select
+                          v-model="formData.department"
+                          :items="departments"
+                          style="width: 100%"
+                        ></v-select>
+                    </v-col>
+                  </v-row>
+
+
+                  <!--Confirm Password -->
+                  <v-row>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">รหัสผ่าน</div>
+                      <v-text-field
+                        v-model="formData.password1"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.min]"
+                        :type="show1 ? 'text' : 'password'"
+                        name="input-10-1"
+                        hint="At least 8 characters"
+                        counter
+                        @click:append="show1 = !show1"
+                        variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">ยืนยันรหัสผ่าน</div>
+                      <v-text-field
+                        v-model="formData.password2"
+                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.min]"
+                        :type="show2 ? 'text' : 'password'"
+                        name="input-10-1"
+                        hint="At least 8 characters"
+                        counter
+                        @click:append="show2 = !show2"
+                        variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <!-- notification error section -->
+                  <template v-if="errors.length > 0">
+                    <div class="bg-red-300 text-white rounded-lg p-6">
+                      <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
+                    </div>
+                  </template>
+
+
+
+                  <v-btn class="logInButton" type="submit">Register</v-btn>
+                </v-form>
+                <!-- Error display section -->
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </div>
-  </v-container>
 </template>
+
 <script>
+import TopNavBarSignup from '../components/TopNavBarSignup.vue'
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
 export default {
-  setup() {
-    const toastStore = useToastStore()
+setup() {
+  const toastStore = useToastStore()
 
-    return {
-      toastStore
+  return {
+    toastStore
+  }
+},
+
+data: () => ({
+  formData: {
+    username: '',
+    user_id: '',
+    password1: '',
+    password2: '',
+    fname: '',
+    lname: '',
+    email: '',
+    role: '',
+    prefix: '',
+    faculty: '',
+    department: ''
+  },
+  errors: [],
+  show2: false,
+  show1: false,
+  password: 'Password',
+  rules: {
+    required: value => !!value || 'Required.',
+    min: v => v.length >= 8 || 'Min 8 characters',
+    email: value => {
+    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return pattern.test(value) || 'Invalid e-mail.';
     }
   },
-  data: () => ({
-    formData: {
-      username: '',
-      user_id: '',
-      password1: '',
-      password2: '',
-      fname: '',
-      lname: '',
-      email: '',
-      role: '',
-      prefix: ''
-    },
-    errors: [],
-    passwordVisible: false,
-    confirmpasswordVisible: false
-  }),
-  methods: {
-    togglePasswordVisibility() {
-      this.passwordVisible = !this.passwordVisible
-    },
-    toggleConfirmPasswordVisibility() {
-      this.confirmpasswordVisible = !this.confirmpasswordVisible
-    },
-    submitform() {
-      this.errors = []
+  departments: ['department 1', 'department 2', 'department 3'],
+  faculties: ['faculties 1', 'faculties 2', 'faculties 3'],
+}),
+components: {
+  TopNavBarSignup
+},
+methods: {
+ 
+  submitform() {
+    console.log(this.formData)
+    this.errors = []
 
-      if (this.formData.email === '') {
-        this.errors.push('Your e-mail is missing')
-      }
+    if (this.formData.email === '') {
+      this.errors.push('Your e-mail is missing')
+    }
 
-      if (this.formData.fname === '') {
-        this.errors.push('Your fname is missing')
-      }
-      if (this.formData.lname === '') {
-        this.errors.push('Your lname is missing')
-      }
+    if (this.formData.fname === '') {
+      this.errors.push('Your fname is missing')
+    }
+    if (this.formData.lname === '') {
+      this.errors.push('Your lname is missing')
+    }
 
-      if (this.formData.password1 === '') {
-        this.errors.push('Your password is missing')
-      }
+    if (this.formData.password1 === '') {
+      this.errors.push('Your password is missing')
+    }
 
-      if (this.formData.password1 !== this.formData.password2) {
-        this.errors.push('The password does not match')
-      }
+    if (this.formData.password1 !== this.formData.password2) {
+      this.errors.push('The password does not match')
+    }
 
-      if (this.errors.length === 0) {
-        this.formData.role = 'student'
-        // console.log(this.formData.email + ' 110')
-        axios
-          .post('/api/signup/', this.formData)
-          .then((response) => {
-            if (response.data.message === 'success') {
-              this.toastStore.showToast(
-                10000,
-                'The user is registered. Please login.',
-                'bg-emerald-500'
-              )
+    if (this.errors.length === 0) {
+      this.formData.role = 'student'
+      // console.log(this.formData.email + ' 110')
+      axios
+        .post('/api/signup/', this.formData)
+        .then((response) => {
+          if (response.data.message === 'success') {
+            this.toastStore.showToast(
+              10000,
+              'The user is registered. Please login.',
+              'bg-emerald-500'
+            )
 
-              this.formData.email = ''
-              this.formData.fname = ''
-              this.formData.lname = ''
-              this.formData.password1 = ''
-              this.formData.password2 = ''
-              this.formData.role = ''
-              this.formData.username = ''
-              this.formData.user_id = ''
-              this.formData.prefix = ''
-            } else {
-              console.error(response.data.message)
-              const data = JSON.parse(response.data.message)
-              for (const key in data) {
-                this.errors.push(data[key][0].message)
-              }
-
-              this.toastStore.showToast(
-                5000,
-                'Something went wrong. Please try again',
-                'bg-red-300'
-              )
+            this.formData.email = ''
+            this.formData.fname = ''
+            this.formData.lname = ''
+            this.formData.password1 = ''
+            this.formData.password2 = ''
+            this.formData.role = ''
+            this.formData.username = ''
+            this.formData.user_id = ''
+            this.formData.prefix = ''
+            this.formData.faculty = ''
+            this.formData.department = ''
+          } else {
+            console.error(response.data.message)
+            const data = JSON.parse(response.data.message)
+            for (const key in data) {
+              this.errors.push(data[key][0].message)
             }
-          })
-          .catch((error) => {
-            this.toastStore.showToast(10000, 'Server Problem', 'bg-red-300')
-            console.log('error', error)
-          })
-      }
+
+            this.toastStore.showToast(
+              5000,
+              'Something went wrong. Please try again',
+              'bg-red-300'
+            )
+          }
+        })
+        .catch((error) => {
+          this.toastStore.showToast(10000, 'Server Problem', 'bg-red-300')
+          console.log('error', error)
+        })
     }
   }
 }
+}
 </script>
+
 <style>
-@media screen and (min-width: 1900px) {
-  .rec2 {
-    width: 30%;
-    height: 68%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 0%;
-    border-radius: 40px;
-    z-index: 1;
-  }
-  .img1 {
-    margin: 3% 44.6% !important;
-    margin-bottom: 2% !important;
-  }
-  form.block1 {
-    margin: auto 5%;
-  }
-  input[type='text'],
-  input[type='password'] {
-    width: 100%;
-    padding: 8px 20px;
-    margin: 16px 0;
-    display: inline-block;
-    border: 1px solid #bdbcc4;
-    border-radius: 50px;
-    box-sizing: border-box;
-    background-color: #bdbcc4;
-  }
-  label {
-    /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 18px;
-    font-family: 'Prompt', sans-serif;
-  }
-  .logInButton {
-    color: white;
-    font-size: 20px;
-    border: 1px solid #03a96b;
-    background-color: #03a96b;
-    width: 80%;
-    padding: 2% 0%;
-    border-radius: 25px;
-    margin: 10%;
-  }
-  button.eye-icon {
-    position: absolute;
-    margin: 1.3% -2% 0;
-  }
-  .background1 {
-    background: url('../assets/SignUp-1.jpg');
-    background-size: cover;
-    height: 100vh;
-    position: absolute;
-  }
-  .v-container {
-    max-width: 1900px !important;
-  }
-  input#inputname {
-    width: 48%;
-    margin-right: 2%;
-  }
-  label.name1 {
-    display: inline-flex;
-    width: 50%;
-  }
+#input-0, #input-2, #input-4, #input-6,
+#input-10, #input-12, #input-14,
+#input-16, #input-18, #input-20, #input-22{
+border: none !important;
+background-color: transparent !important;
 }
-@media screen and (max-width: 1440px) {
-  .rec2 {
-    width: 40%;
-    height: 75%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: -2%;
-    border-radius: 40px;
-    z-index: 1;
-  }
-  .img1 {
-    margin: 3% 44.6% !important;
-    margin-bottom: 2% !important;
-  }
-  form.block1 {
-    margin: 5%;
-  }
-  input[type='text'],
-  input[type='password'] {
-    width: 100%;
-    padding: 8px 20px;
-    margin: 16px 0;
-    display: inline-block;
-    border: 1px solid #bdbcc4;
-    border-radius: 50px;
-    box-sizing: border-box;
-    background-color: #bdbcc4;
-  }
-  label {
-    /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 18px;
-    font-family: 'Prompt', sans-serif;
-  }
-  .logInButton {
-    color: white;
-    font-size: 20px;
-    border: 1px solid #03a96b;
-    background-color: #03a96b;
-    width: 80%;
-    padding: 2% 0%;
-    border-radius: 25px;
-    margin: 10%;
-    margin-top: 3%;
-  }
-  button.eye-icon {
-    position: absolute;
-    margin: 1.7% -3% 0;
+.v-combobox__selection {
+border: none !important;
+background-color: transparent !important;
 }
-  .background1 {
-    background: url('../assets/SignUp-1.jpg');
-    background-size: cover;
-    height: 100vh;
-    position: absolute;
-  }
-  .v-container {
-    max-width: 1900px !important;
-  }
-  input#inputname {
-    width: 48%;
-    margin-right: 2%;
-  }
-  label.name1 {
-    display: inline-flex;
-    width: 50%;
-  }
+.img1 {
+display: flex;
+justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+
 }
 </style>
