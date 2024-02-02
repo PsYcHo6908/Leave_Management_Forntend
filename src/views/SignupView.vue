@@ -297,7 +297,7 @@ methods: {
 </script>
 
 <style>
-#input-0, #input-2, #input-4, #input-6,
+#input-0, #input-2, #input-4, #input-6,#input-8,
 #input-10, #input-12, #input-14,
 #input-16, #input-18, #input-20, #input-21, #input-23, #input-22{
 border: none !important;
@@ -313,4 +313,5 @@ justify-content: center; /* จัดให้อยู่ตรงกลาง�
 align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
 
 }
+
 </style>

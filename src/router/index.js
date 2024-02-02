@@ -9,6 +9,7 @@ import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
 import TestParn from '../views/test/TestParn.vue'
 import TestParn2 from '../views/test/TestParn2.vue'
+import AddSubject from '../views/AddSubject.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,11 +41,16 @@ const router = createRouter({
       component: LeavePaperView
     },
     {
+      path: '/addSubject',
+      name: 'AddSubject',
+      component: AddSubject
+    },
+    // TESTS 
+    {
       path: '/testParn',
       name: 'TestParn',
       component: TestParn
     },
-    // TESTS 
     {
       path: '/testJew',
       name: 'TestJew',
