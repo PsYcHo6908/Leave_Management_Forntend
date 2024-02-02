@@ -1,4 +1,3 @@
-"
 <template>
   <v-container class="background1">
     <div class="img1">
@@ -6,6 +5,7 @@
     </div>
     <div class="rec">
       <form class="block1_login" v-on:submit.prevent="submitform">
+        <br>
         <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
         <input
           type="text"
@@ -16,22 +16,12 @@
         />
 
         <label for="password">รหัสผ่าน</label>
-        <input
-          :type="passwordVisible ? 'text' : 'password'"
-          v-model="formData.password"
-          id="passwordInput"
-          name="lastname"
-          placeholder=""
-        />
-        <button class="eye-icon" v-on:click.prevent="togglePasswordVisibility">
-          <img src="../assets/view.png" width="25" height="25" />
-        </button>
-        
-        <template v-if="errors.length > 0">
-          <div class="bg-red-300 text-white rounded-lg p-6">
-            <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-          </div>
-        </template>
+        <div class="flex items-center">
+          <input :type="passwordVisible ? 'text' : 'password'" v-model="formData.password" id="passwordInput" name="lastname" placeholder="" />
+          <button v-on:click.prevent="togglePasswordVisibility">
+            <img src="../assets/view.png" width="25" height="25" />
+          </button>
+        </div>
 
         <button class="logInButton">เข้าสู่ระบบ</button>
         
@@ -39,6 +29,12 @@
       <!-- <div class="box1"></div>
       <div class="box2"></div> -->
     </div>
+    <br>
+      <template v-if="errors.length > 0">
+        <div class="bg-red-300 text-white rounded-lg p-4  grid place-items-center">
+          <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+        </div>
+      </template>
   </v-container>
 </template>
 <script>

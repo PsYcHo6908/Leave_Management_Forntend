@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LeavePaperView from '../views/LeavePaperView.vue'
 import LogInView from '../views/LogInView.vue'
 import RequestView from '../views/RequestView.vue'
-import SignupStudentView from '../views/SignupStudentView.vue'
+import SignupView from '../views/SignupView.vue'
 import SignupTeacherView from '../views/SignupTeacherView.vue'
 import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
@@ -20,19 +20,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/signupStudent',
-      name: 'SignupStudent',
-      component: SignupStudentView
+      path: '/signup',
+      name: 'Signup',
+      component: SignupView
     },
     {
       path: '/login',
       name: 'Login',
       component: LogInView
-    },
-    {
-      path: '/testJew',
-      name: 'TestJew',
-      component: TestJew
     },
     {
       path: '/signupTeacher',
@@ -50,6 +45,11 @@ const router = createRouter({
       component: TestParn
     },
     // TESTS 
+    {
+      path: '/testJew',
+      name: 'TestJew',
+      component: TestJew
+    },
     {
       path: '/testParn2',
       name: 'TestParn2',

@@ -13,7 +13,7 @@
             <img src="../assets/bell.png" width="20" height="20">
           </button>
 
-          <button class="login">Login</button>
+          <button class="login" @click="login">Login</button>
 
           <!-- <button class="logout">
             <img src="../assets/power.png" width="20" height="20">
@@ -25,8 +25,16 @@
 </template>
 <script>
 export default {
-  name: 'TopNavBarSignup'
-
+  name: 'TopNavBarSignup',
+  data() {
+    return {
+    };
+  },
+  methods: {
+    login(){
+      this.$router.push('/login')
+    },
+  },
 }
 </script>
 <style>

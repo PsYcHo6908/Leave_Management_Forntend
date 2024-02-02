@@ -3,12 +3,16 @@
     <TopNavBarSignup />
       <div class="content-Page">
         <slot></slot>
+
+        <!-- Logo -->
+        <div class="img1">
+          <img src="../assets/logo-1.png" />
+        </div>
+
+        <!-- Card -->
         <v-container  fluid>
           <v-row align="center">
             <v-col cols="12" md="6" offset-md="3" >
-              <div class="img1">
-                <img src="../assets/logo-1.png" />
-              </div>
               <v-card  
                 class="mx-auto pa-12 pb-8"  
                 rounded="xl" 
@@ -18,9 +22,12 @@
                 <v-card-title 
                   style="color: #757575; padding: 0px; border: 30;"
                   >
-                  Student Registation
+                  Registation
                 </v-card-title>
+
+                <!-- Form -->
                 <v-form @submit.prevent="submitform">
+
 
                   <!-- Username prefix -->
                   <v-row>
@@ -41,6 +48,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
+
 
                   <!-- name lastname -->
                   <v-row>
@@ -63,10 +71,11 @@
                     </v-col>
                   </v-row>
 
+
                   <!-- รหัสนิสิต อีเมล -->
                   <v-row>
                     <v-col cols="12" md="6" >
-                      <div class="content-head mt-3">รหัสนิสิต</div>
+                      <div class="content-head mt-3">รหัสอาจารย์/นิสิต</div>
                       <v-text-field
                       v-model="formData.user_id"
                       variant="underlined"
@@ -81,6 +90,7 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
+
 
                   <!-- faculty department -->
                   <v-row>
@@ -97,6 +107,19 @@
                         <v-select
                           v-model="formData.department"
                           :items="departments"
+                          style="width: 100%"
+                        ></v-select>
+                    </v-col>
+                  </v-row>
+
+
+                  <!-- role -->
+                  <v-row>
+                    <v-col cols="12">
+                      <div class="content-head mt-3">Role</div>
+                      <v-select
+                          v-model="formData.role"
+                          :items="roles"
                           style="width: 100%"
                         ></v-select>
                     </v-col>
@@ -135,6 +158,7 @@
                     </v-col>
                   </v-row>
 
+
                   <!-- notification error section -->
                   <template v-if="errors.length > 0">
                     <div class="bg-red-300 text-white rounded-lg p-6">
@@ -143,10 +167,9 @@
                   </template>
 
 
-
                   <v-btn class="logInButton" type="submit">Register</v-btn>
+                
                 </v-form>
-                <!-- Error display section -->
               </v-card>
             </v-col>
           </v-row>
@@ -196,11 +219,13 @@ data: () => ({
   },
   departments: ['department 1', 'department 2', 'department 3'],
   faculties: ['faculties 1', 'faculties 2', 'faculties 3'],
+  roles: ['student', 'teacher'],
 }),
 components: {
   TopNavBarSignup
 },
 methods: {
+
  
   submitform() {
     console.log(this.formData)
@@ -226,8 +251,6 @@ methods: {
     }
 
     if (this.errors.length === 0) {
-      this.formData.role = 'student'
-      // console.log(this.formData.email + ' 110')
       axios
         .post('/api/signup/', this.formData)
         .then((response) => {
@@ -276,7 +299,7 @@ methods: {
 <style>
 #input-0, #input-2, #input-4, #input-6,
 #input-10, #input-12, #input-14,
-#input-16, #input-18, #input-20, #input-22{
+#input-16, #input-18, #input-20, #input-21, #input-23, #input-22{
 border: none !important;
 background-color: transparent !important;
 }
