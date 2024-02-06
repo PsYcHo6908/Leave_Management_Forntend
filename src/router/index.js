@@ -45,6 +45,11 @@ const router = createRouter({
       name: 'AddSubject',
       component: AddSubject
     },
+    {
+      path: '/request',
+      name: 'RequestView',
+      component: RequestView
+    },
     // TESTS 
     {
       path: '/testParn',
@@ -60,11 +65,6 @@ const router = createRouter({
       path: '/testParn2',
       name: 'TestParn2',
       component: TestParn2
-    },
-    {
-      path: '/request',
-      name: 'RequestView',
-      component: RequestView
     },
     {
       path: '/testRequest',

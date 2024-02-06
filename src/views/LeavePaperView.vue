@@ -24,7 +24,7 @@
             <!-- ส่วนของอาจารย์ -->
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="content-head mt-3">อาจารย์</div>
+                <div class="Leave-content-head mt-3">อาจารย์</div>
                 <v-select
                   v-model="newDropdownValue"
                   :items="Teachers"
@@ -37,7 +37,7 @@
             <!-- ส่วนของรายชื่อวิชา -->
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="content-head mt-3">รายชื่อวิชา</div>
+                <div class="Leave-content-head mt-3">รายชื่อวิชา</div>
                 <v-combobox
                   v-model="selectedSubjects"
                   :items="subjects"
@@ -59,7 +59,7 @@
           <v-col cols="12" md="6">
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="content-head mt-3">ประเภทการลา</div>
+                <div class="Leave-content-head mt-3">ประเภทการลา</div>
                 <v-select
                   v-model="leaveTypesValue"
                   :items="leaveTypes"
@@ -72,7 +72,7 @@
           <v-col cols="12" md="6">
             <div class="leaveblock0">
               <div class="leaveblock2">
-                <div class="content-head mt-3">หลักฐานการลา</div>
+                <div class="Leave-content-head mt-3">หลักฐานการลา</div>
                 <v-file-input
                   v-model="files"
                   placeholder="Upload your documents"
@@ -306,7 +306,7 @@ export default {
 .content-sub {
   margin: 0% 0% 0% 1.5%;
 }
-.content-head.mt-3 {
+.Leave-content-head.mt-3 {
   margin: 0% 2% 0% 0%;
   width: 12%;
 }
