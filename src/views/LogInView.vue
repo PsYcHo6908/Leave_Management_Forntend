@@ -5,7 +5,7 @@
     </div>
     <div class="rec">
       <form class="block1_login" v-on:submit.prevent="submitform">
-        <br>
+        <br />
         <label for="fname">บัญชีผู้ใช้เครือข่ายนนทรี</label>
         <input
           type="text"
@@ -17,24 +17,32 @@
 
         <label for="password">รหัสผ่าน</label>
         <div class="flex items-center">
-          <input :type="passwordVisible ? 'text' : 'password'" v-model="formData.password" id="passwordInput" name="lastname" placeholder="" />
-          <button v-on:click.prevent="togglePasswordVisibility">
+          <input
+            :type="passwordVisible ? 'text' : 'password'"
+            v-model="formData.password"
+            id="passwordInput"
+            name="lastname"
+            placeholder=""
+          />
+          <button
+            class="eye-icon"
+            v-on:click.prevent="togglePasswordVisibility"
+          >
             <img src="../assets/view.png" width="25" height="25" />
           </button>
         </div>
 
         <button class="logInButton">เข้าสู่ระบบ</button>
-        
       </form>
       <!-- <div class="box1"></div>
       <div class="box2"></div> -->
     </div>
-    <br>
-      <template v-if="errors.length > 0">
-        <div class="bg-red-300 text-white rounded-lg p-4  grid place-items-center">
-          <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-        </div>
-      </template>
+    <br />
+    <template v-if="errors.length > 0">
+      <div class="bg-red-300 text-white rounded-lg p-4 grid place-items-center">
+        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+      </div>
+    </template>
   </v-container>
 </template>
 <script>
@@ -109,63 +117,63 @@ export default {
 </script>
 <style>
 .rec {
-    width: 30%;
-    height: 44% !important; 
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 0%;
-    border-radius: 40px;
-    z-index: 1;
-  }
-  .img1 {
-    margin: 3% 44.6%;
-    margin-bottom: 2%;
-  }
-  form.block1_login {
-    margin: auto 5% !important;
-  }
-  input[type='text'],
-  input[type='password'] {
-    width: 95% !important;
-    padding: 1px !important;
-    margin: 16px 2% !important;
-    display: inline-block;
-    border: 1px solid #bdbcc4;
-    border-radius: 50px;
-    box-sizing: border-box;
-    background-color: #bdbcc4;
-  }
-  label {
-    /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 16px !important;
-    font-family: 'Prompt', sans-serif;
-  }
-  .logInButton {
-    color: white;
-    font-size: 18px !important;
-    border: 1px solid #03a96b;
-    background-color: #03a96b;
-    width: 80%;
-    padding: 2% 0%;
-    border-radius: 25px;
-    margin: 10%;
-    margin-top: 9% !important;
-  }
-  button.eye-icon {
-    position: absolute;
-    margin: 1.3% -2% 0;
-  }
-  .background1 {
-    background: url('../assets/SignUp-1.jpg');
-    background-size: cover;
-    height: 100vh;
-    position: absolute;
-  }
-  .v-container {
-    max-width: 1900px !important;
-  }
+  width: 30%;
+  height: 44% !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 0%;
+  border-radius: 40px;
+  z-index: 1;
+}
+.img1 {
+  margin: 3% 44.6%;
+  margin-bottom: 2%;
+}
+form.block1_login {
+  margin: auto 5% !important;
+}
+input[type='text'],
+input[type='password'] {
+  width: 95% !important;
+  padding: 1px !important;
+  margin: 16px 2% !important;
+  display: inline-block;
+  border: 1px solid #bdbcc4;
+  border-radius: 50px;
+  box-sizing: border-box;
+  background-color: #bdbcc4;
+}
+label {
+  /* padding: 0 0 30% 0; top right bottom left */
+  font-size: 16px !important;
+  font-family: 'Prompt', sans-serif;
+}
+.logInButton {
+  color: white;
+  font-size: 18px !important;
+  border: 1px solid #03a96b;
+  background-color: #03a96b;
+  width: 80%;
+  padding: 2% 0%;
+  border-radius: 25px;
+  margin: 10%;
+  margin-top: 9% !important;
+}
+button.eye-icon {
+  position: absolute;
+  margin: 1.3% -2% 0;
+}
+.background1 {
+  background: url('../assets/SignUp-1.jpg');
+  background-size: cover;
+  height: 100vh;
+  position: absolute;
+}
+.v-container {
+  max-width: 1900px !important;
+}
 @media screen and (min-width: 1900px) {
   .rec {
     width: 30%;
@@ -198,7 +206,7 @@ export default {
   }
   label {
     /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 18px;
+    font-size: 20px !important;
     font-family: 'Prompt', sans-serif;
   }
   .logInButton {
@@ -212,8 +220,8 @@ export default {
     margin: 10%;
   }
   button.eye-icon {
-    position: absolute;
-    margin: 1.3% -2% 0;
+    position: absolute !important;
+    margin: -3.9% 24% 0 !important;
   }
   .background1 {
     background: url('../assets/SignUp-1.jpg');
@@ -271,9 +279,9 @@ export default {
     margin: 10%;
   }
   button.eye-icon {
-    position: absolute;
-    margin: 1.3% -2% 0;
-  }
+    position: absolute !important;
+    margin: -5% 23% 0 !important;
+}
   .background1 {
     background: url('../assets/SignUp-1.jpg');
     background-size: cover;
@@ -287,7 +295,7 @@ export default {
 @media screen and (max-width: 1191px) {
   .rec {
     width: 30%;
-    height: 44% !important; 
+    height: 44% !important;
     background-color: rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;
