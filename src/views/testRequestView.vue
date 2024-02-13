@@ -7,7 +7,7 @@
         <div class="content-Page">
           <slot></slot>
   
-          <div class="head">แจ้งลา</div>
+          <div class="head">คำขอลาทั้งหมด</div>
         </div>
         <div class="content">
           <v-data-table-server

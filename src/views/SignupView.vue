@@ -32,7 +32,7 @@
                   <!-- Username prefix -->
                   <v-row>
                     <v-col cols="12" md="6">
-                      <div class="content-head mt-3">username</div>
+                      <div class="content-head mt-3">บัญชีผู้ใช้เครือข่ายนนทรี</div>
                       <v-text-field
                       type="text"
                       v-model="formData.username"
@@ -40,7 +40,7 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" md="6">
-                      <div class="content-head mt-3">prefix</div>
+                      <div class="content-head mt-3">คำนำหน้า</div>
                       <v-text-field
                       type="text"
                       v-model="formData.prefix"
@@ -302,6 +302,9 @@ methods: {
 #input-16, #input-18, #input-20, #input-21, #input-23, #input-22{
 border: none !important;
 background-color: transparent !important;
+}
+#input-10 {
+    margin: 0% !important;
 }
 .v-combobox__selection {
 border: none !important;
