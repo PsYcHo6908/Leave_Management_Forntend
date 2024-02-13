@@ -13,9 +13,9 @@
             <img src="../assets/bell.png" width="20" height="20">
           </button>
 
-          <div class="id">6310451286</div>
+          <div class="TopNavBarid">6310451286</div>
 
-          <div class="name">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
+          <div class="TopNavBarname">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
 
           <button class="logout">
             <img src="../assets/power.png" width="20" height="20">
@@ -55,14 +55,14 @@ export default {
     margin-left: 25%;
   }
 
-  .id {
+  .TopNavBarid {
     width: 100%;
     font-size: 20px;
     margin-right: -60%;
     font-family: 'Prompt', sans-serif;
   }
 
-  .name {
+  .TopNavBarname {
     width: 95%;
     margin-right: -30%;
     font-size: 20px;
