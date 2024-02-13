@@ -27,7 +27,15 @@
 </template>
 <script>
 export default {
-  name: 'TopNavBar'
+  name: 'TopNavBar',
+  data: () => ({
+
+  }),
+  methods: {
+  loginButton(){
+    this.$router.push('/login')
+  },
+  }
 
 }
 </script>
