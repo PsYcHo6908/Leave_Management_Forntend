@@ -97,16 +97,18 @@
                     <v-col cols="12" md="6" >
                       <div class="content-head mt-3">คณะ</div>
                       <v-select
-                          v-model="formData.faculty_id"
+                          v-model="selectedFaculty"
                           :items="faculties"
+                          :item-props="facultyItemProps"
                           style="width: 100%"
                         ></v-select>
                     </v-col>
                     <v-col cols="12" md="6" >
                       <div class="content-head mt-3">ภาควิชา</div>
                         <v-select
-                          v-model="formData.department_id"
+                          v-model="selectedDepartment"
                           :items="departments"
+                          :item-props="departmentItemProps"
                           style="width: 100%"
                         ></v-select>
                     </v-col>
@@ -192,6 +194,8 @@ setup() {
 },
 
 data: () => ({
+  selectedFaculty: [],
+  selectedDepartment: [],
   formData: {
     username: '',
     user_id: '',
@@ -224,10 +228,60 @@ data: () => ({
 components: {
   TopNavBarSignup
 },
+mounted() {
+    this.getFaculties();
+    this.getDepartments();
+  },
+  watch: {
+    selectedFaculty: {
+        handler: 'getDepartments', // เรียกใช้ method เมื่อ selectedFaculty เปลี่ยน
+        immediate: true // เรียกใช้ method ทันทีเมื่อ component ถูกโหลด
+    }
+},
 methods: {
-
+facultyItemProps (item) {
+      return {
+        title: item.name,
+        subtitle: item.id,
+      }
+  },
+async getFaculties() {
+    // Fetch faculty data from your server API
+    await axios.get('/education/faculty')
+      .then(response => {
+        this.faculties = response.data;
+        console.log(this.faculties)
+      })
+      .catch(error => {
+        // Handle errors here
+        console.error('Error fetching faculty data:', error);
+      });
+  },
+  departmentItemProps (item) {
+      return {
+        title: item.name,
+        subtitle: item.id,
+      }
+  },
+  async getDepartments() {
+    if (this.selectedFaculty && this.selectedFaculty.id) {
+        const url = `/education/department/?faculty_id=${this.selectedFaculty.id}`;
+        await axios
+        .get(url)
+        .then((response) => {
+            this.departments = response.data; // กำหนดค่า departments ที่ได้จาก API
+        })
+        .catch((error) => {
+            console.log('error', error)
+        })
+    } else {
+        this.departments = []; // ล้างค่า departments เมื่อไม่มีค่า selectedFaculty.id
+    }
+},
  
   submitform() {
+    this.formData.faculty_id = this.selectedFaculty.id
+    this.formData.department_id = this.selectedDepartment.id
     console.log(this.formData)
     this.errors = []
 
