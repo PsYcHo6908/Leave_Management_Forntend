@@ -8,34 +8,6 @@
         <slot></slot>
 
         <div class="head-request">แจ้งลา</div>
-        <v-select
-          :items="items"
-          label="ปีการศึกษา"
-          style="width: 100%"
-        ></v-select>
-        <v-select
-          :items="leaveType"
-          label="ประเภทการลา"
-          style="width: 100%"
-        ></v-select>
-        <v-card-text>
-          <v-text-field
-            :loading="loading"
-            density="compact"
-            variant="solo"
-            label="Search templates"
-            append-inner-icon="mdi-magnify"
-            single-line
-            hide-details
-            @click:append-inner="onClick"
-            style="width: 100%;"
-          ></v-text-field>
-        </v-card-text>
-        <v-select
-          :items="status-req"
-          label="สถานะ"
-          style="width: 100%"
-        ></v-select>
       </div>
       <div class="content">
         <v-data-table-server
