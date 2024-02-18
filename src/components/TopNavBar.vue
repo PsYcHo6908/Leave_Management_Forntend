@@ -13,9 +13,9 @@
             <img src="../assets/bell.png" width="20" height="20">
           </button>
 
-          <div class="TopNavBarid">6310451286</div>
+          <div class="TopNavBarid">{{ userId }}</div>
 
-          <div class="TopNavBarname">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
+          <div class="TopNavBarname">{{ userName }}</div>
 
           <button class="logout">
             <img src="../assets/power.png" width="20" height="20">
@@ -26,9 +26,29 @@
   </nav>
 </template>
 <script>
+import { useUserStore } from '@/stores/user'
 export default {
+  setup() {
+    const userStore = useUserStore()
+    return {
+        userStore,
+        userName: userStore.user.name,
+        userId: userStore.user.user_id,
+        userRole: userStore.user.role,
+        id: userStore.user.id,
+    }
+  },
   name: 'TopNavBar',
+  beforeCreate() {
+      this.userStore.initStore()
+      // this.getUsername()
+
+  },
+  computed: {
+  },
   data: () => ({
+    teacherName: ''
+
 
   }),
   methods: {

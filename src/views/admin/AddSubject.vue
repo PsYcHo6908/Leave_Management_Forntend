@@ -6,7 +6,7 @@
 
       <!-- Logo -->
       <div class="img1">
-        <img src="../assets/logo-1.png" />
+        <img src="../../assets/logo-1.png" />
       </div>
 
       <!-- Card -->
@@ -49,12 +49,17 @@
                 <v-row>
                   <v-col cols="12">
                     <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
-
-                    <v-select
-                      v-model="formData.teachers"
-                      :items="teachers"
-                      style="width: 100%"
-                    ></v-select>
+                    <v-combobox
+                      v-model="formData.selectedDays"
+                      :items="days"
+                      multiple
+                      chips
+                      outlined
+                      @keydown.prevent
+                      @click.right.prevent
+                      @click.middle.prevent
+                      class="no-placeholder"
+                    ></v-combobox>
                   </v-col>
                 </v-row>
 
@@ -123,7 +128,7 @@
 <script>
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
-import TopNavBar from '../components/TopNavBar.vue'
+import TopNavBar from '../../components/TopNavBar.vue'
 export default {
   setup() {
     const toastStore = useToastStore()
@@ -135,15 +140,6 @@ export default {
 
   data: () => ({
     formData: {
-      username: '',
-      user_id: '',
-      password1: '',
-      password2: '',
-      fname: '',
-      lname: '',
-      email: '',
-      role: '',
-      prefix: '',
       faculty: '',
       department: '',
       selectedDays: [],
@@ -161,6 +157,7 @@ export default {
         return pattern.test(value) || 'Invalid e-mail.'
       }
     },
+    //created
     departments: ['department 1', 'department 2', 'department 3'],
     faculties: ['faculties 1', 'faculties 2', 'faculties 3'],
     roles: ['student', 'teacher'],

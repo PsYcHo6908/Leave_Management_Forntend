@@ -2,7 +2,7 @@
 <template>
   <v-container class="background1">
     <div class="img1">
-      <img src="../assets/logo-1.png" width="200" height="250" />
+      <img src="../../assets/logo-1.png" width="200" height="250" />
     </div>
     <div class="rec2">
       <form class="block1" v-on:submit.prevent="submitform">
@@ -245,7 +245,7 @@ export default {
     margin: 1.3% -2% 0;
   }
   .background1 {
-    background: url('../assets/SignUp-1.jpg');
+    background: url('../../assets/SignUp-1.jpg');
     background-size: cover;
     height: 100vh;
     position: absolute;
@@ -313,7 +313,7 @@ export default {
     margin: 1.7% -3% 0;
   }
   .background1 {
-    background: url('../assets/SignUp-1.jpg');
+    background: url('../../assets/SignUp-1.jpg');
     background-size: cover;
     height: 100vh;
     position: absolute;

@@ -12,7 +12,9 @@ export const useUserStore = defineStore({
             username: null,
             email: null,
             access: null,
-            refresh: null
+            refresh: null,
+            role: null,
+            name: null,
         }
     }),
 
@@ -31,6 +33,8 @@ export const useUserStore = defineStore({
                 this.user.user_id = localStorage.getItem('user.user_id')
                 this.user.username = localStorage.getItem('user.username')
                 this.user.email = localStorage.getItem('user.email')
+                this.user.role = localStorage.getItem('user.role')
+                this.user.name = localStorage.getItem('user.name')
                 this.user.isAuthenticated = true
 
                 this.refreshToken()
@@ -61,6 +65,7 @@ export const useUserStore = defineStore({
             this.user.user_id = null
             this.user.username = null
             this.user.email = null
+            this.user.role = null
 
             localStorage.setItem('user.access', '')
             localStorage.setItem('user.refresh', '')
@@ -68,22 +73,44 @@ export const useUserStore = defineStore({
             localStorage.setItem('user.user_id', '')
             localStorage.setItem('user.username', '')
             localStorage.setItem('user.email', '')
+            localStorage.setItem('user.role', '')
 
         },
 
-        setUserInfo(user) {
+        async setUserInfo(user) {
             console.log('setUserInfo', user)
 
             this.user.id = user.id
             this.user.user_id = user.user_id
             this.user.username = user.username
             this.user.email = user.email
+            this.user.role = user.role
 
 
             localStorage.setItem('user.id', this.user.id)
             localStorage.setItem('user.user_id', this.user.user_id)
             localStorage.setItem('user.username', this.user.username)
             localStorage.setItem('user.email', this.user.email)
+            localStorage.setItem('user.role', this.user.role)
+
+            if (this.user.role === 'teacher') {
+              const url = `/teacher/?user_id=${this.user.id}`;
+              await axios
+              .get(url)
+              .then((response) => {
+                let loginTeacher = response.data[0]
+
+                this.user.name = loginTeacher.fname + ' ' + loginTeacher.lname
+                localStorage.setItem('user.name', this.user.name)
+
+              })
+              .catch((error) => {
+                console.log('error', error)
+              })
+            }
+            if (this.user.role === 'student') {
+
+            }
 
             console.log('User', this.user)
         },

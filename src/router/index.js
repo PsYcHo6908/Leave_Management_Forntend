@@ -1,24 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LeavePaperView from '../views/LeavePaperView.vue'
 import LogInView from '../views/LogInView.vue'
+//student
+import LeavePaperView from '../views/LeavePaperView.vue'
 import RequestView from '../views/RequestView.vue'
-import SignupView from '../views/SignupView.vue'
-import SignupTeacherView from '../views/SignupTeacherView.vue'
+//admin
+import SignupView from '../views/admin/SignupView.vue'
+import SignupTeacherView from '../views/admin/SignupTeacherView.vue'
+import AddSubject from '../views/admin/AddSubject.vue'
+//test
 import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
 import TestParn from '../views/test/TestParn.vue'
 import TestParn2 from '../views/test/TestParn2.vue'
-import AddSubject from '../views/AddSubject.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // Product
+    // All Roles
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/Home.vue')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LogInView
+    },
+    // Admin
+    {
+      path: '/homeAdmin',
+      name: 'homeAdmin',
+      component: () => import('../views/admin/HomeAdmin.vue')
     },
     {
       path: '/signup',
@@ -26,24 +39,30 @@ const router = createRouter({
       component: SignupView
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: LogInView
+      path: '/addSubject',
+      name: 'AddSubject',
+      component: AddSubject
+    },
+    {
+      path: '/addFaculty',
+      name: 'addFaculty',
+      component: () => import('../views/admin/AddFacultyView.vue')
+    },
+    {
+      path: '/addDepartment',
+      name: 'addDepartment',
+      component: () => import('../views/admin/AddDepartmentView.vue')
     },
     {
       path: '/signupTeacher',
       name: 'SignupTeacher',
       component: SignupTeacherView
     },
+    //students
     {
       path: '/leavePaper',
       name: 'LeavePaperView',
       component: LeavePaperView
-    },
-    {
-      path: '/addSubject',
-      name: 'AddSubject',
-      component: AddSubject
     },
     {
       path: '/request',
@@ -85,6 +104,11 @@ const router = createRouter({
       path: '/sandbox',
       name: 'sandbox',
       component: () => import('../views/test/Sandbox.vue')
+    },
+    {
+      path: '/dupInput',
+      name: 'dupInput',
+      component: () => import('../views/test/TestDuplicateInput.vue')
     }
   ]
 })

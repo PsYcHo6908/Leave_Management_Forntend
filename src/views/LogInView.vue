@@ -102,7 +102,7 @@ export default {
             this.userStore.setUserInfo(response.data)
             console.log('testttttt')
             // console.log(localStorage.getItem('user.fname'))
-            this.$router.push('/feed')
+            this.$router.push('/home')
           })
           .catch((error) => {
             console.log('error', error)

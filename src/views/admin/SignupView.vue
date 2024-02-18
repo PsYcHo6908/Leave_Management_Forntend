@@ -6,7 +6,7 @@
 
         <!-- Logo -->
         <div class="img1">
-          <img src="../assets/logo-1.png" />
+          <img src="../../assets/logo-1.png" />
         </div>
 
         <!-- Card -->
@@ -97,7 +97,7 @@
                     <v-col cols="12" md="6" >
                       <div class="content-head mt-3">คณะ</div>
                       <v-select
-                          v-model="formData.faculty"
+                          v-model="formData.faculty_id"
                           :items="faculties"
                           style="width: 100%"
                         ></v-select>
@@ -105,7 +105,7 @@
                     <v-col cols="12" md="6" >
                       <div class="content-head mt-3">ภาควิชา</div>
                         <v-select
-                          v-model="formData.department"
+                          v-model="formData.department_id"
                           :items="departments"
                           style="width: 100%"
                         ></v-select>
@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import TopNavBarSignup from '../components/TopNavBarSignup.vue'
+import TopNavBarSignup from '../../components/TopNavBarSignup.vue'
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
 export default {
@@ -202,8 +202,8 @@ data: () => ({
     email: '',
     role: '',
     prefix: '',
-    faculty: '',
-    department: ''
+    faculty_id: '',
+    department_id:''
   },
   errors: [],
   show2: false,
@@ -217,8 +217,8 @@ data: () => ({
     return pattern.test(value) || 'Invalid e-mail.';
     }
   },
-  departments: ['department 1', 'department 2', 'department 3'],
-  faculties: ['faculties 1', 'faculties 2', 'faculties 3'],
+  departments: [],
+  faculties: [],
   roles: ['student', 'teacher'],
 }),
 components: {

@@ -170,9 +170,10 @@
                
               </v-col>
               <v-col cols="12" md="6">
-                <p>{{ formData.lname }}</p>
-                <input v-model="formData.lname" placeholder="นามสกุล" class="custom-input"> 
-                
+                <div class="content-head mt-3">หลักฐานการลา</div>
+                <v-text-field
+                v-model="test"
+                ></v-text-field>
               </v-col>
             </v-row>
         <v-row>
@@ -301,6 +302,16 @@ export default {
   opacity: 1; /* บางเบราว์เซอร์อาจตั้งค่าความเข้มของสีให้ต่ำ สามารถปรับได้ที่นี่ */
  
 }
+#input-102 {
+  border: none !important;
+  background-color: transparent !important;
+}
+#input-8  {
+  border: none !important;
+  background-color: transparent !important; /* ตั้งค่าพื้นหลังให้โปร่งใส */
+}
+
+
 @media only screen and (min-width: 600px) {
   .custom-input {
   background-color: rgba(117, 117, 117, 0.3);
