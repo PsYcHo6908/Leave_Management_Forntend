@@ -66,6 +66,7 @@ export const useUserStore = defineStore({
             this.user.username = null
             this.user.email = null
             this.user.role = null
+            this.user.name = null
 
             localStorage.setItem('user.access', '')
             localStorage.setItem('user.refresh', '')
@@ -74,6 +75,7 @@ export const useUserStore = defineStore({
             localStorage.setItem('user.username', '')
             localStorage.setItem('user.email', '')
             localStorage.setItem('user.role', '')
+            localStorage.setItem('user.name', '')
 
         },
 
@@ -108,10 +110,27 @@ export const useUserStore = defineStore({
                 console.log('error', error)
               })
             }
-            if (this.user.role === 'student') {
-
+            else{
+              if (this.user.role === 'student') {
+                const url = `/student/?user_id=${this.user.id}`;
+                await axios
+                .get(url)
+                .then((response) => {
+                  let loginStudent = response.data[0]
+  
+                  this.user.name = loginStudent.fname + ' ' + loginStudent.lname
+                  localStorage.setItem('user.name', this.user.name)
+  
+                })
+                .catch((error) => {
+                  console.log('error', error)
+                })
+  
+              }
+              else{
+                localStorage.setItem('user.name', Admin)
+              }
             }
-
             console.log('User', this.user)
         },
 

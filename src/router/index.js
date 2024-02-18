@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+
+// system
 import LogInView from '../views/LogInView.vue'
 //student
 import LeavePaperView from '../views/LeavePaperView.vue'
@@ -112,5 +115,21 @@ const router = createRouter({
     }
   ]
 })
+
+
+//"When this comment is open, it will not navigate to other pages when not authenticated.
+
+// router.beforeEach((to, from, next) => {
+//   const userStore = useUserStore()
+//   userStore.initStore()
+//   const isAuthenticated = !!userStore.user.access;
+
+//   if (to.name !== 'Login' && !isAuthenticated) {
+//     next({ name: 'Login' });
+//   } else {
+//     next();
+//   }
+// });
+
 
 export default router

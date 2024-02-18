@@ -251,6 +251,8 @@ methods: {
     }
 
     if (this.errors.length === 0) {
+      const result = this.formData.role === "" ? "admin" : this.formData.role;
+      this.formData.role = result
       axios
         .post('/api/signup/', this.formData)
         .then((response) => {

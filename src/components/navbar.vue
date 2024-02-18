@@ -23,6 +23,12 @@
           <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
           <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
           <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
+          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 

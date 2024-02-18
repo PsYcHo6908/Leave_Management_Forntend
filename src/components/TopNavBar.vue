@@ -17,7 +17,7 @@
 
           <div class="TopNavBarname">{{ userName }}</div>
 
-          <button class="logout">
+          <button class="logout" @click="logout">
             <img src="../assets/power.png" width="20" height="20">
           </button>
         </div>
@@ -32,7 +32,6 @@ export default {
     const userStore = useUserStore()
     return {
         userStore,
-        userName: userStore.user.name,
         userId: userStore.user.user_id,
         userRole: userStore.user.role,
         id: userStore.user.id,
@@ -45,15 +44,18 @@ export default {
 
   },
   computed: {
+    userName() {
+      return this.userStore.user.name;
+    },
   },
   data: () => ({
-    teacherName: ''
 
 
   }),
   methods: {
-  loginButton(){
-    this.$router.push('/login')
+    logout(){
+      this.userStore.removeToken()
+      this.$router.push('/login')
   },
   }
 
