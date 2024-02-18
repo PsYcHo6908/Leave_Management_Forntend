@@ -44,14 +44,34 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
+                <v-row>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">คณะ</div>
+                      <v-select
+                          v-model="selectedFaculty"
+                          :items="faculties"
+                          :item-props="facultyItemProps"
+                          style="width: 100%"
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="12" md="6" >
+                      <div class="content-head mt-3">ภาควิชา</div>
+                        <v-select
+                          v-model="selectedDepartment"
+                          :items="departments"
+                          :item-props="departmentItemProps"
+                          style="width: 100%"
+                        ></v-select>
+                    </v-col>
+                  </v-row>
                 <!-- name lastname -->
                 <v-row>
                   <v-col cols="12">
                     <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
                     <v-combobox
-                      v-model="formData.selectedDays"
-                      :items="days"
+                      v-model="selectedTeachers"
+                      :items="teachers"
+                      :item-props="teachersItemProps"
                       multiple
                       chips
                       outlined
@@ -157,18 +177,96 @@ export default {
         return pattern.test(value) || 'Invalid e-mail.'
       }
     },
+    selectedFaculty: [],
+    selectedDepartment: [],
+    selectedTeachers: [],
     //created
-    departments: ['department 1', 'department 2', 'department 3'],
-    faculties: ['faculties 1', 'faculties 2', 'faculties 3'],
+    departments: [],
+    faculties: [],
     roles: ['student', 'teacher'],
-    teachers: ['teacher1', 'teacher2', 'teacher3'],
+    teachers: [],
     days: ['วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์','วันอาทิตย์'],
     status: ['เปิด','ปิด'],
   }),
   components: {
     TopNavBar
   },
+  mounted() {
+    this.getFaculties();
+    this.getDepartments();
+    this.getTeachers();
+  },
+  watch: {
+    selectedFaculty: {
+        handler: 'getDepartments', // เรียกใช้ method เมื่อ selectedFaculty เปลี่ยน
+        immediate: true // เรียกใช้ method ทันทีเมื่อ component ถูกโหลด
+    },
+    selectedDepartment: {
+      handler: 'getTeachers',
+      immediate: true
+    },
+},
   methods: {
+  facultyItemProps (item) {
+      return {
+        title: item.name,
+        subtitle: item.id,
+      }
+  },
+  departmentItemProps (item) {
+      return {
+        title: item.name,
+        subtitle: item.id,
+      }
+  },
+  teachersItemProps (item) {
+      return {
+        title: item.fname,
+        subtitle: item.id,
+      }
+  },
+  async getFaculties() {
+    // Fetch faculty data from your server API
+    await axios.get('/education/faculty')
+      .then(response => {
+        this.faculties = response.data;
+        console.log(this.faculties)
+      })
+      .catch(error => {
+        // Handle errors here
+        console.error('Error fetching faculty data:', error);
+      });
+  },
+  async getDepartments() {
+    if (this.selectedFaculty && this.selectedFaculty.id) {
+        const url = `/education/department/?faculty_id=${this.selectedFaculty.id}`;
+        await axios
+        .get(url)
+        .then((response) => {
+            this.departments = response.data; // กำหนดค่า departments ที่ได้จาก API
+        })
+        .catch((error) => {
+            console.log('error', error)
+        })
+    } else {
+        this.departments = []; // ล้างค่า departments เมื่อไม่มีค่า selectedFaculty.id
+    }
+  },
+    async getTeachers() {
+      if (this.selectedDepartment && this.selectedDepartment.id) {
+        const url = `/teacher/?faculty_id=${this.selectedDepartment.faculty_id}&department_id=${this.selectedDepartment.id}`;
+        await axios
+        .get(url)
+        .then((response) => {
+          this.teachers = response.data;
+        })
+        .catch((error) => {
+          console.log('error',error)
+        })
+      } else {
+        this.teachers = [];
+      }
+    },
     submitform() {
       console.log(this.formData)
       this.errors = []
@@ -247,6 +345,7 @@ export default {
 #input-8,
 #input-10,
 #input-12,
+#input-13,
 #input-14,
 #input-15,
 #input-16,
