@@ -24,12 +24,19 @@
             <!-- ส่วนของอาจารย์ -->
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="Leave-content-head mt-3">อาจารย์</div>
-                <v-select
-                  v-model="newDropdownValue"
-                  :items="Teachers"
-                  style="width: 100%"
-                ></v-select>
+                <div class="Leave-content-head mt-3">รายชื่อวิชา</div>
+                <v-combobox
+                  v-model="selectedSubjects"
+                  :items="subjects"
+                  :item-props="subjectsItemProps"
+                  multiple
+                  chips
+                  outlined
+                  @keydown.prevent
+                  @click.right.prevent
+                  @click.middle.prevent
+                  class="no-placeholder"
+                ></v-combobox>
               </div>
             </div>
           </v-col>
@@ -37,10 +44,11 @@
             <!-- ส่วนของรายชื่อวิชา -->
             <div class="leaveblock0">
               <div class="leaveblock1">
-                <div class="Leave-content-head mt-3">รายชื่อวิชา</div>
+                <div class="Leave-content-head mt-3">อาจารย์</div>
                 <v-combobox
-                  v-model="selectedSubjects"
-                  :items="subjects"
+                  v-model="selectedTeachers"
+                  :items="teachers"
+                  :item-props="teachersItemProps"
                   multiple
                   chips
                   outlined
@@ -182,6 +190,7 @@ import {
   validateSelectedDates
 } from '@/core/utils'
 import { useToastStore } from '@/stores/toast'
+import axios from 'axios'
 
 export default {
   setup() {
@@ -192,17 +201,19 @@ export default {
   },
   data() {
     return {
-      subjects: ['Subject 1', 'Subject 2', 'Subject 3'],
+      subjects: [],
       Teachers: [],
       leaveTypes: ['ลากิจ', 'ลาป่วย', 'อื่น ๆ'],
       studentId: '',
       selectedSubjects: [],
       selectedSection: '',
+      selectedTeachers: [],
       selectedDates: [],
       selectedTime: '',
       selectedLeaveType: '',
       attachment: null,
       description: '',
+      teachers: [],
       additionalInput: '',
       newDropdownValue: '',
       leaveTypesValue: '',
@@ -226,7 +237,67 @@ export default {
     TopNavBar
     // Demo,
   },
+  mounted() {
+    this.getTeachers()
+    this.getSubjects()
+  },
+  watch: {
+    selectedSubjects: {
+      handler: 'getTeachers',
+      immediate: true
+    }
+  },
   methods: {
+    teachersItemProps(item) {
+      return {
+        title: item.fname,
+        // subtitle: item.id
+      }
+    },
+    subjectsItemProps(item) {
+      return {
+        title: item.name,
+        subtitle: item.course_id
+      }
+    },
+    async getSubjects() {
+      // Fetch faculty data from your server API
+      await axios
+        .get('/education/course/')
+        .then((response) => {
+          this.subjects = response.data
+          console.log(this.subjects)
+        })
+        .catch((error) => {
+          // Handle errors here
+          console.error('Error fetching subjects data:', error)
+        })
+    },
+    async getTeachers() {
+
+      console.log("selectSubject: "+ this.selectedSubjects)
+      console.log("selectSubject: "+ this.selectedSubjects[0].id)
+      if (this.selectedSubjects && this.selectedSubjects[0].id) {
+        const url = `/instructorCourse/?course_id=${this.selectedSubjects[0].id}`
+        await axios
+        .get(url)
+        .then((response) => {
+          // this.teachers = response.data
+          // console.log("teacher:" + this.teachers[0])
+
+
+          // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
+          this.teachers = response.data.map(course => course.teacher_data);
+          console.log("Teachers:", this.teachers);
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+      } else {
+        this.teachers = []
+      }
+    },
+
     submitForm() {
       this.errors = []
       // console.log('Form submitted')
@@ -264,6 +335,9 @@ export default {
 </script>
 
 <style>
+input#input-11 {
+  display: none;
+}
 .custom-input {
   background-color: rgba(117, 117, 117, 0.3);
   border: none; /* ลบเส้นขอบทั้งหมด */
@@ -286,7 +360,7 @@ export default {
   opacity: 1; /* บางเบราว์เซอร์อาจตั้งค่าความเข้มของสีให้ต่ำ สามารถปรับได้ที่นี่ */
 }
 .content {
-  border-top: solid 6px #02BC77;
+  border-top: solid 6px #02bc77;
   border-radius: 5px;
 }
 .head {
@@ -317,49 +391,65 @@ export default {
   display: none;
 }
 .Leave-submit {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    border: 0.125em solid #02BC77;
-    border-radius: 0.9375em;
-    box-sizing: border-box;
-    color: #3B3B3B;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    font-size: 16px;
-    font-weight: 600;
-    line-height: normal;
-    margin: 0;
-    /* min-height: 3.75em; */
-    min-width: 0;
-    outline: none;
-    padding: 1.3% 4%;
-    text-align: center;
-    text-decoration: none;
-    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-    -moz-user-select: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    will-change: transform;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: 0.125em solid #02bc77;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #3b3b3b;
+  cursor: pointer;
+  display: inline-block;
+  font-family:
+    Roobert,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Helvetica,
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  /* min-height: 3.75em; */
+  min-width: 0;
+  outline: none;
+  padding: 1.3% 4%;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
 }
 
 .Leave-submit:disabled {
- pointer-events: none;
+  pointer-events: none;
 }
 
 .Leave-submit:hover {
- color: #fff;
- background-color: #02BC77;
- box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
- transform: translateY(-2px);
+  color: #fff;
+  background-color: #02bc77;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
 }
 
 .Leave-submit:active {
- box-shadow: none;
- transform: translateY(0);
+  box-shadow: none;
+  transform: translateY(0);
+}
+@media only screen and (max-width: 1440px) {
+  .Leave-content-head.mt-3 {
+    width: 12.1%;
+    margin: 0%;
+  }
 }
 @media only screen and (min-width: 600px) {
   .custom-input {
