@@ -243,7 +243,13 @@ export default {
   },
   watch: {
     selectedSubjects: {
-      handler: 'getTeachers',
+      handler() {
+        this.selectedTeachers = [];
+      // This code will run every time selectedSubjects changes
+      this.getTeachers();
+      // Reset selectedTeachers to an empty array whenever selectedSubjects changes
+      
+    },
       immediate: true
     }
   },
@@ -251,7 +257,7 @@ export default {
     teachersItemProps(item) {
       return {
         title: item.fname,
-        // subtitle: item.id
+        subtitle: item.id
       }
     },
     subjectsItemProps(item) {
@@ -299,6 +305,9 @@ export default {
     },
 
     submitForm() {
+      console.log("this.selectedTeachers: ")
+      console.log(this.selectedTeachers)
+
       this.errors = []
       // console.log('Form submitted')
       // console.log('Student ID:', this.studentId)
