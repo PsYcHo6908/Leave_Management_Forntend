@@ -328,7 +328,9 @@ async getFaculties() {
             this.formData.prefix = ''
             this.formData.faculty = ''
             this.formData.department = ''
-          } else {
+            this.selectedFaculty = ''
+            this.selectedDepartment = ''
+         } else {
             console.error(response.data.message)
             const data = JSON.parse(response.data.message)
             for (const key in data) {

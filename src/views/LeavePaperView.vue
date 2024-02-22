@@ -21,27 +21,21 @@
         </div>
         <v-row>
           <v-col cols="12" md="6">
-            <!-- ส่วนของอาจารย์ -->
+            <!-- รายชื่อวิชา -->
             <div class="leaveblock0">
               <div class="leaveblock1">
                 <div class="Leave-content-head mt-3">รายชื่อวิชา</div>
-                <v-combobox
+                <v-select
                   v-model="selectedSubjects"
                   :items="subjects"
                   :item-props="subjectsItemProps"
-                  multiple
-                  chips
-                  outlined
-                  @keydown.prevent
-                  @click.right.prevent
-                  @click.middle.prevent
-                  class="no-placeholder"
-                ></v-combobox>
+                  style="width: 100%"
+                ></v-select>
               </div>
             </div>
           </v-col>
           <v-col cols="12" md="6">
-            <!-- ส่วนของรายชื่อวิชา -->
+            <!-- อาจารย์ -->
             <div class="leaveblock0">
               <div class="leaveblock1">
                 <div class="Leave-content-head mt-3">อาจารย์</div>
@@ -190,13 +184,16 @@ import {
   validateSelectedDates
 } from '@/core/utils'
 import { useToastStore } from '@/stores/toast'
+import { useUserStore } from '@/stores/user'
 import axios from 'axios'
 
 export default {
   setup() {
     const toastStore = useToastStore()
+    const userStore = useUserStore()
     return {
-      toastStore
+      toastStore,
+      userStore
     }
   },
   data() {
@@ -204,7 +201,10 @@ export default {
       subjects: [],
       Teachers: [],
       leaveTypes: ['ลากิจ', 'ลาป่วย', 'อื่น ๆ'],
-      studentId: '',
+      user: [],
+      testId: '',
+      testStudentId: '',
+      student: [],
       selectedSubjects: [],
       selectedSection: '',
       selectedTeachers: [],
@@ -237,19 +237,22 @@ export default {
     TopNavBar
     // Demo,
   },
+  beforeCreate() {
+    
+
+  },
   mounted() {
-    this.getTeachers()
+    this.getStudentLogin()
     this.getSubjects()
   },
   watch: {
     selectedSubjects: {
       handler() {
-        this.selectedTeachers = [];
-      // This code will run every time selectedSubjects changes
-      this.getTeachers();
-      // Reset selectedTeachers to an empty array whenever selectedSubjects changes
-      
-    },
+        this.selectedTeachers = []
+        // This code will run every time selectedSubjects changes
+        this.getTeachers()
+        // Reset selectedTeachers to an empty array whenever selectedSubjects changes
+      },
       immediate: true
     }
   },
@@ -266,12 +269,40 @@ export default {
         subtitle: item.course_id
       }
     },
+    async getStudentLogin(){
+      this.userStore.initStore()
+      this.user = this.userStore.user
+      this.testId = this.userStore.user.id //user_id
+      console.log("TestID: 275" + this.testId) //user_id = 5
+      //user = 6 Pongsiri
+      //who is login student from user_id = 6
+      // console.log("277: "+ this.user[0])
+      if ( this.testId) {
+        const url = `/student/?user_id=${ this.testId}`
+        await axios
+        .get(url)
+        .then((response) => {
+          this.student = response.data[0]
+          console.log("fname285:  " +this.student.fname)
+          console.log("IdStudent285:  " +this.student.id)
+          this.testStudentId = this.student.id // student_id = 1 Panisra
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+      } else {
+        this.student = []
+      }
+
+    },
     async getSubjects() {
+      const url = `/studentRegister/?student_id=${this.testStudentId}` //student_id = 1 Panisra
       // Fetch faculty data from your server API
       await axios
-        .get('/education/course/')
+        .get(url)
         .then((response) => {
-          this.subjects = response.data
+          // this.subjects = response.data
+          this.subjects = response.data.map((course) => course.course_data)
           console.log(this.subjects)
         })
         .catch((error) => {
@@ -280,32 +311,34 @@ export default {
         })
     },
     async getTeachers() {
+      console.log('selectSubject: ' + this.selectedSubjects)
+      console.log('selectSubject: ' + this.selectedSubjects.id)
 
-      console.log("selectSubject: "+ this.selectedSubjects)
-      console.log("selectSubject: "+ this.selectedSubjects[0].id)
-      if (this.selectedSubjects && this.selectedSubjects[0].id) {
-        const url = `/instructorCourse/?course_id=${this.selectedSubjects[0].id}`
+      // console.log("selectSubject: "+ this.selectedSubjects[0].id)
+
+      console.log('selectSubject: ' + this.selectedSubjects.id)
+      if (this.selectedSubjects && this.selectedSubjects.id) {
+        const url = `/instructorCourse/?course_id=${this.selectedSubjects.id}`
         await axios
-        .get(url)
-        .then((response) => {
-          // this.teachers = response.data
-          // console.log("teacher:" + this.teachers[0])
+          .get(url)
+          .then((response) => {
+            // this.teachers = response.data
+            // console.log("teacher:" + this.teachers[0])
 
-
-          // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
-          this.teachers = response.data.map(course => course.teacher_data);
-          console.log("Teachers:", this.teachers);
-        })
-        .catch((error) => {
-          console.log('error', error);
-        });
+            // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
+            this.teachers = response.data.map((course) => course.teacher_data)
+            console.log('Teachers:', this.teachers)
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
       } else {
         this.teachers = []
       }
     },
 
     submitForm() {
-      console.log("this.selectedTeachers: ")
+      console.log('this.selectedTeachers: ')
       console.log(this.selectedTeachers)
 
       this.errors = []
