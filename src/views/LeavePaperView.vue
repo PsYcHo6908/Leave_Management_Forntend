@@ -19,6 +19,29 @@
           <div class="content-head">รหัสนิสิต</div>
           <div class="content-sub">6310451286</div>
         </div>
+        <!-- Add table -->
+        <v-row>
+          <v-col cols="12">
+            <v-data-table-server
+              v-model:items-per-page="itemsPerPage"
+              :headers="headers"
+              :items-length="totalItems"
+              :items="serverItems"
+              :loading="loading"
+              :search="search"
+              item-value="name"
+              @update:options="loadItems"
+            >
+              <!-- Correct usage of v-slot for item -->
+              <template v-slot:item="{ item }">
+                <span v-for="(teacher, index) in item.teachers" :key="index">
+                  <!-- Correctly accessing teacher properties -->
+                  {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
+                </span>
+              </template>
+            </v-data-table-server>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <!-- รายชื่อวิชา -->
@@ -55,7 +78,16 @@
             </div>
           </v-col>
         </v-row>
-
+        <v-row>
+          <v-col cols="12">
+            <!-- รายชื่อวิชา -->
+            <div class="leaveblock0">
+              <div class="leaveblock1">
+                <button class="leave-addBtn" @click="addItem">เพิ่ม</button>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
         <v-row>
           <!-- ประเภทการลา -->
           <v-col cols="12" md="6">
@@ -229,7 +261,13 @@ export default {
         email: '',
         role: '',
         prefix: ''
-      }
+      },
+      serverItems: [], // This will hold the table entries
+      headers: [
+        { text: 'Subject', value: 'name' },
+        { text: 'Teacher', value: 'teachers' }
+        // ... other headers
+      ]
     }
   },
   components: {
@@ -237,10 +275,7 @@ export default {
     TopNavBar
     // Demo,
   },
-  beforeCreate() {
-    
-
-  },
+  beforeCreate() {},
   mounted() {
     this.getStudentLogin()
     this.getSubjects()
@@ -257,6 +292,23 @@ export default {
     }
   },
   methods: {
+    addItem() {
+      // Assuming serverItems is an array of objects and each object is a row in your table.
+      // You might need to adjust the object structure based on your headers.
+      const newItem = {
+        subject: this.selectedSubjects,
+        // teacher: this.selectedTeachers.join(', ')
+        // if multiple teachers are allowed
+        teachers: this.selectedTeachers.map(teacher => 
+        `${teacher.prefix} ${teacher.fname} ${teacher.lname}`
+      ),
+      }
+      this.serverItems.push(newItem)
+
+      // Clear the inputs if necessary
+      this.selectedSubjects = null
+      this.selectedTeachers = []
+    },
     teachersItemProps(item) {
       return {
         title: item.fname,
@@ -269,31 +321,30 @@ export default {
         subtitle: item.course_id
       }
     },
-    async getStudentLogin(){
+    async getStudentLogin() {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
-      console.log("TestID: 275" + this.testId) //user_id = 5
+      console.log('TestID: 275' + this.testId) //user_id = 5
       //user = 6 Pongsiri
       //who is login student from user_id = 6
       // console.log("277: "+ this.user[0])
-      if ( this.testId) {
-        const url = `/student/?user_id=${ this.testId}`
+      if (this.testId) {
+        const url = `/student/?user_id=${this.testId}`
         await axios
-        .get(url)
-        .then((response) => {
-          this.student = response.data[0]
-          console.log("fname285:  " +this.student.fname)
-          console.log("IdStudent285:  " +this.student.id)
-          this.testStudentId = this.student.id // student_id = 1 Panisra
-        })
-        .catch((error) => {
-          console.log('error', error);
-        });
+          .get(url)
+          .then((response) => {
+            this.student = response.data[0]
+            console.log('fname285:  ' + this.student.fname)
+            console.log('IdStudent285:  ' + this.student.id)
+            this.testStudentId = this.student.id // student_id = 1 Panisra
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
       } else {
         this.student = []
       }
-
     },
     async getSubjects() {
       const url = `/studentRegister/?student_id=${this.testStudentId}` //student_id = 1 Panisra
@@ -377,7 +428,8 @@ export default {
 </script>
 
 <style>
-input#input-11 {
+#input-11,
+#input-14 {
   display: none;
 }
 .custom-input {
@@ -487,6 +539,63 @@ input#input-11 {
   box-shadow: none;
   transform: translateY(0);
 }
+.leave-addBtn {
+  --color: #00a97f;
+  padding: 0.8em 1.7em;
+  background-color: transparent;
+  border-radius: 0.3em;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.5s;
+  font-weight: 400;
+  font-size: 13px;
+  border: 1px solid;
+  font-family: inherit;
+  text-transform: uppercase;
+  color: var(--color);
+  z-index: 1;
+  margin: -3.5% 0% 0% 94.5%;
+}
+
+.leave-addBtn::before,
+.button::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  background-color: var(--color);
+  transition: 1s ease;
+}
+
+.leave-addBtn::before {
+  top: -1em;
+  left: -1em;
+}
+
+.leave-addBtn::after {
+  left: calc(100% + 1em);
+  top: calc(100% + 1em);
+}
+
+.leave-addBtn:hover::before,
+.leave-addBtn:hover::after {
+  height: 410px;
+  width: 410px;
+}
+
+.leave-addBtn:hover {
+  color: rgb(10, 25, 30);
+}
+
+.leave-addBtn:active {
+  filter: brightness(0.8);
+}
+
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
     width: 12.1%;
