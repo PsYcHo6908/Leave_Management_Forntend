@@ -28,14 +28,26 @@
               :items-per-page="itemsPerPage"
               class="elevation-1"
             >
-              <template v-slot:item.teachers="{ item }">
+            <template v-slot:item.subjectsTable="{ item }">
+              <!-- Debugging line: -->
+              <!-- <div>Debug Subjects: {{ item.subjectsTable }}</div> -->
+
+              <v-chip-group v-if="item.subjectsTable">
+                <!-- Since item.subjectsTable is an object, we don't use v-for -->
+                <v-chip small>
+                  {{ item.subjectsTable.name }}
+                </v-chip>
+              </v-chip-group>
+              <div v-else>No subjects to display</div>
+            </template>
+              <template v-slot:item.teachersTable="{ item }">
                 <v-chip-group>
                   <v-chip
-                    v-for="teacher in item.teachers"
+                    v-for="teacher in item.teachersTable"
                     :key="teacher.id"
                     small
                   >
-                    {{teacher}}
+                  {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
                   </v-chip>
                 </v-chip-group>
               </template>
@@ -235,26 +247,35 @@ export default {
   },
   data() {
     return {
-      subjects: [],
-      Teachers: [],
+      // Option
       leaveTypes: ['ลากิจ', 'ลาป่วย', 'อื่น ๆ'],
-      user: [],
+      
+      // getStudentLogin
       testId: '',
       testStudentId: '',
       student: [],
-      selectedSubjects: {},
-      selectedSection: '',
+      user: [],
+      // getSubject
+      subjects: [],
+      // getTechers
+      teachers: [],
+
+      // Input
       selectedTeachers: {},
+      selectedSubjects: {},
+
+      selectedSection: '',
       selectedDates: [],
       selectedTime: '',
       selectedLeaveType: '',
       attachment: null,
       description: '',
-      teachers: [],
       additionalInput: '',
       newDropdownValue: '',
       leaveTypesValue: '',
       files: [],
+      
+      // playload
       errors: [],
       formData: {
         username: '',
@@ -267,10 +288,12 @@ export default {
         role: '',
         prefix: ''
       },
+
+      // app table
       serverItems: [], // This will hold the table entries
       headers: [
-        { text: 'Subject', value: 'subject' },
-        { text: 'Teacher', value: 'teachers' },
+        { text: 'Subject', value: 'subjectsTable' },
+        { text: 'Teacher', value: 'teachersTable' },
         { text: 'Actions', value: 'actions', sortable: false },
         // ... other headers
       ]
@@ -305,26 +328,38 @@ export default {
       }
     },
     addItem() {
-      console.log("addItemSubject", this.selectedSubjects)
-      console.log("addItem"+this.selectedTeachers)
-      // Assuming serverItems is an array of objects and each object is a row in your table.
-      // You might need to adjust the object structure based on your headers.
-      const newItem = {
-        subject: this.selectedSubjects.name,
-        teachers: this.selectedTeachers.map(teacher => `${teacher.prefix} ${teacher.fname} ${teacher.lname}`)
-        // teacher: this.selectedTeachers.join(', ')
-        // if multiple teachers are allowed
-      //   teachers: this.selectedTeachers.map(teacher => 
-      //   `${teacher.prefix} ${teacher.fname} ${teacher.lname}`
-      // ),
+      // Log the selected items for debugging.
+      console.log("Selected Subject", this.selectedSubjects);
+      console.log("Selected Teachers", this.selectedTeachers);
+
+      // Check if the selected subject is already in the serverItems array.
+      const isSubjectExists = this.serverItems.some(item => 
+        item.subjectsTable && item.subjectsTable.id === this.selectedSubjects.id
+      );
+
+      // Check if the selected teachers are already in the serverItems array.
+      const areTeachersExists = this.selectedTeachers.every(teacher => 
+        this.serverItems.some(item => 
+          item.teachersTable && item.teachersTable.some(t => t.id === teacher.id)
+        )
+      );
+
+      // If the subject is not already present, add it along with the selected teachers.
+      if (!isSubjectExists) {
+        const newItem = {
+          subjectsTable: this.selectedSubjects,
+          teachersTable: this.selectedTeachers
+        };
+        this.serverItems.push(newItem);
+      } else {
+        console.log("This subject is already in the table.");
+        // Optionally show a user-facing message or toast notification here.
       }
-      this.serverItems.push(newItem)
 
-      // Clear the inputs if necessary
-      this.selectedSubjects = null
-      this.selectedTeachers = []
+      // Clear the inputs if necessary.
+      this.selectedSubjects = {};
+      this.selectedTeachers = [];
     },
-
     teachersItemProps(item) {
       const name = item.fname + " " +item.lname
       return {
@@ -371,8 +406,8 @@ export default {
         .get(url)
         .then((response) => {
           // this.subjects = response.data
-          this.subjects = response.data.map((course) => course.course_data)
-          console.log(this.subjects)
+          this.subjects = response.data.map((item) => item.course_data)
+          console.log('GetSubject' + this.subjects)
         })
         .catch((error) => {
           // Handle errors here
@@ -396,7 +431,7 @@ export default {
             // console.log("teacher:" + this.teachers[0])
 
             // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
-            this.teachers = response.data.map((course) => course.teacher_data)
+            this.teachers = response.data.map((item) => item.teacher_data)
             console.log('TeachersGetTeacher:', this.teachers)
           })
           .catch((error) => {
