@@ -19,7 +19,7 @@
           <div class="content-head">รหัสนิสิต</div>
           <div class="content-sub">6310451286</div>
         </div>
-        <!-- Add table -->
+        <!-- Leave Table -->
         <v-row>
           <v-col cols="12">
             <v-data-table-server
@@ -32,13 +32,11 @@
               item-value="name"
               @update:options="loadItems"
             >
-              <!-- Correct usage of v-slot for item -->
-              <template v-slot:item="{ item }">
-                <span v-for="(teacher, index) in item.teachers" :key="index">
-                  <!-- Correctly accessing teacher properties -->
-                  {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
-                </span>
-              </template>
+            <template v-slot:item.actions="{ item }">
+              <!-- <v-btn icon @click="deleteItem(item)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn> -->
+            </template>
             </v-data-table-server>
           </v-col>
         </v-row>
@@ -237,7 +235,7 @@ export default {
       testId: '',
       testStudentId: '',
       student: [],
-      selectedSubjects: [],
+      selectedSubjects: {},
       selectedSection: '',
       selectedTeachers: [],
       selectedDates: [],
@@ -263,11 +261,12 @@ export default {
         prefix: ''
       },
       serverItems: [], // This will hold the table entries
-      headers: [
-        { text: 'Subject', value: 'name' },
-        { text: 'Teacher', value: 'teachers' }
-        // ... other headers
-      ]
+      // headers: [
+      //   { text: 'Subject', value: 'subject' },
+      //   { text: 'Teacher', value: 'teachers' },
+      //   { text: 'Actions', value: 'actions', sortable: false },
+      //   // ... other headers
+      // ]
     }
   },
   components: {
@@ -292,16 +291,25 @@ export default {
     }
   },
   methods: {
+    deleteItem(item) {
+      const index = this.serverItems.indexOf(item);
+      if (index > -1) {
+        this.serverItems.splice(index, 1);
+      }
+    },
     addItem() {
+      console.log("addItemSubject", this.selectedSubjects)
+      console.log("addItem"+this.selectedTeachers)
       // Assuming serverItems is an array of objects and each object is a row in your table.
       // You might need to adjust the object structure based on your headers.
       const newItem = {
-        subject: this.selectedSubjects,
+        subject: this.selectedSubjects.name,
+        teachers: this.selectedTeachers.map(teacher => `${teacher.prefix} ${teacher.fname} ${teacher.lname}`)
         // teacher: this.selectedTeachers.join(', ')
         // if multiple teachers are allowed
-        teachers: this.selectedTeachers.map(teacher => 
-        `${teacher.prefix} ${teacher.fname} ${teacher.lname}`
-      ),
+      //   teachers: this.selectedTeachers.map(teacher => 
+      //   `${teacher.prefix} ${teacher.fname} ${teacher.lname}`
+      // ),
       }
       this.serverItems.push(newItem)
 
@@ -309,9 +317,11 @@ export default {
       this.selectedSubjects = null
       this.selectedTeachers = []
     },
+
     teachersItemProps(item) {
+      const name = item.fname + " " +item.lname
       return {
-        title: item.fname,
+        title: name,
         subtitle: item.id
       }
     },
@@ -346,6 +356,7 @@ export default {
         this.student = []
       }
     },
+
     async getSubjects() {
       const url = `/studentRegister/?student_id=${this.testStudentId}` //student_id = 1 Panisra
       // Fetch faculty data from your server API
@@ -361,6 +372,7 @@ export default {
           console.error('Error fetching subjects data:', error)
         })
     },
+
     async getTeachers() {
       console.log('selectSubject: ' + this.selectedSubjects)
       console.log('selectSubject: ' + this.selectedSubjects.id)
@@ -378,7 +390,7 @@ export default {
 
             // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
             this.teachers = response.data.map((course) => course.teacher_data)
-            console.log('Teachers:', this.teachers)
+            console.log('TeachersGetTeacher:', this.teachers)
           })
           .catch((error) => {
             console.log('error', error)
@@ -389,8 +401,10 @@ export default {
     },
 
     submitForm() {
-      console.log('this.selectedTeachers: ')
-      console.log(this.selectedTeachers)
+      // console.log('this.selectedTeachers: ')
+      // console.log(this.selectedTeachers)
+      console.log("Table items")
+      console.log(this.serverItems)
 
       this.errors = []
       // console.log('Form submitted')
@@ -595,6 +609,9 @@ export default {
 .leave-addBtn:active {
   filter: brightness(0.8);
 }
+.my-delete-btn .v-btn__content {
+    font-size: 8px; /* Adjust the size as needed */
+  }
 
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
