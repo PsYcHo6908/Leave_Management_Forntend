@@ -22,22 +22,29 @@
         <!-- Leave Table -->
         <v-row>
           <v-col cols="12">
-            <v-data-table-server
-              v-model:items-per-page="itemsPerPage"
+            <v-data-table
               :headers="headers"
-              :items-length="totalItems"
               :items="serverItems"
-              :loading="loading"
-              :search="search"
-              item-value="name"
-              @update:options="loadItems"
+              :items-per-page="itemsPerPage"
+              class="elevation-1"
             >
-            <template v-slot:item.actions="{ item }">
-              <!-- <v-btn icon @click="deleteItem(item)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn> -->
-            </template>
-            </v-data-table-server>
+              <template v-slot:item.teachers="{ item }">
+                <v-chip-group>
+                  <v-chip
+                    v-for="teacher in item.teachers"
+                    :key="teacher.id"
+                    small
+                  >
+                    {{teacher}}
+                  </v-chip>
+                </v-chip-group>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-btn icon small class="my-delete-btn" @click="deleteItem(item)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+              </template>
+            </v-data-table>
           </v-col>
         </v-row>
         <v-row>
@@ -237,7 +244,7 @@ export default {
       student: [],
       selectedSubjects: {},
       selectedSection: '',
-      selectedTeachers: [],
+      selectedTeachers: {},
       selectedDates: [],
       selectedTime: '',
       selectedLeaveType: '',
@@ -261,12 +268,12 @@ export default {
         prefix: ''
       },
       serverItems: [], // This will hold the table entries
-      // headers: [
-      //   { text: 'Subject', value: 'subject' },
-      //   { text: 'Teacher', value: 'teachers' },
-      //   { text: 'Actions', value: 'actions', sortable: false },
-      //   // ... other headers
-      // ]
+      headers: [
+        { text: 'Subject', value: 'subject' },
+        { text: 'Teacher', value: 'teachers' },
+        { text: 'Actions', value: 'actions', sortable: false },
+        // ... other headers
+      ]
     }
   },
   components: {
@@ -610,7 +617,7 @@ export default {
   filter: brightness(0.8);
 }
 .my-delete-btn .v-btn__content {
-    font-size: 8px; /* Adjust the size as needed */
+    font-size: 16px; /* Adjust the size as needed */
   }
 
 @media only screen and (max-width: 1440px) {
