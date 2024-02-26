@@ -13,11 +13,11 @@
         <slot></slot>
         <div class="leaveblock1">
           <div class="content-head">ชื่อ</div>
-          <div class="content-sub">พงศ์ศิริ เจริญกฤตยาวุฒิ</div>
+          <div class="content-sub">{{ nameStudentLogin }}</div>
         </div>
         <div class="leaveblock2">
           <div class="content-head">รหัสนิสิต</div>
-          <div class="content-sub">6310451286</div>
+          <div class="content-sub">{{ userIdStudentLogin }}</div>
         </div>
         <!-- Leave Table -->
         <v-row v-if="serverItems && serverItems.length > 0">
@@ -262,6 +262,8 @@ export default {
       testStudentId: '',
       student: [],
       user: [],
+      nameStudentLogin: "",
+      userIdStudentLogin: "",
       // getSubject
       subjects: [],
       // getTechers
@@ -410,6 +412,8 @@ export default {
             console.log('fname285:  ' + this.student.fname)
             console.log('IdStudent285:  ' + this.student.id)
             this.testStudentId = this.student.id // student_id = 1 Panisra
+            this.nameStudentLogin = this.student.fname + " " + this.student.lname
+            this.userIdStudentLogin = this.userStore.user.user_id
           })
           .catch((error) => {
             console.log('error', error)
