@@ -20,7 +20,7 @@
           <div class="content-sub">6310451286</div>
         </div>
         <!-- Leave Table -->
-        <v-row>
+        <v-row v-if="serverItems && serverItems.length > 0">
           <v-col cols="12">
             <v-data-table
               :headers="headers"
@@ -28,32 +28,39 @@
               :items-per-page="itemsPerPage"
               class="elevation-1"
             >
-            <template v-slot:item.subjectsTable="{ item }">
-              <!-- Debugging line: -->
-              <!-- <div>Debug Subjects: {{ item.subjectsTable }}</div> -->
+              <template v-slot:item.subjectsTable="{ item }">
+                <!-- Debugging line: -->
+                <!-- <div>Debug Subjects: {{ item.subjectsTable }}</div> -->
 
-              <v-chip-group v-if="item.subjectsTable">
-                <!-- Since item.subjectsTable is an object, we don't use v-for -->
-                <v-chip small>
-                  {{ item.subjectsTable.name }}
-                </v-chip>
-              </v-chip-group>
-              <div v-else>No subjects to display</div>
-            </template>
+                <v-chip-group v-if="item.subjectsTable" >
+                  <!-- Since item.subjectsTable is an object, we don't use v-for -->
+                  <v-chip small>
+                    {{ item.subjectsTable.name }}
+                  </v-chip>
+                </v-chip-group>
+                <div v-else>No subjects to display</div>
+              </template>
               <template v-slot:item.teachersTable="{ item }">
                 <v-chip-group>
                   <v-chip
                     v-for="teacher in item.teachersTable"
                     :key="teacher.id"
                     small
+                    :style="{ backgroundColor: item.subjectsTable ? '#10B981' : '' , color: '#ffff'}"
+                  
                   >
-                  {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
+                    {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
                   </v-chip>
                 </v-chip-group>
               </template>
               <template v-slot:item.actions="{ item }">
-                <v-btn icon small class="my-delete-btn" @click="deleteItem(item)">
-                  <v-icon small>mdi-delete</v-icon>
+                <v-btn
+                  icon
+                  small
+                  class="my-delete-btn"
+                  @click="deleteItem(item)"
+                >
+                  <v-icon small color="red">mdi-close</v-icon>
                 </v-btn>
               </template>
             </v-data-table>
@@ -249,7 +256,7 @@ export default {
     return {
       // Option
       leaveTypes: ['ลากิจ', 'ลาป่วย', 'อื่น ๆ'],
-      
+
       // getStudentLogin
       testId: '',
       testStudentId: '',
@@ -274,7 +281,7 @@ export default {
       newDropdownValue: '',
       leaveTypesValue: '',
       files: [],
-      
+
       // playload
       errors: [],
       formData: {
@@ -294,7 +301,7 @@ export default {
       headers: [
         { text: 'Subject', value: 'subjectsTable' },
         { text: 'Teacher', value: 'teachersTable' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false }
         // ... other headers
       ]
     }
@@ -322,46 +329,59 @@ export default {
   },
   methods: {
     deleteItem(item) {
-      const index = this.serverItems.indexOf(item);
+      const index = this.serverItems.indexOf(item)
       if (index > -1) {
-        this.serverItems.splice(index, 1);
+        this.serverItems.splice(index, 1)
       }
     },
     addItem() {
-      // Log the selected items for debugging.
-      console.log("Selected Subject", this.selectedSubjects);
-      console.log("Selected Teachers", this.selectedTeachers);
+      // Check if a subject is selected
+      if (!this.selectedSubjects || !this.selectedSubjects.id) {
+        console.log('No subject selected, item not added.')
+        // Optionally, show a user-facing error message here.
+        return
+      }
+
+      // Check if at least one teacher is selected (assuming selectedTeachers is an array)
+      if (!this.selectedTeachers || this.selectedTeachers.length === 0) {
+        console.log('No teacher selected, item not added.')
+        // Optionally, show a user-facing error message here.
+        return
+      }
 
       // Check if the selected subject is already in the serverItems array.
-      const isSubjectExists = this.serverItems.some(item => 
-        item.subjectsTable && item.subjectsTable.id === this.selectedSubjects.id
-      );
+      const isSubjectExists = this.serverItems.some(
+        (item) =>
+          item.subjectsTable &&
+          item.subjectsTable.id === this.selectedSubjects.id
+      )
 
       // Check if the selected teachers are already in the serverItems array.
-      const areTeachersExists = this.selectedTeachers.every(teacher => 
-        this.serverItems.some(item => 
-          item.teachersTable && item.teachersTable.some(t => t.id === teacher.id)
-        )
-      );
+      const areTeachersExists = this.serverItems.some(
+        (item) =>
+          item.teachersTable &&
+          item.teachersTable.some((t) => this.selectedTeachers.includes(t))
+      )
 
       // If the subject is not already present, add it along with the selected teachers.
-      if (!isSubjectExists) {
+      if (!isSubjectExists || !areTeachersExists) {
         const newItem = {
           subjectsTable: this.selectedSubjects,
           teachersTable: this.selectedTeachers
-        };
-        this.serverItems.push(newItem);
+        }
+        this.serverItems.push(newItem)
+        console.log('New item added:', newItem)
       } else {
-        console.log("This subject is already in the table.");
+        console.log('This subject and/or teacher(s) are already in the table.')
         // Optionally show a user-facing message or toast notification here.
       }
 
       // Clear the inputs if necessary.
-      this.selectedSubjects = {};
-      this.selectedTeachers = [];
+      this.selectedSubjects = {}
+      this.selectedTeachers = []
     },
     teachersItemProps(item) {
-      const name = item.fname + " " +item.lname
+      const name = item.fname + ' ' + item.lname
       return {
         title: name,
         subtitle: item.id
@@ -445,7 +465,7 @@ export default {
     submitForm() {
       // console.log('this.selectedTeachers: ')
       // console.log(this.selectedTeachers)
-      console.log("Table items")
+      console.log('Table items')
       console.log(this.serverItems)
 
       this.errors = []
@@ -534,7 +554,8 @@ export default {
   margin: 0% 2% 0% 0%;
   width: 12%;
 }
-#input-8 {
+#input-8,
+#input-21 {
   margin: 0% 0% !important;
 }
 #input-63 {
@@ -615,7 +636,7 @@ export default {
 }
 
 .leave-addBtn::before,
-.button::after {
+.leave-addBtn::after {
   content: '';
   display: block;
   width: 50px;
@@ -626,6 +647,7 @@ export default {
   z-index: -1;
   background-color: var(--color);
   transition: 1s ease;
+  background-color: transparent;
 }
 
 .leave-addBtn::before {
@@ -642,6 +664,7 @@ export default {
 .leave-addBtn:hover::after {
   height: 410px;
   width: 410px;
+  background-color: var(--color); /* กำหนดสีเมื่อ hover */
 }
 
 .leave-addBtn:hover {
@@ -652,9 +675,22 @@ export default {
   filter: brightness(0.8);
 }
 .my-delete-btn .v-btn__content {
-    font-size: 16px; /* Adjust the size as needed */
-  }
-
+  font-size: 16px; /* Adjust the size as needed */
+}
+.v-data-table-footer {
+  display: none !important;
+}
+th.v-data-table__td.v-data-table-column--align-start.v-data-table__th {
+  display: none !important;
+}
+button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v-btn--size-default.v-btn--variant-elevated.my-delete-btn {
+    width: 60%;
+    height: 65%;
+}
+/* span.v-chip.v-chip--link.v-theme--light.v-chip--density-default.v-chip--size-default.v-chip--variant-tonal.custom-cursor-on-hover {
+    background-color: #10B981;
+    color: white;
+} */
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
     width: 12.1%;
