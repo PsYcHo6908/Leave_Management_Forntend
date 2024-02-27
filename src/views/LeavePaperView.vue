@@ -339,49 +339,44 @@ export default {
     addItem() {
       // Check if a subject is selected
       if (!this.selectedSubjects || !this.selectedSubjects.id) {
-        console.log('No subject selected, item not added.')
+        console.log('No subject selected, item not added.');
         // Optionally, show a user-facing error message here.
-        return
+        return;
       }
 
-      // Check if at least one teacher is selected (assuming selectedTeachers is an array)
+      // Check if any teachers are selected
       if (!this.selectedTeachers || this.selectedTeachers.length === 0) {
-        console.log('No teacher selected, item not added.')
+        console.log('No teacher selected, item not added.');
         // Optionally, show a user-facing error message here.
-        return
+        return;
       }
 
       // Check if the selected subject is already in the serverItems array.
-      const isSubjectExists = this.serverItems.some(
-        (item) =>
-          item.subjectsTable &&
-          item.subjectsTable.id === this.selectedSubjects.id
-      )
+      const isSubjectExists = this.serverItems.some(item =>
+        item.subjectsTable && item.subjectsTable.id === this.selectedSubjects.id
+      );
 
-      // Check if the selected teachers are already in the serverItems array.
-      const areTeachersExists = this.serverItems.some(
-        (item) =>
-          item.teachersTable &&
-          item.teachersTable.some((t) => this.selectedTeachers.includes(t))
-      )
-
-      // If the subject is not already present, add it along with the selected teachers.
-      if (!isSubjectExists || !areTeachersExists) {
-        const newItem = {
-          subjectsTable: this.selectedSubjects,
-          teachersTable: this.selectedTeachers
-        }
-        this.serverItems.push(newItem)
-        console.log('New item added:', newItem)
-      } else {
-        console.log('This subject and/or teacher(s) are already in the table.')
+      // If the subject is already present, do not add it again.
+      if (isSubjectExists) {
+        console.log('This subject is already in the table.');
         // Optionally show a user-facing message or toast notification here.
+        return;
       }
 
+      // If the subject is not already present and at least one teacher is selected, add it to the serverItems.
+      const newItem = {
+        subjectsTable: this.selectedSubjects,
+        teachersTable: this.selectedTeachers
+      };
+      this.serverItems.push(newItem);
+      console.log('New item added:', newItem);
+
       // Clear the inputs if necessary.
-      this.selectedSubjects = {}
-      this.selectedTeachers = []
+      this.selectedSubjects = {};
+      this.selectedTeachers = [];
     },
+
+
     teachersItemProps(item) {
       const name = item.fname + ' ' + item.lname
       return {
@@ -399,7 +394,8 @@ export default {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
-      console.log('TestID: 275' + this.testId) //user_id = 5
+      // console.log('TestID: 275' + this.testId) 
+      //user_id = 5
       //user = 6 Pongsiri
       //who is login student from user_id = 6
       // console.log("277: "+ this.user[0])
@@ -409,8 +405,8 @@ export default {
           .get(url)
           .then((response) => {
             this.student = response.data[0]
-            console.log('fname285:  ' + this.student.fname)
-            console.log('IdStudent285:  ' + this.student.id)
+            // console.log('fname285:  ' + this.student.fname)
+            // console.log('IdStudent285:  ' + this.student.id)
             this.testStudentId = this.student.id // student_id = 1 Panisra
             this.nameStudentLogin = this.student.fname + " " + this.student.lname
             this.userIdStudentLogin = this.userStore.user.user_id
@@ -440,12 +436,12 @@ export default {
     },
 
     async getTeachers() {
-      console.log('selectSubject: ' + this.selectedSubjects)
-      console.log('selectSubject: ' + this.selectedSubjects.id)
+      // console.log('selectSubject: ' + this.selectedSubjects)
+      // console.log('selectSubject: ' + this.selectedSubjects.id)
 
       // console.log("selectSubject: "+ this.selectedSubjects[0].id)
 
-      console.log('selectSubject: ' + this.selectedSubjects.id)
+      // console.log('selectSubject: ' + this.selectedSubjects.id)
       if (this.selectedSubjects && this.selectedSubjects.id) {
         const url = `/instructorCourse/?course_id=${this.selectedSubjects.id}`
         await axios
@@ -456,7 +452,7 @@ export default {
 
             // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
             this.teachers = response.data.map((item) => item.teacher_data)
-            console.log('TeachersGetTeacher:', this.teachers)
+            // console.log('TeachersGetTeacher:', this.teachers)
           })
           .catch((error) => {
             console.log('error', error)
