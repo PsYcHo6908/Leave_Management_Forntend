@@ -102,17 +102,19 @@
             </div>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="12">
-            <!-- รายชื่อวิชา -->
-            <div class="leaveblock0">
-              <div class="leaveblock1">
-                <button class="leave-addBtn" @click="addItem">เพิ่ม</button>
-              </div>
-            </div>
+        <!-- <v-row>
+          <v-spacer></v-spacer>
+        </v-row> -->
+        <v-row justify="end">
+          <v-col cols="12" md="8" lg="9" class="pa-md-2">
+            <!-- ... -->
+          </v-col>
+          <v-col cols="12" md="4" lg="3" class="text-right pa-md-2" style="margin-top: -20px;">
+            <button class="leave-addBtn mt--2" @click="addItem">เพิ่ม</button>
           </v-col>
         </v-row>
-        <v-row>
+
+        <v-row style="margin-top: 45px;">
           <!-- ประเภทการลา -->
           <v-col cols="12" md="6">
             <div class="leaveblock0">
@@ -632,7 +634,7 @@ export default {
   text-transform: uppercase;
   color: var(--color);
   z-index: 1;
-  margin: -3.5% 0% 0% 94.5%;
+  /* margin: -3.5% 0% 0% 94.5%; */
 }
 
 .leave-addBtn::before,
@@ -691,6 +693,17 @@ button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v
     background-color: #10B981;
     color: white;
 } */
+/* Below for ADD Button */
+.v-input__details {
+  padding-top: 0px;
+}
+#input-8-messages {
+  display: none;
+}
+.v-col-md-8 v-col-lg-9 v-col-12 pa-md-2 {
+  padding: 0%;
+}
+
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
     width: 12.1%;
