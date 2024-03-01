@@ -59,6 +59,7 @@
                   small
                   class="my-delete-btn"
                   @click="deleteItem(item)"
+                  :style="{ fontSize: '10px', padding: '1px 2px' }"
                 >
                   <v-icon small color="red">mdi-close</v-icon>
                 </v-btn>
@@ -220,7 +221,7 @@
         <!-- Other input fields -->
         <v-row>
           <v-col cols="12" md="6">
-            <button class="Leave-submit" @click="submitForm">ส่ง</button>
+            <button class="leave-addBtn" @click="submitForm">ส่ง</button>
             <!-- <v-btn class="submit" @click="submitForm" style="">ส่ง</v-btn> -->
           </v-col>
         </v-row>
@@ -563,61 +564,6 @@ export default {
 #input-63 {
   display: none;
 }
-.Leave-submit {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  border: 0.125em solid #02bc77;
-  border-radius: 0.9375em;
-  box-sizing: border-box;
-  color: #3b3b3b;
-  cursor: pointer;
-  display: inline-block;
-  font-family:
-    Roobert,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Helvetica,
-    Arial,
-    sans-serif,
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol';
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-  /* min-height: 3.75em; */
-  min-width: 0;
-  outline: none;
-  padding: 1.3% 4%;
-  text-align: center;
-  text-decoration: none;
-  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
-  -moz-user-select: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  will-change: transform;
-}
-
-.Leave-submit:disabled {
-  pointer-events: none;
-}
-
-.Leave-submit:hover {
-  color: #fff;
-  background-color: #02bc77;
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
-}
-
-.Leave-submit:active {
-  box-shadow: none;
-  transform: translateY(0);
-}
 .leave-addBtn {
   --color: #00a97f;
   padding: 0.8em 1.7em;
@@ -634,7 +580,6 @@ export default {
   text-transform: uppercase;
   color: var(--color);
   z-index: 1;
-  /* margin: -3.5% 0% 0% 94.5%; */
 }
 
 .leave-addBtn::before,
@@ -686,8 +631,9 @@ th.v-data-table__td.v-data-table-column--align-start.v-data-table__th {
   display: none !important;
 }
 button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v-btn--size-default.v-btn--variant-elevated.my-delete-btn {
-    width: 60%;
-    height: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* span.v-chip.v-chip--link.v-theme--light.v-chip--density-default.v-chip--size-default.v-chip--variant-tonal.custom-cursor-on-hover {
     background-color: #10B981;
@@ -706,9 +652,12 @@ button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v
 
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
-    width: 12.1%;
+    width: 17%;
     margin: 0%;
   }
+  .v-input__prepend {
+    margin-left: -25% !important;
+}
 }
 @media only screen and (min-width: 600px) {
   .custom-input {

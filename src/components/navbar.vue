@@ -19,17 +19,44 @@
 
         <v-divider class="white-text" ></v-divider>
 
-        <v-list density="compact" nav >
-          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared" class="white-text"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="white-text"></v-list-item>
+        <!-- v-if="mode !== 'create' && formData.contact_type === 'company'" -->
+        <v-list density="compact" nav v-if="userLoginRole === 'student' ">
+          <RouterLink to="/home">
+          <v-list-item prepend-icon="mdi-home" title="หน้าแรก" value="home" class="white-text"></v-list-item>
+        </RouterLink>
+          <RouterLink to="/leavepaper">
+            <v-list-item prepend-icon="mdi-email-fast-outline" title="แจ้งลา" value="leavepaper" class="white-text"></v-list-item>
+          </RouterLink>
+          <RouterLink to="/request">
+          <v-list-item prepend-icon="mdi-file-document-edit-outline" title="คำขอลาทั้งหมด" value="request" class="white-text"></v-list-item>
+        </RouterLink>
         </v-list>
+        <v-list density="compact" nav v-if="userLoginRole === 'teacher' ">
+          <RouterLink to="/home">
+          <v-list-item prepend-icon="mdi-home" title="หน้าแรก" value="home" class="white-text"></v-list-item>
+        </RouterLink>
+        <RouterLink to="/request">
+          <v-list-item prepend-icon="mdi-file-document-edit-outline" title="คำขอลาทั้งหมด" value="leavepaper" class="white-text"></v-list-item>
+        </RouterLink>
+        <RouterLink to="/home">
+          <v-list-item prepend-icon="mdi-magnify" title="ค้นหาการลาตามเงื่อนไข" value="search" class="white-text"></v-list-item>
+        </RouterLink>
+        <RouterLink to="/home">
+          <v-list-item prepend-icon="mdi-file-document-multiple-outline
+          " title="รายงานสรุปการลา" value="report" class="white-text"></v-list-item>
+        </RouterLink>
+        </v-list>
+        <v-list density="compact" nav v-if="userLoginRole === 'admin' ">
+          <RouterLink to="/signup">
+          <v-list-item prepend-icon="mdi-folder" title="ลงทะเบียน" value="myfiles" class="white-text"></v-list-item>
+        </RouterLink>
+        <RouterLink to="/addFaculty">
+          <v-list-item prepend-icon="mdi-star" title="เพิ่มคณะ" value="starred" class="white-text"></v-list-item>
+        </RouterLink>
+        <RouterLink to="/addSubject">
+        <v-list-item prepend-icon="mdi-star" title="เพิ่มวิชา" value="starred" class="white-text"></v-list-item>
+      </RouterLink>  
+      </v-list>
       </v-navigation-drawer>
 
       <!-- <v-main ></v-main> -->
@@ -39,12 +66,24 @@
 </template>
 
 <script>
+import { useUserStore } from '@/stores/user'
+
 export default {
+  setup() {
+    const userStore = useUserStore()
+    return {
+      userStore,
+    }
+  },
   name: 'Navbar',
   data() {
     return {
-      leftSectionWidth: 'auto'
+      leftSectionWidth: 'auto',
+      userLoginRole: '',
     };
+  },
+  mounted() {
+    this.userLogin()
   },
   methods: {
     expandNavbar() {
@@ -53,6 +92,10 @@ export default {
     collapseNavbar() {
       this.leftSectionWidth = 'auto';
     },
+    userLogin() {
+      this.userStore.initStore()
+      this.userLoginRole = this.userStore.user.role
+    }
   },
 };
 </script>
