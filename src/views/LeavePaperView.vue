@@ -28,25 +28,25 @@
               :items-per-page="itemsPerPage"
               class="elevation-1"
             >
-              <template v-slot:item.subjectsTable="{ item }">
+              <template v-slot:item.coursesItem="{ item }">
                 <!-- Debugging line: -->
-                <!-- <div>Debug Subjects: {{ item.subjectsTable }}</div> -->
+                <!-- <div>Debug Subjects: {{ item.coursesItem }}</div> -->
 
-                <v-chip-group v-if="item.subjectsTable" >
-                  <!-- Since item.subjectsTable is an object, we don't use v-for -->
+                <v-chip-group v-if="item.coursesItem" >
+                  <!-- Since item.coursesItem is an object, we don't use v-for -->
                   <v-chip small>
-                    {{ item.subjectsTable.name }}
+                    {{ item.coursesItem.name }}
                   </v-chip>
                 </v-chip-group>
                 <div v-else>No subjects to display</div>
               </template>
-              <template v-slot:item.teachersTable="{ item }">
+              <template v-slot:item.teachersItem="{ item }">
                 <v-chip-group>
                   <v-chip
-                    v-for="teacher in item.teachersTable"
+                    v-for="teacher in item.teachersItem"
                     :key="teacher.id"
                     small
-                    :style="{ backgroundColor: item.subjectsTable ? '#10B981' : '' , color: '#ffff'}"
+                    :style="{ backgroundColor: item.coursesItem ? '#10B981' : '' , color: '#ffff'}"
                   
                   >
                     {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
@@ -122,7 +122,7 @@
               <div class="leaveblock1">
                 <div class="Leave-content-head mt-3">ประเภทการลา</div>
                 <v-select
-                  v-model="leaveTypesValue"
+                  v-model="selectedLeaveType"
                   :items="leaveTypes"
                   style="width: 100%"
                 ></v-select>
@@ -161,7 +161,7 @@
         </v-row>
 
         <v-row>
-          <!-- วันที่ -->
+          <!-- วันที่ // description row -->
           <v-col cols="12" md="6">
             <div class="leaveblock0">
               <div class="content-head mr-3 mb-3.5">คำอธิบาย</div>
@@ -171,6 +171,7 @@
                   rows="4"
                   placeholder="กรุณาป้อนคำอธิบายที่นี่"
                   style="width: 100%"
+                  v-model="formDataLeaveRequest.description"
                 ></v-textarea>
               </div>
             </div>
@@ -200,7 +201,7 @@
         </v-row>
 
         <v-row>
-          <!-- description row -->
+          <!-- error row -->
           <v-col cols="12">
             <template v-if="errors.length > 0">
               <div class="bg-red-300 text-white rounded-lg p-6" cols="12">
@@ -275,37 +276,27 @@ export default {
       // Input
       selectedTeachers: {},
       selectedSubjects: {},
-
-      selectedSection: '',
       selectedDates: [],
-      selectedTime: '',
       selectedLeaveType: '',
-      attachment: null,
-      description: '',
-      additionalInput: '',
-      newDropdownValue: '',
-      leaveTypesValue: '',
       files: [],
 
       // playload
       errors: [],
-      formData: {
-        username: '',
-        user_id: '',
-        password1: '',
-        password2: '',
-        fname: '',
-        lname: '',
-        email: '',
-        role: '',
-        prefix: ''
+      formDataLeaveRequest: {
+        approve_id_by: "",
+        start_date: "",
+        end_date: "",
+        leave_type: "",
+        description: "",
+        status: "pending",
+
       },
 
       // app table
       serverItems: [], // This will hold the table entries
       headers: [
-        { text: 'Subject', value: 'subjectsTable' },
-        { text: 'Teacher', value: 'teachersTable' },
+        { text: 'Subject', value: 'coursesItem' },
+        { text: 'Teacher', value: 'teachersItem' },
         { text: 'Actions', value: 'actions', sortable: false }
         // ... other headers
       ]
@@ -356,7 +347,7 @@ export default {
 
       // Check if the selected subject is already in the serverItems array.
       const isSubjectExists = this.serverItems.some(item =>
-        item.subjectsTable && item.subjectsTable.id === this.selectedSubjects.id
+        item.coursesItem && item.coursesItem.id === this.selectedSubjects.id
       );
 
       // If the subject is already present, do not add it again.
@@ -368,8 +359,8 @@ export default {
 
       // If the subject is not already present and at least one teacher is selected, add it to the serverItems.
       const newItem = {
-        subjectsTable: this.selectedSubjects,
-        teachersTable: this.selectedTeachers
+        coursesItem: this.selectedSubjects,
+        teachersItem: this.selectedTeachers
       };
       this.serverItems.push(newItem);
       console.log('New item added:', newItem);
@@ -465,18 +456,9 @@ export default {
       }
     },
 
-    submitForm() {
-      // console.log('this.selectedTeachers: ')
-      // console.log(this.selectedTeachers)
-      console.log('Table items')
-      console.log(this.serverItems)
-
+    async submitForm() {
       this.errors = []
       // console.log('Form submitted')
-      // console.log('Student ID:', this.studentId)
-      // console.log('New Dropdown Value:', this.newDropdownValue)
-      // console.log('Additional Input:', this.additionalInput)
-      // console.log('files:', this.files)
       console.log('days', this.selectedDates)
 
       // เรียงลำดับวันที่ใน selectedDates
@@ -499,16 +481,79 @@ export default {
       const lastDate = formatDate(
         new Date(this.selectedDates[this.selectedDates.length - 1])
       )
-      console.log('First Date (formatted):', firstDate)
-      console.log('Last Date (formatted):', lastDate)
+      // console.log('First Date (formatted):', firstDate)
+      // console.log('Last Date (formatted):', lastDate)
+
+      // Prepare PlayLoad: ( approve_id_by
+      //  file_id, start_date, end_date, leave_type, description, status)
+
+
+      console.log("Preparing PlayLoad")
+      if (firstDate !== "NaN-NaN-NaN") {
+        this.formDataLeaveRequest.start_date = firstDate
+        this.formDataLeaveRequest.end_date = lastDate
+        this.formDataLeaveRequest.leave_type = this.selectedLeaveType 
+        console.log(this.formDataLeaveRequest)
+
+        await axios
+          .post('/leaveRequest/', this.formDataLeaveRequest)
+          .then((response) => {
+            console.log("response: ")
+            console.log(response.data)
+
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
+        
+        
+        //create LeaveRequest
+ 
+        // console.log('this.selectedTeachers: ')
+        // console.log(this.selectedTeachers)
+        console.log('Table items')
+        this.serverItems.forEach((item, index) => {
+          // console.log(item);
+          if (item && item.coursesItem && item.teachersItem) {  // ตรวจสอบทั้งสองค่า
+            let courseId = item.coursesItem.course_id; //01418332
+            let couseOfId = item.coursesItem.id; //1 2 3
+            let teachersId = item.teachersItem.map(teacher => teacher.id);  // สมมติว่า teachersItem เป็นอาร์เรย์
+            // console.log(courseId);
+            // console.log(teachersId);  // แสดงอาร์เรย์ของ ids ex [2, 4]
+            teachersId.forEach((id) => {
+              console.log("Item Row")
+              console.log("course id: " + courseId);
+              console.log("Id of Course: " + couseOfId); 
+              console.log("Id of Teacher: " + id);  //index0=2, index1=4
+
+            });
+          } else {
+            console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
+          }
+        });
+      } else{
+        this.errors.push('Please select dates')
+
+      }
     }
   }
 }
 </script>
 
 <style>
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox input {
+  background-color: transparent !important;
+  border: none !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox:not(.v-input--is-disabled) .v-input__control {
+  background-color: transparent !important;
+  border: none !important;
+}
 #input-11,
-#input-14 {
+#input-14,
+#input-63 {
   display: none;
 }
 .custom-input {
