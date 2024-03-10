@@ -291,6 +291,14 @@ export default {
         status: "pending",
 
       },
+      leaveRequestId: "",
+      formDataLeaveDetails: {
+        leave_request_id: "",
+        student_id: "",
+        course_id: "",
+        teacher_id: "",
+
+      },
 
       // app table
       serverItems: [], // This will hold the table entries
@@ -500,9 +508,22 @@ export default {
           .then((response) => {
             console.log("response: ")
             console.log(response.data)
+            // const leaveRequestId = response.data.leaveRequest_id
+            this.leaveRequestId = response.data.leaveRequest_id
+            if (this.leaveRequestId){
+              console.log("leaveRequestId: " + this.leaveRequestId)
+              this.formDataLeaveDetails.leave_request_id = this.leaveRequestId
+              this.formDataLeaveDetails.student_id = this.testStudentId
+              //dofunction
+              this.addLeaveRequestDetail()
+              // Clear Data here
+              
+
+            }
 
           })
           .catch((error) => {
+            // if doesnt save LeaveRequest
             console.log('error', error)
           })
         
@@ -511,31 +532,68 @@ export default {
  
         // console.log('this.selectedTeachers: ')
         // console.log(this.selectedTeachers)
-        console.log('Table items')
-        this.serverItems.forEach((item, index) => {
-          // console.log(item);
-          if (item && item.coursesItem && item.teachersItem) {  // ตรวจสอบทั้งสองค่า
-            let courseId = item.coursesItem.course_id; //01418332
-            let couseOfId = item.coursesItem.id; //1 2 3
-            let teachersId = item.teachersItem.map(teacher => teacher.id);  // สมมติว่า teachersItem เป็นอาร์เรย์
-            // console.log(courseId);
-            // console.log(teachersId);  // แสดงอาร์เรย์ของ ids ex [2, 4]
-            teachersId.forEach((id) => {
-              console.log("Item Row")
-              console.log("course id: " + courseId);
-              console.log("Id of Course: " + couseOfId); 
-              console.log("Id of Teacher: " + id);  //index0=2, index1=4
 
-            });
-          } else {
-            console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
-          }
-        });
+        // console.log('Table items')
+        // this.serverItems.forEach((item, index) => {
+        //   // console.log(item);
+        //   if (item && item.coursesItem && item.teachersItem) {  // ตรวจสอบทั้งสองค่า
+        //     let courseId = item.coursesItem.course_id; //01418332
+        //     let couseOfId = item.coursesItem.id; //1 2 3
+        //     let teachersId = item.teachersItem.map(teacher => teacher.id);  // สมมติว่า teachersItem เป็นอาร์เรย์
+        //     // console.log(courseId);
+        //     // console.log(teachersId);  // แสดงอาร์เรย์ของ ids ex [2, 4]
+        //     teachersId.forEach((id) => {
+        //       console.log("Item Row")
+        //       console.log("course id: " + courseId);
+        //       console.log("Id of Course: " + couseOfId); 
+        //       console.log("Id of Teacher: " + id);  //index0=2, index1=4
+
+        //     });
+        //   } else {
+        //     console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
+        //   }
+        // });
+
       } else{
         this.errors.push('Please select dates')
 
       }
+    },
+    async addLeaveRequestDetail() {
+      console.log('Table items');
+      for (const item of this.serverItems) {
+        if (item && item.coursesItem && item.teachersItem) {
+          let courseId = item.coursesItem.course_id;
+          let couseOfId = item.coursesItem.id;
+          let teachersId = item.teachersItem.map(teacher => teacher.id);
+
+          for (const id of teachersId) {
+            console.log("Item Row");
+            console.log("course id: " + courseId);
+            console.log("Id of Course: " + couseOfId);
+            console.log("Id of Teacher: " + id);
+            this.formDataLeaveDetails.teacher_id = id
+            this.formDataLeaveDetails.course_id = couseOfId
+
+            // const response = await axios.get(url);
+            await axios
+              .post('/leaveDetail/', this.formDataLeaveDetails)
+              .then((response) => {
+                console.log("Leave details")
+                console.log(response.data)
+
+              })
+              .catch((error) => {
+                console.log('error', error)
+              })
+          }
+        } else {
+          console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
+        }
+      }
     }
+
+
   }
 }
 </script>
