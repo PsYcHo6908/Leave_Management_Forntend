@@ -517,8 +517,11 @@ export default {
               //dofunction
               this.addLeaveRequestDetail()
               // Clear Data here
-              
-
+              this.selectedLeaveType = ""
+              this.files = ""
+              this.formDataLeaveRequest.description = ""
+              this.selectedDates = []
+              this.serverItems = ""
             }
 
           })
