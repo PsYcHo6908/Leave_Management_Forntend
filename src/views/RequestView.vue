@@ -7,7 +7,7 @@
       <div class="content-Page">
         <slot></slot>
 
-        <div class="head-request">แจ้งลา</div>
+        <div class="head-request">คำขอลาทั้งหมด</div>
       </div>
       <div class="content">
         <v-row v-if="serverItems && serverItems.length > 0">
@@ -80,20 +80,6 @@ const FakeAPI = {
 export default {
   data: () => ({
     itemsPerPage: 5,
-    headers: [
-      {
-        title: 'รายชื่อวิชา',
-        align: 'start',
-        sortable: false,
-        key: 'name'
-      },
-      { title: 'หมู่เรียน', key: 'calories', align: 'end' },
-      { title: 'วันที่', key: 'fat', align: 'end' },
-      { title: 'เวลา', key: 'carbs', align: 'end' },
-      { title: 'เทอม', key: 'protein', align: 'end' },
-      { title: 'ประเภทการลา', key: 'iron', align: 'end' },
-      { title: '', key: 'iron', align: 'end' }
-    ],
     loaded: false,
     loading: false,
     leaveType: ['ลาป่วย', 'ลากิจ'],
@@ -139,6 +125,15 @@ export default {
         this.loading = false
         this.loaded = true
       }, 2000)
+    },
+    addItem() {
+      const isSubjectExists = this.serverItems.some(item =>
+        item.subjectsTable && item.subjectsTable.id === this.selectedSubjects.id
+      );
+      const newItem = {
+        subjectsTable: this.selectedSubjects,
+        sectionTable: this.selectedTeachers
+      };
     }
   },
   components: {
@@ -148,7 +143,7 @@ export default {
 }
 </script>
 <style>
-@media screen and (min-width: 1900px) {
+@media screen and (max-width: 1900px) {
   .content-Page {
     display: flex;
   }
@@ -160,5 +155,11 @@ export default {
     padding: 2% 0%;
     width: 100%;
   }
+  .head {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0% 2.5%;
+  padding: 1% 0% 2% 0%;
+}
 }
 </style>
