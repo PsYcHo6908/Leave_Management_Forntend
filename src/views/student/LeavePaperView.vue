@@ -234,8 +234,8 @@
 <!-- ... rest of the component ... -->
 
 <script>
-import Navbar from '../components/navbar.vue'
-import TopNavBar from '../components/TopNavBar.vue'
+import Navbar from '../../components/navbar.vue'
+import TopNavBar from '../../components/TopNavBar.vue'
 // import Demo from "../../components/Demo.vue";
 import {
   formatDate,

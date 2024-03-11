@@ -4,7 +4,6 @@ import { useUserStore } from '@/stores/user'
 // system
 import LogInView from '../views/LogInView.vue'
 //student
-import LeavePaperView from '../views/LeavePaperView.vue'
 import RequestView from '../views/RequestView.vue'
 //admin
 import SignupView from '../views/admin/SignupView.vue'
@@ -65,12 +64,17 @@ const router = createRouter({
     {
       path: '/leavePaper',
       name: 'LeavePaperView',
-      component: LeavePaperView
+      component: () => import('../views/student/LeavePaperView.vue')
     },
     {
       path: '/request',
       name: 'RequestView',
       component: RequestView
+    },
+    {
+      path: '/details/:id',
+      name: 'DetailPage',
+      component: () => import(/* webpackChunkName: "details" */ '../views/student/DetailPage.vue')
     },
     // TESTS 
     {
