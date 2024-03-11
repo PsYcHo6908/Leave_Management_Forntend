@@ -1,12 +1,16 @@
 <template>
-  <div class="right-section">
-    <TopNavBar />
-    <div class="content-Page">
-      <slot></slot>
+  <div class="layout-container">
+    <Navbar />
+    <div class="right-section">
+      <TopNavBar />
+      <div class="content-Page">
 
-      <!-- Logo -->
-      <div class="img1">
-        <img src="../../assets/logo-1.png" />
+        <slot></slot>
+
+        <!-- Logo -->
+        <div class="img1">
+          <img src="../../assets/logo-1.png" />
+        </div>
       </div>
 
       <!-- Card -->
@@ -23,34 +27,35 @@
                 คณะ/ภาควิชา
               </v-card-title>
 
-              <!-- Form -->
-              <v-form @submit.prevent="submitform">
-                <!-- Faculty -->
-                <v-row>
-                  <v-col cols="12">
-                    <div class="content-head mt-3">Faculty</div>
-                    <v-text-field
-                      type="text"
-                      v-model="formData.name"
-                      variant="underlined"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <!-- Form -->
+                <v-form @submit.prevent="submitform">
+                  <!-- Faculty -->
+                  <v-row>
+                    <v-col cols="12">
+                      <div class="content-head mt-3">Faculty</div>
+                      <v-text-field
+                        type="text"
+                        v-model="formData.name"
+                        variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                
-                <!-- notification error section -->
-                <template v-if="errors.length > 0">
-                  <div class="bg-red-300 text-white rounded-lg p-6">
-                    <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
-                  </div>
-                </template>
 
-                <v-btn class="logInButton" type="submit">Register</v-btn>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+                  <!-- notification error section -->
+                    <template v-if="errors.length > 0">
+                      <div class="bg-red-300 text-white rounded-lg p-6">
+                        <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
+                      </div>
+                    </template>
+
+
+                  <v-btn class="logInButton" type="submit">Register</v-btn>
+                </v-form>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
     </div>
   </div>
 </template>
@@ -59,6 +64,7 @@
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
 import TopNavBar from '../../components/TopNavBar.vue'
+import Navbar from '../../components/navbar.vue'
 export default {
   setup() {
     const toastStore = useToastStore()
@@ -76,6 +82,7 @@ export default {
     //created
   }),
   components: {
+    Navbar,
     TopNavBar
   },
   methods: {
