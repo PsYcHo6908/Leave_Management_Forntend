@@ -58,23 +58,31 @@ import axios from 'axios'
 import Navbar from '../components/navbar.vue'
 import TopNavBar from '../components/TopNavBar.vue'
 import { useRouter } from 'vue-router';
+import { useToastStore } from '@/stores/toast'
+import { useUserStore } from '@/stores/user'
 
 export default {
   setup() {
   const router = useRouter();
-
+  const toastStore = useToastStore()
+  const userStore = useUserStore()
   function navigateToDetail(id) {
     router.push({ name: 'DetailPage', params: { id } });
   }
-
   return {
     navigateToDetail,
     // ... อื่นๆ ...
+    toastStore,
+    userStore
   };
 },
   components: {
     Navbar,
     TopNavBar
+  },
+  mounted() {
+    this.fetchLeaveRequests();
+    this.getStudentLogin()
   },
   data() {
     return {
@@ -90,12 +98,42 @@ export default {
         // { text: 'Status', value: 'leave_request_data.status' },
         { text: 'Actions', value: 'actions' },
       ],
+      // getStudentLogin
+      testId: '',
+      testStudentId: '',
+      student: [],
+      user: [],
     };
   },
-  mounted() {
-    this.fetchLeaveRequests();
-  },
   methods: {
+    async getStudentLogin() {
+      this.userStore.initStore()
+      this.user = this.userStore.user
+      this.testId = this.userStore.user.id //user_id
+      // console.log('TestID: 275' + this.testId) 
+      //user_id = 5
+      //user = 6 Pongsiri
+      //who is login student from user_id = 6
+      // console.log("277: "+ this.user[0])
+      if (this.testId) {
+        const url = `/student/?user_id=${this.testId}`
+        await axios
+          .get(url)
+          .then((response) => {
+            this.student = response.data[0]
+            // console.log('fname285:  ' + this.student.fname)
+            // console.log('IdStudent285:  ' + this.student.id)
+            this.testStudentId = this.student.id // student_id = 1 Panisra
+            // this.nameStudentLogin = this.student.fname + " " + this.student.lname
+            // this.userIdStudentLogin = this.userStore.user.user_id
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
+      } else {
+        this.student = []
+      }
+    },
     getUniqueSubjects(items) {
     const unique = {};
     items.forEach((item) => {
@@ -110,7 +148,7 @@ export default {
     async fetchLeaveRequests() {
       this.loading = true;
       try {
-        const response = await axios.get('http://127.0.0.1:8000/leaveDetail/');
+        const response = await axios.get(`/leaveDetail/?student_id=${this.testId}`);
         this.leaveRequests = response.data;
         this.leaveRequests = this.getUniqueSubjects(response.data);
       } catch (error) {
