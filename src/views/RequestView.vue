@@ -328,7 +328,7 @@ export default {
 
 /* search */
 .label-input-pair select {
-  width: calc(100% - -21px);
+  width: calc(80% - -40px);
   box-sizing: border-box;
   border: 1px solid #000;
   padding: 8px;
@@ -344,7 +344,7 @@ export default {
   margin-top: 11%;
 }
 .label-input-pair input {
-  width: calc(100% - -21px) !important;
+  width: calc(90% - -21px) !important;
   box-sizing: border-box !important;
   border: 1px solid #000 !important;
   padding: 8px !important;
