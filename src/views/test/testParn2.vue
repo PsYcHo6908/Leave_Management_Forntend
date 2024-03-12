@@ -66,7 +66,7 @@ async saveFile() {
       'Content-Type': 'multipart/form-data'
     }
   }
-  await axios.post('/leave/files/', formData, axiosConfig).then(
+  await axios.post('/files/', formData, axiosConfig).then(
     response => {
       console.log(response)
       this.upload_status = 'File Upload Success'
@@ -81,7 +81,7 @@ async saveFile() {
 async getFile() {
 
 
-  await axios.get('/leave/files/').then(
+  await axios.get('/files/').then(
     response => {
       console.log(response.data)
       this.files = response.data

@@ -131,32 +131,14 @@
           </v-col>
           <!-- หลักฐานการลา -->
           <v-col cols="12" md="6">
-            <div class="leaveblock0">
-              <div class="leaveblock2">
-                <div class="Leave-content-head mt-3">หลักฐานการลา</div>
-                <v-file-input
-                  v-model="files"
-                  placeholder="Upload your documents"
-                  label="File input"
-                  multiple
-                >
-                  <!-- <v-file-input
-                  v-model="files"
-                  placeholder="Upload your documents"
-                  label="File input"
-                  multiple
-                  prepend-icon="mdi-paperclip"
-                > -->
-                  <template v-slot:selection="{ fileNames }">
-                    <template v-for="fileName in fileNames" :key="fileName">
-                      <v-chip size="small" label color="primary" class="me-2">
-                        {{ fileName }}
-                      </v-chip>
-                    </template>
-                  </template>
-                </v-file-input>
-              </div>
+
+            <div class="Leave-content-head mt-3">หลักฐานการลา</div>
+            <div>
+              <!-- <label for="exampleFormControlFile1" class="float-left mt-2">Browse A file</label> -->
+              <input type="file"  @change="uploadedFile" ref="file">
             </div>
+            <!-- <button type="submit" onclick={saveFile} class="btn btn-primary">Save</button> -->
+
           </v-col>
         </v-row>
 
@@ -165,7 +147,6 @@
           <v-col cols="12" md="6">
             <div class="leaveblock0">
               <div class="content-head mr-3 mb-3.5">คำอธิบาย</div>
-              <div class="leaveblock1">
                 <v-textarea
                   class="custom-textarea"
                   rows="4"
@@ -173,7 +154,7 @@
                   style="width: 100%"
                   v-model="formDataLeaveRequest.description"
                 ></v-textarea>
-              </div>
+
             </div>
           </v-col>
           <v-col cols="12" md="6">
@@ -307,7 +288,12 @@ export default {
         { text: 'Teacher', value: 'teachersItem' },
         { text: 'Actions', value: 'actions', sortable: false }
         // ... other headers
-      ]
+      ],
+
+      // file
+      files: [],
+      upload_status: '',
+      filename: '',
     }
   },
   components: {
@@ -319,6 +305,10 @@ export default {
   mounted() {
     this.getStudentLogin()
     this.getSubjects()
+  },
+  created(){
+    // console.log('DOM Created')
+    // this.getFile()
   },
   watch: {
     selectedSubjects: {
@@ -514,8 +504,10 @@ export default {
               console.log("leaveRequestId: " + this.leaveRequestId)
               this.formDataLeaveDetails.leave_request_id = this.leaveRequestId
               this.formDataLeaveDetails.student_id = this.testStudentId
-              //dofunction
+              //save Detail
               this.addLeaveRequestDetail()
+              //save File
+              this.saveFile()
               // Clear Data here
               this.selectedLeaveType = ""
               this.files = ""
@@ -594,7 +586,37 @@ export default {
           console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
         }
       }
-    }
+    },
+    // File method
+    async saveFile() {
+      let formData = new FormData();
+      formData.append("pdf", this.filename)
+      formData.append("leave_request_id", this.leaveRequestId)
+
+      let axiosConfig = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      await axios.post('/files/', formData, axiosConfig).then(
+        response => {
+          console.log(response)
+          this.upload_status = 'File Upload Success'
+
+
+        }
+      ).catch(error => {
+        console.log(error)
+      })
+    },
+    uploadedFile(){
+      // Clear previous filename
+      this.filename = '';
+      // Set new filename
+      this.filename = this.$refs.file.files[0]
+      console.log(this.filename)
+
+    },
 
 
   }
