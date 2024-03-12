@@ -5,68 +5,125 @@
     <div class="right-section">
       <TopNavBar />
       <div class="content-Page">
-        <!-- Slot is used for distributing content from a parent component -->
         <slot></slot>
 
-        <div class="head-request">คำขอลาทั้งหมด</div>
+        <div class="head">คำขอลาทั้งหมด</div>
       </div>
       <div class="content">
+
+
+
+      <!-- Search fields in a single row -->
+      <v-row>
+        <v-col cols="12" md="6">
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-row>
+            <!-- Adjusted each input field with its label -->
+            <v-col cols="6" sm="3" class="field-container">
+              <div class="label-input-pair">
+                <!-- <label for="cars">Choose a car:</label> -->
+                <input type="text"  placeholder="course">
+              </div>
+            </v-col>
+            <!-- Repeated for other fields, ensure ID and for attributes are unique -->
+            <v-col cols="6" sm="3" class="field-container">
+              <div class="label-input-pair">
+                <!-- <label for="cars">Choose a car:</label> -->
+                <select v-model="selectedOption">
+                  <option value="" disabled selected>-- ประเภทการลา --</option>
+                  <option value="ลากิจ">ลากิจ</option>
+                  <option value="ลาป่วย">ลาป่วย</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
+                  <!-- <option value="">1234</option> -->
+                </select>
+                <!-- <template v-slot:append>
+                  <v-icon>mdi-home</v-icon>
+                </template> -->
+              </div>
+            </v-col>
+            <v-col cols="6" sm="3" class="field-container">
+              <div class="label-input-pair">
+                <!-- <label for="cars">Choose a car:</label> -->
+                <input type="text"  placeholder="สถานะ">
+              </div>
+            </v-col>
+            <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
+          </v-row>
+        </v-col>
+      </v-row>
+
+        <!-- table -->
         <v-row>
-          <v-col cols="12">
-            <v-data-table
-              :headers="headers"
-              :items="leaveRequests"
-              :loading="loading"
-              :items-per-page="10"
-              class="elevation-1"
-              @click:row="onRowClicked"
-            >
-              <!-- Slot for customizing how items are displayed in a column -->
-              <template v-slot:item.actions="{ item }">
-                <v-btn
-                  small
-                  :color="item.status === 'approve' || item.status === 'reject' ? 'grey' : 
-                          item.status === 'pending' ? 'grey' : 'grey'"
-                  @click="item.status === 'pending' ? onPending(item) : 
-                          item.status !== 'approve' && item.status !== 'reject' && approveRequest(item)"
-                  :disabled="item.status === 'approve' || item.status === 'reject' || item.status === 'pending'"
-                >
-                  {{ item.status === 'approve' ? 'Approved' : 
-                    item.status === 'reject' ? 'Rejected' : 
-                    item.status === 'pending' ? 'Pending' : 'Approve' }}
-                </v-btn>
-                <!-- เงื่อนไขสำหรับปุ่ม Reject -->
-                <v-btn 
-                  small 
-                  color="red" 
-                  @click.stop="cancelRequest(item)"
-                  style="margin-left: 5%;"
-                  v-if="item.status !== 'approve' && item.status !== 'reject'"
-                >
-                  Cancle
-                </v-btn>
-              </template>
-            </v-data-table>
-          </v-col>
+          <table class="leave-requests-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+                <th>Course Section</th>
+                <th>Leave Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="request in filteredRequests" :key="request.id" @click="navigateToDetail(request.id)" class="request-row">
+                <td>{{ request.id }}</td>
+                <td>{{ request.course_data.name }}</td>
+                <td>{{ request.course_data.section }}</td>
+                <td>{{ request.leave_request_data.leave_type }}</td>
+                <td>{{ request.leave_request_data.start_date }}</td>
+                <td>{{ request.leave_request_data.end_date }}</td>
+                <td class="actions-cell">
+                  <v-btn
+                    small
+                    :color="request.status === 'approve' ? 'green' : request.status === 'reject' ? 'grey' : 'primary'"
+                    @click.stop="request.status === 'pending' ? onPending(request) : request.status === 'approve' ? onApproved(request) : approveRequest(request)"
+                    :disabled="request.status === 'approve' || request.status === 'reject' || request.status === 'pending'"
+                  >
+                    {{ request.status === 'approve' ? 'Approved' : request.status === 'reject' ? 'Rejected' : request.status === 'pending' ? 'Pending' : 'Approve' }}
+                  </v-btn>
+                  <!-- Condition for Cancel button -->
+                  <v-btn
+                    small
+                    color="red"
+                    @click.stop="cancelRequest(request)"
+                    style="margin-left: 5%;"
+                    v-if="request.status === 'pending'"
+                  >
+                    Cancel
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </v-row>
       </div>
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios'
-import Navbar from '../components/navbar.vue'
-import TopNavBar from '../components/TopNavBar.vue'
-import { useRouter } from 'vue-router';
 import { useToastStore } from '@/stores/toast'
 import { useUserStore } from '@/stores/user'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+import TopNavBar from '../components/TopNavBar.vue'
+import Navbar from '../components/navbar.vue'
+// import { defineComponent } from 'vue';
 
 export default {
   setup() {
   const router = useRouter();
   const toastStore = useToastStore()
   const userStore = useUserStore()
+
+  // เปลี่ยนหน้าเมื่อกดตาม row ยกวเ้น colum action
   function navigateToDetail(id) {
+    // Check if the event target has a parent with the 'actions-cell' class
+    // if (!event.target.closest('.actions-cell')) {
+    //   router.push({ name: 'DetailPage', params: { id } });
+    // }
     router.push({ name: 'DetailPage', params: { id } });
   }
   return {
@@ -82,16 +139,25 @@ export default {
   },
   mounted() {
     this.fetchLeaveRequests();
-    this.getStudentLogin()
   },
+  computed: {
+  filteredRequests() {
+    if (this.search) {
+      return this.leaveRequests.filter((request) =>
+        request.course_data.name.toLowerCase().includes(this.search.toLowerCase())
+      );
+    }
+    return this.leaveRequests;
+  },
+},
   data() {
     return {
       leaveRequests: [],
       loading: false,
       headers: [
-        { text: 'ID', align: 'start', value: 'id' },
-        { text: 'Course', value: 'course_data.name' },
-        { text: 'Course', value: 'course_data.section' },
+        { text: 'ID', align: 'start', value: 'id', sortable: true },
+        { text: 'Course Name', value: 'course_data.name' },
+        { text: 'Course Section', value: 'course_data.section' },
         { text: 'Leave Type', value: 'leave_request_data.leave_type' },
         { text: 'Start Date', value: 'leave_request_data.start_date' },
         { text: 'End Date', value: 'leave_request_data.end_date' },
@@ -103,6 +169,9 @@ export default {
       testStudentId: '',
       student: [],
       user: [],
+      // for Search
+      search: '',
+      selectedOption: '' // ค่าเริ่มต้น
     };
   },
   methods: {
@@ -135,48 +204,115 @@ export default {
       }
     },
     getUniqueSubjects(items) {
-    const unique = {};
-    items.forEach((item) => {
-      // Create a composite key using both subject name and leave_request_id
-      const uniqueKey = `${item.course_data.name}-${item.leave_request_id}`;
-      if (!unique[uniqueKey]) {
-        unique[uniqueKey] = item;
-      }
-    });
-    return Object.values(unique);
-  },
+      const unique = {};
+      items.forEach((item) => {
+        // Create a composite key using both subject name and leave_request_id
+        const uniqueKey = `${item.course_data.name}-${item.leave_request_id}`;
+        if (!unique[uniqueKey]) {
+          unique[uniqueKey] = item;
+        }
+      });
+      return Object.values(unique);
+    },
     async fetchLeaveRequests() {
-      this.loading = true;
+      this.loading = true; // เริ่มต้นการโหลด
+      await this.getStudentLogin(); // เรียกใช้ getStudentLogin()
+      console.log("test Student ID: " + this.testStudentId); // ตรวจสอบค่า testStudentId
       try {
-        const response = await axios.get(`/leaveDetail/?student_id=${this.testId}`);
-        this.leaveRequests = response.data;
-        this.leaveRequests = this.getUniqueSubjects(response.data);
+        if (this.testStudentId) { // ตรวจสอบว่ามีค่า testStudentId หรือไม่
+          const response = await axios.get(`/leaveDetail/?student_id=${this.testStudentId}`);
+          this.leaveRequests = response.data;
+          this.leaveRequests = this.getUniqueSubjects(response.data);
+        } else {
+          console.log("Doesn't have Student ID:  " + this.testStudentId);
+        }
       } catch (error) {
         console.error('There was an error fetching the leave requests:', error);
       } finally {
-        this.loading = false;
+        this.loading = false; // เสร็จสิ้นการโหลด
       }
     },
-    approveRequest(id) {
-          console.log('Approving request with id:', id);
-          // Here you would add
-    // the logic to handle the approval of the leave request, typically making an API call to update the status.
+    onPending(request) {
+      // Logic for handling a pending request
     },
-    // Keep your existing onRowClicked as is.
-    onRowClicked(item) {
-      console.log('Row clicked:', item);
-      // Navigation logic for going to the detail page.
-      // this.$router.push({ name: 'DetailPage', params: { id: item.id } });
+    onApproved(request) {
+      // Logic for handling an already approved request
     },
-    cancelRequest(item) {
-      console.log('Cancel request:', item);
-      // Perform the cancel logic here, such as sending a request to your API.
+    approveRequest(request) {
+      // Logic for approving a request
+    },
+    cancelRequest(request) {
+      // Logic for canceling a request
+      console.log("Cancle Request: " + request)
     },
   },
 
 }
 </script>
 <style>
+
+/* ... CSS of Table ... */
+
+.leave-requests-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leave-requests-table th,
+.leave-requests-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.leave-requests-table th {
+  background-color: #f4f4f4;
+}
+
+.cancel-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+}
+
+.cancel-btn:hover {
+  background-color: darkred;
+}
+
+/* title คำขอลาทั้งหมด */
+.head {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0% 2.5%;
+  padding: 1% 0% 2% 0%;
+}
+
+
+/* ตอนกดแต่ละ row */
+.request-row {
+  cursor: pointer;
+}
+.request-row:hover {
+  background-color: #f5f5f5; /* Or any other hover color */
+}
+
+/* search */
+.label-input-pair select {
+  width: calc(100% - 20px); 
+  box-sizing: border-box;
+  border: 1px solid #000;
+  padding: 8px;
+  border-radius: 4px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('dropdown-arrow.svg');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px 12px;
+  padding-right: 30px;
+}
 
 @media screen and (max-width: 1900px) {
   .content-Page {
@@ -196,5 +332,6 @@ export default {
   margin: 0% 2.5%;
   padding: 1% 0% 2% 0%;
 }
+
 }
 </style>
