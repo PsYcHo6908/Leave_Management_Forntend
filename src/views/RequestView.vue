@@ -10,48 +10,46 @@
         <div class="head">คำขอลาทั้งหมด</div>
       </div>
       <div class="content">
-
-
-
-      <!-- Search fields in a single row -->
-      <v-row>
-        <v-col cols="12" md="6">
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-row>
-            <!-- Adjusted each input field with its label -->
-            <v-col cols="6" sm="3" class="field-container">
-              <div class="label-input-pair">
-                <!-- <label for="cars">Choose a car:</label> -->
-                <input type="text"  placeholder="course">
-              </div>
-            </v-col>
-            <!-- Repeated for other fields, ensure ID and for attributes are unique -->
-            <v-col cols="6" sm="3" class="field-container">
-              <div class="label-input-pair">
-                <!-- <label for="cars">Choose a car:</label> -->
-                <select v-model="selectedOption">
-                  <option value="" disabled selected>-- ประเภทการลา --</option>
-                  <option value="ลากิจ">ลากิจ</option>
-                  <option value="ลาป่วย">ลาป่วย</option>
-                  <option value="อื่นๆ">อื่นๆ</option>
-                  <!-- <option value="">1234</option> -->
-                </select>
-                <!-- <template v-slot:append>
+        <!-- Search fields in a single row -->
+        <v-row>
+          <v-col cols="12" md="6"> </v-col>
+          <v-col cols="12" md="6">
+            <v-row>
+              <!-- Adjusted each input field with its label -->
+              <v-col cols="6" sm="3" class="field-container">
+                <div class="label-input-pair">
+                  <!-- <label for="cars">Choose a car:</label> -->
+                  <input type="text" placeholder="วิชา" />
+                </div>
+              </v-col>
+              <!-- Repeated for other fields, ensure ID and for attributes are unique -->
+              <v-col cols="6" sm="3" class="field-container">
+                <div class="label-input-pair">
+                  <!-- <label for="cars">Choose a car:</label> -->
+                  <select v-model="selectedOption">
+                    <option value="" disabled selected>
+                      -- ประเภทการลา --
+                    </option>
+                    <option value="ลากิจ">ลากิจ</option>
+                    <option value="ลาป่วย">ลาป่วย</option>
+                    <option value="อื่นๆ">อื่นๆ</option>
+                    <!-- <option value="">1234</option> -->
+                  </select>
+                  <!-- <template v-slot:append>
                   <v-icon>mdi-home</v-icon>
                 </template> -->
-              </div>
-            </v-col>
-            <v-col cols="6" sm="3" class="field-container">
-              <div class="label-input-pair">
-                <!-- <label for="cars">Choose a car:</label> -->
-                <input type="text"  placeholder="สถานะ">
-              </div>
-            </v-col>
-            <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
-          </v-row>
-        </v-col>
-      </v-row>
+                </div>
+              </v-col>
+              <v-col cols="6" sm="3" class="field-container">
+                <div class="label-input-pair">
+                  <!-- <label for="cars">Choose a car:</label> -->
+                  <input type="text" placeholder="สถานะ" />
+                </div>
+              </v-col>
+              <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
+            </v-row>
+          </v-col>
+        </v-row>
 
         <!-- table -->
         <v-row>
@@ -68,7 +66,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="request in filteredRequests" :key="request.id" @click="navigateToDetail(request.id)" class="request-row">
+              <tr
+                v-for="request in filteredRequests"
+                :key="request.id"
+                @click="navigateToDetail(request.id)"
+                class="request-row"
+              >
                 <td>{{ request.id }}</td>
                 <td>{{ request.course_data.name }}</td>
                 <td>{{ request.course_data.section }}</td>
@@ -78,18 +81,42 @@
                 <td class="actions-cell">
                   <v-btn
                     small
-                    :color="request.status === 'approve' ? 'green' : request.status === 'reject' ? 'grey' : 'primary'"
-                    @click.stop="request.status === 'pending' ? onPending(request) : request.status === 'approve' ? onApproved(request) : approveRequest(request)"
-                    :disabled="request.status === 'approve' || request.status === 'reject' || request.status === 'pending'"
+                    :color="
+                      request.status === 'approve'
+                        ? 'green'
+                        : request.status === 'reject'
+                          ? 'grey'
+                          : 'primary'
+                    "
+                    @click.stop="
+                      request.status === 'pending'
+                        ? onPending(request)
+                        : request.status === 'approve'
+                          ? onApproved(request)
+                          : approveRequest(request)
+                    "
+                    :disabled="
+                      request.status === 'approve' ||
+                      request.status === 'reject' ||
+                      request.status === 'pending'
+                    "
                   >
-                    {{ request.status === 'approve' ? 'Approved' : request.status === 'reject' ? 'Rejected' : request.status === 'pending' ? 'Pending' : 'Approve' }}
+                    {{
+                      request.status === 'approve'
+                        ? 'Approved'
+                        : request.status === 'reject'
+                          ? 'Rejected'
+                          : request.status === 'pending'
+                            ? 'Pending'
+                            : 'Approve'
+                    }}
                   </v-btn>
                   <!-- Condition for Cancel button -->
                   <v-btn
                     small
                     color="red"
                     @click.stop="cancelRequest(request)"
-                    style="margin-left: 5%;"
+                    style="margin-left: 5%"
                     v-if="request.status === 'pending'"
                   >
                     Cancel
@@ -114,42 +141,44 @@ import Navbar from '../components/navbar.vue'
 
 export default {
   setup() {
-  const router = useRouter();
-  const toastStore = useToastStore()
-  const userStore = useUserStore()
+    const router = useRouter()
+    const toastStore = useToastStore()
+    const userStore = useUserStore()
 
-  // เปลี่ยนหน้าเมื่อกดตาม row ยกวเ้น colum action
-  function navigateToDetail(id) {
-    // Check if the event target has a parent with the 'actions-cell' class
-    // if (!event.target.closest('.actions-cell')) {
-    //   router.push({ name: 'DetailPage', params: { id } });
-    // }
-    router.push({ name: 'DetailPage', params: { id } });
-  }
-  return {
-    navigateToDetail,
-    // ... อื่นๆ ...
-    toastStore,
-    userStore
-  };
-},
+    // เปลี่ยนหน้าเมื่อกดตาม row ยกวเ้น colum action
+    function navigateToDetail(id) {
+      // Check if the event target has a parent with the 'actions-cell' class
+      // if (!event.target.closest('.actions-cell')) {
+      //   router.push({ name: 'DetailPage', params: { id } });
+      // }
+      router.push({ name: 'DetailPage', params: { id } })
+    }
+    return {
+      navigateToDetail,
+      // ... อื่นๆ ...
+      toastStore,
+      userStore
+    }
+  },
   components: {
     Navbar,
     TopNavBar
   },
   mounted() {
-    this.fetchLeaveRequests();
+    this.fetchLeaveRequests()
   },
   computed: {
-  filteredRequests() {
-    if (this.search) {
-      return this.leaveRequests.filter((request) =>
-        request.course_data.name.toLowerCase().includes(this.search.toLowerCase())
-      );
+    filteredRequests() {
+      if (this.search) {
+        return this.leaveRequests.filter((request) =>
+          request.course_data.name
+            .toLowerCase()
+            .includes(this.search.toLowerCase())
+        )
+      }
+      return this.leaveRequests
     }
-    return this.leaveRequests;
   },
-},
   data() {
     return {
       leaveRequests: [],
@@ -162,7 +191,7 @@ export default {
         { text: 'Start Date', value: 'leave_request_data.start_date' },
         { text: 'End Date', value: 'leave_request_data.end_date' },
         // { text: 'Status', value: 'leave_request_data.status' },
-        { text: 'Actions', value: 'actions' },
+        { text: 'Actions', value: 'actions' }
       ],
       // getStudentLogin
       testId: '',
@@ -172,14 +201,14 @@ export default {
       // for Search
       search: '',
       selectedOption: '' // ค่าเริ่มต้น
-    };
+    }
   },
   methods: {
     async getStudentLogin() {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
-      // console.log('TestID: 275' + this.testId) 
+      // console.log('TestID: 275' + this.testId)
       //user_id = 5
       //user = 6 Pongsiri
       //who is login student from user_id = 6
@@ -204,32 +233,35 @@ export default {
       }
     },
     getUniqueSubjects(items) {
-      const unique = {};
+      const unique = {}
       items.forEach((item) => {
         // Create a composite key using both subject name and leave_request_id
-        const uniqueKey = `${item.course_data.name}-${item.leave_request_id}`;
+        const uniqueKey = `${item.course_data.name}-${item.leave_request_id}`
         if (!unique[uniqueKey]) {
-          unique[uniqueKey] = item;
+          unique[uniqueKey] = item
         }
-      });
-      return Object.values(unique);
+      })
+      return Object.values(unique)
     },
     async fetchLeaveRequests() {
-      this.loading = true; // เริ่มต้นการโหลด
-      await this.getStudentLogin(); // เรียกใช้ getStudentLogin()
-      console.log("test Student ID: " + this.testStudentId); // ตรวจสอบค่า testStudentId
+      this.loading = true // เริ่มต้นการโหลด
+      await this.getStudentLogin() // เรียกใช้ getStudentLogin()
+      console.log('test Student ID: ' + this.testStudentId) // ตรวจสอบค่า testStudentId
       try {
-        if (this.testStudentId) { // ตรวจสอบว่ามีค่า testStudentId หรือไม่
-          const response = await axios.get(`/leaveDetail/?student_id=${this.testStudentId}`);
-          this.leaveRequests = response.data;
-          this.leaveRequests = this.getUniqueSubjects(response.data);
+        if (this.testStudentId) {
+          // ตรวจสอบว่ามีค่า testStudentId หรือไม่
+          const response = await axios.get(
+            `/leaveDetail/?student_id=${this.testStudentId}`
+          )
+          this.leaveRequests = response.data
+          this.leaveRequests = this.getUniqueSubjects(response.data)
         } else {
-          console.log("Doesn't have Student ID:  " + this.testStudentId);
+          console.log("Doesn't have Student ID:  " + this.testStudentId)
         }
       } catch (error) {
-        console.error('There was an error fetching the leave requests:', error);
+        console.error('There was an error fetching the leave requests:', error)
       } finally {
-        this.loading = false; // เสร็จสิ้นการโหลด
+        this.loading = false // เสร็จสิ้นการโหลด
       }
     },
     onPending(request) {
@@ -243,14 +275,12 @@ export default {
     },
     cancelRequest(request) {
       // Logic for canceling a request
-      console.log("Cancle Request: " + request)
-    },
-  },
-
+      console.log('Cancle Request: ' + request)
+    }
+  }
 }
 </script>
 <style>
-
 /* ... CSS of Table ... */
 
 .leave-requests-table {
@@ -288,7 +318,6 @@ export default {
   padding: 1% 0% 2% 0%;
 }
 
-
 /* ตอนกดแต่ละ row */
 .request-row {
   cursor: pointer;
@@ -299,7 +328,7 @@ export default {
 
 /* search */
 .label-input-pair select {
-  width: calc(100% - 20px); 
+  width: calc(100% - -21px);
   box-sizing: border-box;
   border: 1px solid #000;
   padding: 8px;
@@ -312,9 +341,27 @@ export default {
   background-position: right 10px center;
   background-size: 12px 12px;
   padding-right: 30px;
+  margin-top: 11%;
+}
+.label-input-pair input {
+  width: calc(100% - -21px) !important;
+  box-sizing: border-box !important;
+  border: 1px solid #000 !important;
+  padding: 8px !important;
+  border-radius: 4px !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url(dropdown-arrow.svg) !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  background-size: 12px 12px !important;
+  padding-right: 30px !important;
+  margin-left: 0% !important;
+  background-color: #fff !important;
 }
 
-@media screen and (max-width: 1900px) {
+@media screen and (max-width: 1899px) {
   .content-Page {
     display: flex;
   }
@@ -327,11 +374,18 @@ export default {
     width: 100%;
   }
   .head {
-  font-size: 28px;
-  font-weight: 600;
-  margin: 0% 2.5%;
-  padding: 1% 0% 2% 0%;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0% 2.5%;
+    padding: 1% 0% 2% 0%;
+  }
+  .label-input-pair select {
+  margin-top: 8%;
+  }
 }
-
+@media screen and (min-width: 1440px) {
+  .label-input-pair select {
+  margin-top: 11%;
+  }
 }
 </style>
