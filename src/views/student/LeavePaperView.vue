@@ -521,7 +521,7 @@ export default {
               this.files = ""
               this.formDataLeaveRequest.description = ""
               this.selectedDates = []
-              this.serverItems = ""
+              this.serverItems = []
             }
 
           })
