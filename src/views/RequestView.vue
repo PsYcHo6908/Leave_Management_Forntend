@@ -19,7 +19,7 @@
               <v-col cols="6" sm="3" class="field-container">
                 <div class="label-input-pair">
                   <!-- <label for="cars">Choose a car:</label> -->
-                  <input type="text" placeholder="วิชา" />
+                  <input type="text" placeholder="วิชา" v-model="search"/>
                 </div>
               </v-col>
               <!-- Repeated for other fields, ensure ID and for attributes are unique -->
@@ -30,6 +30,7 @@
                     <option value="" disabled selected>
                       -- ประเภทการลา --
                     </option>
+                    <option value="">None</option>
                     <option value="ลากิจ">ลากิจ</option>
                     <option value="ลาป่วย">ลาป่วย</option>
                     <option value="อื่นๆ">อื่นๆ</option>
@@ -43,7 +44,22 @@
               <v-col cols="6" sm="3" class="field-container">
                 <div class="label-input-pair">
                   <!-- <label for="cars">Choose a car:</label> -->
-                  <input type="text" placeholder="สถานะ" />
+                  <!-- <input type="text" placeholder="สถานะ" v-model="statusSearch"/> -->
+                                    <!-- <label for="cars">Choose a car:</label> -->
+                  <select v-model="statusSearch">
+                    <option value="" disabled selected>
+                      -- สถานะ --
+                    </option>
+                    <option value="">None</option>
+                    <option value="pending">Pending</option>
+                    <option value="approve">Approved</option>
+                    <option value="reject">Rejected</option>
+                    <!-- <option value="">1234</option> -->
+                  </select>
+                  <!-- <template v-slot:append>
+                  <v-icon>mdi-home</v-icon>
+                </template> -->
+
                 </div>
               </v-col>
               <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
@@ -168,17 +184,15 @@ export default {
     this.fetchLeaveRequests()
   },
   computed: {
-    filteredRequests() {
-      if (this.search) {
-        return this.leaveRequests.filter((request) =>
-          request.course_data.name
-            .toLowerCase()
-            .includes(this.search.toLowerCase())
-        )
-      }
-      return this.leaveRequests
-    }
-  },
+  filteredRequests() {
+    return this.leaveRequests.filter(request => {
+      const matchesCourse = request.course_data.name.toLowerCase().includes(this.search.toLowerCase());
+      const matchesLeaveType = this.selectedOption ? request.leave_request_data.leave_type === this.selectedOption : true;
+      const matchesStatus = this.statusSearch ? request.status.toLowerCase().includes(this.statusSearch.toLowerCase()) : true;
+      return matchesCourse && matchesLeaveType && matchesStatus;
+    });
+  }
+},
   data() {
     return {
       leaveRequests: [],
@@ -200,7 +214,8 @@ export default {
       user: [],
       // for Search
       search: '',
-      selectedOption: '' // ค่าเริ่มต้น
+      selectedOption: '', // For leave type
+      statusSearch: '', // New property for status
     }
   },
   methods: {
@@ -273,9 +288,33 @@ export default {
     approveRequest(request) {
       // Logic for approving a request
     },
-    cancelRequest(request) {
-      // Logic for canceling a request
-      console.log('Cancle Request: ' + request)
+    async cancelRequest(request) {
+      // Extract the needed identifiers from the request object
+      const leave_request_id = request.leave_request_data.id; // Make sure you use the correct property
+      const course_id = request.course_data.id; // Make sure you use the correct property
+      
+      // Construct the URL with the custom action and query parameters
+      const url = `/leaveDetail/delete_multiple/`;
+      const params = {
+        course_id: course_id,
+        leave_request_id: leave_request_id
+      };
+
+      try {
+        // Send a DELETE request using axios with query parameters
+        const response = await axios.delete(url, { params: params });
+        console.log('Requests cancelled successfully:', response.data);
+        
+        // If you want to update the UI or state to reflect the deletion, do it here
+        // e.g., remove the requests from the leaveRequests array
+        this.leaveRequests = this.leaveRequests.filter((r) => {
+          return r.leave_request_data.id !== leave_request_id || r.course_data.id !== course_id;
+        });
+
+      } catch (error) {
+        // Handle any errors that occur during the HTTP request
+        console.error('Error cancelling requests:', error.response || error.message);
+      }
     }
   }
 }
@@ -328,7 +367,7 @@ export default {
 
 /* search */
 .label-input-pair select {
-  width: calc(100% - -21px);
+  width: calc(80% - -40px);
   box-sizing: border-box;
   border: 1px solid #000;
   padding: 8px;
@@ -344,7 +383,7 @@ export default {
   margin-top: 11%;
 }
 .label-input-pair input {
-  width: calc(100% - -21px) !important;
+  width: calc(90% - -21px) !important;
   box-sizing: border-box !important;
   border: 1px solid #000 !important;
   padding: 8px !important;
