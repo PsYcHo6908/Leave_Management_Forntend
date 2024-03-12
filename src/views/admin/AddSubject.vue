@@ -1,154 +1,157 @@
 <template>
-  <div class="right-section">
-    <TopNavBar />
-    <div class="content-Page">
-      <slot></slot>
+  <div class="layout-container">
+    <Navbar />
+    <div class="right-section">
+      <TopNavBar />
+      <div class="content-Page">
+        <slot></slot>
 
-      <!-- Logo -->
-      <div class="img1">
-        <img src="../../assets/logo-1.png" />
+        <!-- Logo -->
+        <div class="img1">
+          <img src="../../assets/logo-1.png" />
+        </div>
       </div>
+        <!-- Card -->
+        <v-container fluid>
+          <v-row align="center">
+            <v-col cols="12" md="6" offset-md="3">
+              <v-card
+                class="mx-auto pa-12 pb-8"
+                rounded="xl"
+                color="rgba(255, 255, 255, 0.5)"
+                style="padding: 20px"
+              >
+                <v-card-title style="color: #757575; padding: 0px; border: 30">
+                  Registation
+                </v-card-title>
 
-      <!-- Card -->
-      <v-container fluid>
-        <v-row align="center">
-          <v-col cols="12" md="6" offset-md="3">
-            <v-card
-              class="mx-auto pa-12 pb-8"
-              rounded="xl"
-              color="rgba(255, 255, 255, 0.5)"
-              style="padding: 20px"
-            >
-              <v-card-title style="color: #757575; padding: 0px; border: 30">
-                Registation
-              </v-card-title>
-
-              <!-- Form -->
-              <v-form @submit.prevent="submitform">
-                <!-- Username prefix -->
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">ชื่อวิชา</div>
-                    <v-text-field
-                      type="text"
-                      v-model="formData.username"
-                      variant="underlined"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">รหัสวิชา</div>
-                    <v-text-field
-                      type="text"
-                      v-model="formData.prefix"
-                      variant="underlined"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12" md="6" >
-                      <div class="content-head mt-3">คณะ</div>
-                      <v-select
-                          v-model="selectedFaculty"
-                          :items="faculties"
-                          :item-props="facultyItemProps"
-                          style="width: 100%"
-                        ></v-select>
+                <!-- Form -->
+                <v-form @submit.prevent="submitform">
+                  <!-- Username prefix -->
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">ชื่อวิชา</div>
+                      <v-text-field
+                        type="text"
+                        v-model="formData.username"
+                        variant="underlined"
+                      ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="6" >
-                      <div class="content-head mt-3">ภาควิชา</div>
-                        <v-select
-                          v-model="selectedDepartment"
-                          :items="departments"
-                          :item-props="departmentItemProps"
-                          style="width: 100%"
-                        ></v-select>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">รหัสวิชา</div>
+                      <v-text-field
+                        type="text"
+                        v-model="formData.prefix"
+                        variant="underlined"
+                      ></v-text-field>
                     </v-col>
                   </v-row>
-                <!-- name lastname -->
-                <v-row>
-                  <v-col cols="12">
-                    <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
-                    <v-combobox
-                      v-model="selectedTeachers"
-                      :items="teachers"
-                      :item-props="teachersItemProps"
-                      multiple
-                      chips
-                      outlined
-                      @keydown.prevent
-                      @click.right.prevent
-                      @click.middle.prevent
-                      class="no-placeholder"
-                    ></v-combobox>
-                  </v-col>
-                </v-row>
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">คณะ</div>
+                      <v-select
+                        v-model="selectedFaculty"
+                        :items="faculties"
+                        :item-props="facultyItemProps"
+                        style="width: 100%"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">ภาควิชา</div>
+                      <v-select
+                        v-model="selectedDepartment"
+                        :items="departments"
+                        :item-props="departmentItemProps"
+                        style="width: 100%"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                  <!-- name lastname -->
+                  <v-row>
+                    <v-col cols="12">
+                      <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
+                      <v-combobox
+                        v-model="selectedTeachers"
+                        :items="teachers"
+                        :item-props="teachersItemProps"
+                        multiple
+                        chips
+                        outlined
+                        @keydown.prevent
+                        @click.right.prevent
+                        @click.middle.prevent
+                        class="no-placeholder"
+                      ></v-combobox>
+                    </v-col>
+                  </v-row>
 
-                <!-- รหัสนิสิต อีเมล -->
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">หมู่เรียน</div>
-                    <v-text-field
-                      v-model="formData.user_id"
-                      variant="underlined"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">ภาคเรียน</div>
-                    <v-select
-                      v-model="formData.department"
-                      :items="departments"
-                      style="width: 100%"
-                    ></v-select>
-                  </v-col>
-                </v-row>
+                  <!-- รหัสนิสิต อีเมล -->
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">หมู่เรียน</div>
+                      <v-text-field
+                        v-model="formData.user_id"
+                        variant="underlined"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">ภาคเรียน</div>
+                      <v-select
+                        v-model="formData.department"
+                        :items="departments"
+                        style="width: 100%"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
 
-                <!-- faculty department -->
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">สถานะ</div>
-                    <v-select
-                      v-model="formData.status"
-                      :items="status"
-                      style="width: 100%"
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <div class="content-head mt-3">วันที่เรียน</div>
-                    <v-combobox
-                      v-model="formData.selectedDays"
-                      :items="days"
-                      multiple
-                      chips
-                      outlined
-                      @keydown.prevent
-                      @click.right.prevent
-                      @click.middle.prevent
-                      class="no-placeholder"
-                    ></v-combobox>
-                  </v-col>
-                </v-row>
+                  <!-- faculty department -->
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">สถานะ</div>
+                      <v-select
+                        v-model="formData.status"
+                        :items="status"
+                        style="width: 100%"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="content-head mt-3">วันที่เรียน</div>
+                      <v-combobox
+                        v-model="formData.selectedDays"
+                        :items="days"
+                        multiple
+                        chips
+                        outlined
+                        @keydown.prevent
+                        @click.right.prevent
+                        @click.middle.prevent
+                        class="no-placeholder"
+                      ></v-combobox>
+                    </v-col>
+                  </v-row>
 
-                <!-- notification error section -->
-                <template v-if="errors.length > 0">
-                  <div class="bg-red-300 text-white rounded-lg p-6">
-                    <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
-                  </div>
-                </template>
+                  <!-- notification error section -->
+                  <template v-if="errors.length > 0">
+                    <div class="bg-red-300 text-white rounded-lg p-6">
+                      <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
+                    </div>
+                  </template>
 
-                <v-btn class="logInButton" type="submit">Register</v-btn>
-              </v-form>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+                  <v-btn class="logInButton" type="submit">Register</v-btn>
+                </v-form>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
 import TopNavBar from '../../components/TopNavBar.vue'
+import Navbar from '../../components/navbar.vue'
 export default {
   setup() {
     const toastStore = useToastStore()
@@ -162,7 +165,7 @@ export default {
     formData: {
       faculty: '',
       department: '',
-      selectedDays: [],
+      selectedDays: []
     },
     errors: [],
     show2: false,
@@ -185,86 +188,96 @@ export default {
     faculties: [],
     roles: ['student', 'teacher'],
     teachers: [],
-    days: ['วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์','วันอาทิตย์'],
-    status: ['เปิด','ปิด'],
+    days: [
+      'วันจันทร์',
+      'วันอังคาร',
+      'วันพุธ',
+      'วันพฤหัสบดี',
+      'วันศุกร์',
+      'วันเสาร์',
+      'วันอาทิตย์'
+    ],
+    status: ['เปิด', 'ปิด']
   }),
   components: {
-    TopNavBar
+    TopNavBar,
+    Navbar,
   },
   mounted() {
-    this.getFaculties();
-    this.getDepartments();
-    this.getTeachers();
+    this.getFaculties()
+    this.getDepartments()
+    this.getTeachers()
   },
   watch: {
     selectedFaculty: {
-        handler: 'getDepartments', // เรียกใช้ method เมื่อ selectedFaculty เปลี่ยน
-        immediate: true // เรียกใช้ method ทันทีเมื่อ component ถูกโหลด
+      handler: 'getDepartments', // เรียกใช้ method เมื่อ selectedFaculty เปลี่ยน
+      immediate: true // เรียกใช้ method ทันทีเมื่อ component ถูกโหลด
     },
     selectedDepartment: {
       handler: 'getTeachers',
       immediate: true
-    },
-},
-  methods: {
-  facultyItemProps (item) {
-      return {
-        title: item.name,
-        subtitle: item.id,
-      }
-  },
-  departmentItemProps (item) {
-      return {
-        title: item.name,
-        subtitle: item.id,
-      }
-  },
-  teachersItemProps (item) {
-      return {
-        title: item.fname,
-        subtitle: item.id,
-      }
-  },
-  async getFaculties() {
-    // Fetch faculty data from your server API
-    await axios.get('/education/faculty')
-      .then(response => {
-        this.faculties = response.data;
-        console.log(this.faculties)
-      })
-      .catch(error => {
-        // Handle errors here
-        console.error('Error fetching faculty data:', error);
-      });
-  },
-  async getDepartments() {
-    if (this.selectedFaculty && this.selectedFaculty.id) {
-        const url = `/education/department/?faculty_id=${this.selectedFaculty.id}`;
-        await axios
-        .get(url)
-        .then((response) => {
-            this.departments = response.data; // กำหนดค่า departments ที่ได้จาก API
-        })
-        .catch((error) => {
-            console.log('error', error)
-        })
-    } else {
-        this.departments = []; // ล้างค่า departments เมื่อไม่มีค่า selectedFaculty.id
     }
   },
-    async getTeachers() {
-      if (this.selectedDepartment && this.selectedDepartment.id) {
-        const url = `/teacher/?faculty_id=${this.selectedDepartment.faculty_id}&department_id=${this.selectedDepartment.id}`;
-        await axios
-        .get(url)
+  methods: {
+    facultyItemProps(item) {
+      return {
+        title: item.name,
+        subtitle: item.id
+      }
+    },
+    departmentItemProps(item) {
+      return {
+        title: item.name,
+        subtitle: item.id
+      }
+    },
+    teachersItemProps(item) {
+      return {
+        title: item.fname,
+        subtitle: item.id
+      }
+    },
+    async getFaculties() {
+      // Fetch faculty data from your server API
+      await axios
+        .get('/education/faculty')
         .then((response) => {
-          this.teachers = response.data;
+          this.faculties = response.data
+          console.log(this.faculties)
         })
         .catch((error) => {
-          console.log('error',error)
+          // Handle errors here
+          console.error('Error fetching faculty data:', error)
         })
+    },
+    async getDepartments() {
+      if (this.selectedFaculty && this.selectedFaculty.id) {
+        const url = `/education/department/?faculty_id=${this.selectedFaculty.id}`
+        await axios
+          .get(url)
+          .then((response) => {
+            this.departments = response.data // กำหนดค่า departments ที่ได้จาก API
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
       } else {
-        this.teachers = [];
+        this.departments = [] // ล้างค่า departments เมื่อไม่มีค่า selectedFaculty.id
+      }
+    },
+    async getTeachers() {
+      if (this.selectedDepartment && this.selectedDepartment.id) {
+        const url = `/teacher/?faculty_id=${this.selectedDepartment.faculty_id}&department_id=${this.selectedDepartment.id}`
+        await axios
+          .get(url)
+          .then((response) => {
+            this.teachers = response.data
+          })
+          .catch((error) => {
+            console.log('error', error)
+          })
+      } else {
+        this.teachers = []
       }
     },
     submitform() {
@@ -343,6 +356,7 @@ export default {
 #input-6,
 #input-7,
 #input-8,
+#input-9,
 #input-10,
 #input-12,
 #input-13,
@@ -357,6 +371,9 @@ export default {
   border: none !important;
   background-color: transparent !important;
 }
+#input-23 {
+  margin: 0 !important;
+}
 .v-combobox__selection {
   border: none !important;
   background-color: transparent !important;
@@ -365,5 +382,7 @@ export default {
   display: flex;
   justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
   align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+}
+@media screen and (min-width: 1900px) {
 }
 </style>
