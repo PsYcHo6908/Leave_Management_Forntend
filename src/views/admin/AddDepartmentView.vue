@@ -1,14 +1,16 @@
 <template>
-  <div class="right-section">
-    <TopNavBar />
-    <div class="content-Page">
-      <slot></slot>
+  <div class="layout-container">
+    <Navbar />
+    <div class="right-section">
+      <TopNavBar />
+      <div class="content-Page">
+        <slot></slot>
 
-      <!-- Logo -->
-      <div class="img1">
-        <img src="../../assets/logo-1.png" />
+        <!-- Logo -->
+        <div class="img1">
+          <img src="../../assets/logo-1.png" />
+        </div>
       </div>
-
       <!-- Card -->
       <v-container fluid>
         <v-row align="center">
@@ -30,10 +32,10 @@
                   <v-col cols="12">
                     <div class="content-head mt-3">Faculty</div>
                     <v-select
-                          v-model="selectedFaculty"
-                          :items="faculties"
-                          :item-props="facultyItemProps"
-                          style="width: 100%"
+                      v-model="selectedFaculty"
+                      :items="faculties"
+                      :item-props="facultyItemProps"
+                      style="width: 100%"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -49,7 +51,6 @@
                   </v-col>
                 </v-row>
 
-                
                 <!-- notification error section -->
                 <!-- <template v-if="errors.length > 0">
                   <div class="bg-red-300 text-white rounded-lg p-6">
@@ -71,6 +72,7 @@
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
 import TopNavBar from '../../components/TopNavBar.vue'
+import Navbar from '../../components/navbar.vue'
 export default {
   setup() {
     const toastStore = useToastStore()
@@ -84,36 +86,38 @@ export default {
     selectedFaculty: [],
     formData: {
       faculty_id: '',
-      name: '',
+      name: ''
     },
     faculties: [],
-    errors: [],
+    errors: []
     //created
   }),
   components: {
-    TopNavBar
+    TopNavBar,
+    Navbar,
   },
   mounted() {
-    this.getFaculties();
+    this.getFaculties()
   },
   methods: {
-    facultyItemProps (item) {
-        return {
-          title: item.name,
-          subtitle: item.id,
-        }
+    facultyItemProps(item) {
+      return {
+        title: item.name,
+        subtitle: item.id
+      }
     },
     async getFaculties() {
       // Fetch faculty data from your server API
-      await axios.get('/education/faculty')
-        .then(response => {
-          this.faculties = response.data;
+      await axios
+        .get('/education/faculty')
+        .then((response) => {
+          this.faculties = response.data
           console.log(this.faculties)
         })
-        .catch(error => {
+        .catch((error) => {
           // Handle errors here
-          console.error('Error fetching faculty data:', error);
-        });
+          console.error('Error fetching faculty data:', error)
+        })
     },
     submitform() {
       this.formData.faculty_id = this.selectedFaculty.id
@@ -122,7 +126,6 @@ export default {
       if (this.formData.name === '') {
         this.errors.push('Your faculty name is missing')
       }
-
 
       if (this.errors.length === 0) {
         axios
@@ -162,7 +165,8 @@ export default {
 
 <style>
 #input-0,
-#input-3 {
+#input-3,
+#input-5 {
   border: none !important;
   background-color: transparent !important;
 }
