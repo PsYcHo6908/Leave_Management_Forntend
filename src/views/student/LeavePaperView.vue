@@ -32,7 +32,7 @@
                 <!-- Debugging line: -->
                 <!-- <div>Debug Subjects: {{ item.coursesItem }}</div> -->
 
-                <v-chip-group v-if="item.coursesItem" >
+                <v-chip-group v-if="item.coursesItem">
                   <!-- Since item.coursesItem is an object, we don't use v-for -->
                   <v-chip small>
                     {{ item.coursesItem.name }}
@@ -46,8 +46,10 @@
                     v-for="teacher in item.teachersItem"
                     :key="teacher.id"
                     small
-                    :style="{ backgroundColor: item.coursesItem ? '#10B981' : '' , color: '#ffff'}"
-                  
+                    :style="{
+                      backgroundColor: item.coursesItem ? '#10B981' : '',
+                      color: '#ffff'
+                    }"
                   >
                     {{ teacher.prefix }} {{ teacher.fname }} {{ teacher.lname }}
                   </v-chip>
@@ -110,12 +112,18 @@
           <v-col cols="12" md="8" lg="9" class="pa-md-2">
             <!-- ... -->
           </v-col>
-          <v-col cols="12" md="4" lg="3" class="text-right pa-md-2" style="margin-top: -20px;">
+          <v-col
+            cols="12"
+            md="4"
+            lg="3"
+            class="text-right pa-md-2"
+            style="margin-top: -20px"
+          >
             <button class="leave-addBtn mt--2" @click="addItem">เพิ่ม</button>
           </v-col>
         </v-row>
 
-        <v-row style="margin-top: 45px;">
+        <v-row style="margin-top: 45px">
           <!-- ประเภทการลา -->
           <v-col cols="12" md="6">
             <div class="leaveblock0">
@@ -131,31 +139,33 @@
           </v-col>
           <!-- หลักฐานการลา -->
           <v-col cols="12" md="6">
-
-            <div class="Leave-content-head mt-3">หลักฐานการลา</div>
-            <div>
-              <!-- <label for="exampleFormControlFile1" class="float-left mt-2">Browse A file</label> -->
-              <input type="file"  @change="uploadedFile" ref="file">
+            <div class="layout-side">
+              <div class="Leave-content-head mt-3">หลักฐานการลา</div>
+              <div class="input-file">
+                <!-- <label for="exampleFormControlFile1" class="float-left mt-2">Browse A file</label> -->
+                <input
+                  id="input-file-button"
+                  type="file"
+                  @change="uploadedFile"
+                  ref="file"
+                />
+              </div>
+              <!-- <button type="submit" onclick={saveFile} class="btn btn-primary">Save</button> -->
             </div>
-            <!-- <button type="submit" onclick={saveFile} class="btn btn-primary">Save</button> -->
-
           </v-col>
         </v-row>
 
         <v-row>
           <!-- วันที่ // description row -->
           <v-col cols="12" md="6">
-            <div class="leaveblock0">
-              <div class="content-head mr-3 mb-3.5">คำอธิบาย</div>
-                <v-textarea
-                  class="custom-textarea"
-                  rows="4"
-                  placeholder="กรุณาป้อนคำอธิบายที่นี่"
-                  style="width: 100%"
-                  v-model="formDataLeaveRequest.description"
-                ></v-textarea>
-
-            </div>
+            <div class="content-head mr-3 mb-3.5">คำอธิบาย</div>
+            <v-textarea
+              class="custom-textarea"
+              rows="4"
+              placeholder="กรุณาป้อนคำอธิบายที่นี่"
+              style="width: 100%"
+              v-model="formDataLeaveRequest.description"
+            ></v-textarea>
           </v-col>
           <v-col cols="12" md="6">
             <v-date-picker
@@ -247,8 +257,8 @@ export default {
       testStudentId: '',
       student: [],
       user: [],
-      nameStudentLogin: "",
-      userIdStudentLogin: "",
+      nameStudentLogin: '',
+      userIdStudentLogin: '',
       // getSubject
       subjects: [],
       // getTechers
@@ -264,21 +274,19 @@ export default {
       // playload
       errors: [],
       formDataLeaveRequest: {
-        approve_id_by: "",
-        start_date: "",
-        end_date: "",
-        leave_type: "",
-        description: "",
-        status: "pending",
-
+        approve_id_by: '',
+        start_date: '',
+        end_date: '',
+        leave_type: '',
+        description: '',
+        status: 'pending'
       },
-      leaveRequestId: "",
+      leaveRequestId: '',
       formDataLeaveDetails: {
-        leave_request_id: "",
-        student_id: "",
-        course_id: "",
-        teacher_id: "",
-
+        leave_request_id: '',
+        student_id: '',
+        course_id: '',
+        teacher_id: ''
       },
 
       // app table
@@ -293,7 +301,7 @@ export default {
       // file
       files: [],
       upload_status: '',
-      filename: '',
+      filename: ''
     }
   },
   components: {
@@ -306,7 +314,7 @@ export default {
     this.getStudentLogin()
     this.getSubjects()
   },
-  created(){
+  created() {
     // console.log('DOM Created')
     // this.getFile()
   },
@@ -331,43 +339,43 @@ export default {
     addItem() {
       // Check if a subject is selected
       if (!this.selectedSubjects || !this.selectedSubjects.id) {
-        console.log('No subject selected, item not added.');
+        console.log('No subject selected, item not added.')
         // Optionally, show a user-facing error message here.
-        return;
+        return
       }
 
       // Check if any teachers are selected
       if (!this.selectedTeachers || this.selectedTeachers.length === 0) {
-        console.log('No teacher selected, item not added.');
+        console.log('No teacher selected, item not added.')
         // Optionally, show a user-facing error message here.
-        return;
+        return
       }
 
       // Check if the selected subject is already in the serverItems array.
-      const isSubjectExists = this.serverItems.some(item =>
-        item.coursesItem && item.coursesItem.id === this.selectedSubjects.id
-      );
+      const isSubjectExists = this.serverItems.some(
+        (item) =>
+          item.coursesItem && item.coursesItem.id === this.selectedSubjects.id
+      )
 
       // If the subject is already present, do not add it again.
       if (isSubjectExists) {
-        console.log('This subject is already in the table.');
+        console.log('This subject is already in the table.')
         // Optionally show a user-facing message or toast notification here.
-        return;
+        return
       }
 
       // If the subject is not already present and at least one teacher is selected, add it to the serverItems.
       const newItem = {
         coursesItem: this.selectedSubjects,
         teachersItem: this.selectedTeachers
-      };
-      this.serverItems.push(newItem);
-      console.log('New item added:', newItem);
+      }
+      this.serverItems.push(newItem)
+      console.log('New item added:', newItem)
 
       // Clear the inputs if necessary.
-      this.selectedSubjects = {};
-      this.selectedTeachers = [];
+      this.selectedSubjects = {}
+      this.selectedTeachers = []
     },
-
 
     teachersItemProps(item) {
       const name = item.fname + ' ' + item.lname
@@ -386,7 +394,7 @@ export default {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
-      // console.log('TestID: 275' + this.testId) 
+      // console.log('TestID: 275' + this.testId)
       //user_id = 5
       //user = 6 Pongsiri
       //who is login student from user_id = 6
@@ -400,7 +408,8 @@ export default {
             // console.log('fname285:  ' + this.student.fname)
             // console.log('IdStudent285:  ' + this.student.id)
             this.testStudentId = this.student.id // student_id = 1 Panisra
-            this.nameStudentLogin = this.student.fname + " " + this.student.lname
+            this.nameStudentLogin =
+              this.student.fname + ' ' + this.student.lname
             this.userIdStudentLogin = this.userStore.user.user_id
           })
           .catch((error) => {
@@ -485,23 +494,22 @@ export default {
       // Prepare PlayLoad: ( approve_id_by
       //  file_id, start_date, end_date, leave_type, description, status)
 
-
-      console.log("Preparing PlayLoad")
-      if (firstDate !== "NaN-NaN-NaN") {
+      console.log('Preparing PlayLoad')
+      if (firstDate !== 'NaN-NaN-NaN') {
         this.formDataLeaveRequest.start_date = firstDate
         this.formDataLeaveRequest.end_date = lastDate
-        this.formDataLeaveRequest.leave_type = this.selectedLeaveType 
+        this.formDataLeaveRequest.leave_type = this.selectedLeaveType
         console.log(this.formDataLeaveRequest)
 
         await axios
           .post('/leaveRequest/', this.formDataLeaveRequest)
           .then((response) => {
-            console.log("response: ")
+            console.log('response: ')
             console.log(response.data)
             // const leaveRequestId = response.data.leaveRequest_id
             this.leaveRequestId = response.data.leaveRequest_id
-            if (this.leaveRequestId){
-              console.log("leaveRequestId: " + this.leaveRequestId)
+            if (this.leaveRequestId) {
+              console.log('leaveRequestId: ' + this.leaveRequestId)
               this.formDataLeaveDetails.leave_request_id = this.leaveRequestId
               this.formDataLeaveDetails.student_id = this.testStudentId
               //save Detail
@@ -509,22 +517,20 @@ export default {
               //save File
               this.saveFile()
               // Clear Data here
-              this.selectedLeaveType = ""
-              this.files = ""
-              this.formDataLeaveRequest.description = ""
+              this.selectedLeaveType = ''
+              this.files = ''
+              this.formDataLeaveRequest.description = ''
               this.selectedDates = []
               this.serverItems = []
             }
-
           })
           .catch((error) => {
             // if doesnt save LeaveRequest
             console.log('error', error)
           })
-        
-        
+
         //create LeaveRequest
- 
+
         // console.log('this.selectedTeachers: ')
         // console.log(this.selectedTeachers)
 
@@ -540,7 +546,7 @@ export default {
         //     teachersId.forEach((id) => {
         //       console.log("Item Row")
         //       console.log("course id: " + courseId);
-        //       console.log("Id of Course: " + couseOfId); 
+        //       console.log("Id of Course: " + couseOfId);
         //       console.log("Id of Teacher: " + id);  //index0=2, index1=4
 
         //     });
@@ -548,25 +554,23 @@ export default {
         //     console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
         //   }
         // });
-
-      } else{
+      } else {
         this.errors.push('Please select dates')
-
       }
     },
     async addLeaveRequestDetail() {
-      console.log('Table items');
+      console.log('Table items')
       for (const item of this.serverItems) {
         if (item && item.coursesItem && item.teachersItem) {
-          let courseId = item.coursesItem.course_id;
-          let couseOfId = item.coursesItem.id;
-          let teachersId = item.teachersItem.map(teacher => teacher.id);
+          let courseId = item.coursesItem.course_id
+          let couseOfId = item.coursesItem.id
+          let teachersId = item.teachersItem.map((teacher) => teacher.id)
 
           for (const id of teachersId) {
-            console.log("Item Row");
-            console.log("course id: " + courseId);
-            console.log("Id of Course: " + couseOfId);
-            console.log("Id of Teacher: " + id);
+            console.log('Item Row')
+            console.log('course id: ' + courseId)
+            console.log('Id of Course: ' + couseOfId)
+            console.log('Id of Teacher: ' + id)
             this.formDataLeaveDetails.teacher_id = id
             this.formDataLeaveDetails.course_id = couseOfId
 
@@ -574,51 +578,48 @@ export default {
             await axios
               .post('/leaveDetail/', this.formDataLeaveDetails)
               .then((response) => {
-                console.log("Leave details")
+                console.log('Leave details')
                 console.log(response.data)
-
               })
               .catch((error) => {
                 console.log('error', error)
               })
           }
         } else {
-          console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
+          console.log(
+            'this.item or this.item.coursesItem or this.item.teachersItem is undefined'
+          )
         }
       }
     },
     // File method
     async saveFile() {
-      let formData = new FormData();
-      formData.append("pdf", this.filename)
-      formData.append("leave_request_id", this.leaveRequestId)
+      let formData = new FormData()
+      formData.append('pdf', this.filename)
+      formData.append('leave_request_id', this.leaveRequestId)
 
       let axiosConfig = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
-      await axios.post('/files/', formData, axiosConfig).then(
-        response => {
+      await axios
+        .post('/files/', formData, axiosConfig)
+        .then((response) => {
           console.log(response)
           this.upload_status = 'File Upload Success'
-
-
-        }
-      ).catch(error => {
-        console.log(error)
-      })
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
-    uploadedFile(){
+    uploadedFile() {
       // Clear previous filename
-      this.filename = '';
+      this.filename = ''
       // Set new filename
       this.filename = this.$refs.file.files[0]
       console.log(this.filename)
-
-    },
-
-
+    }
   }
 }
 </script>
@@ -759,9 +760,9 @@ th.v-data-table__td.v-data-table-column--align-start.v-data-table__th {
   display: none !important;
 }
 button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v-btn--size-default.v-btn--variant-elevated.my-delete-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* span.v-chip.v-chip--link.v-theme--light.v-chip--density-default.v-chip--size-default.v-chip--variant-tonal.custom-cursor-on-hover {
     background-color: #10B981;
@@ -777,7 +778,47 @@ button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v
 .v-col-md-8 v-col-lg-9 v-col-12 pa-md-2 {
   padding: 0%;
 }
+.layout-side {
+  display: flex;
+}
+.input-file {
+  margin-top: 1%;
+}
+#input-file-button {
+  color: #000;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  background: none;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: color;
+}
 
+#input-file-button:focus,
+#input-file-button:hover {
+  color: #10b981;
+}
+
+#input-file-button:focus:after,
+#input-file-button:hover:after {
+  width: 100%;
+  left: 0%;
+}
+
+#input-file-button:after {
+  content: '';
+  pointer-events: none;
+  bottom: -2px;
+  left: 50%;
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #fff;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: width, left;
+}
 @media only screen and (max-width: 1440px) {
   .Leave-content-head.mt-3 {
     width: 17%;
@@ -785,7 +826,7 @@ button.v-btn.v-btn--elevated.v-btn--icon.v-theme--light.v-btn--density-default.v
   }
   .v-input__prepend {
     margin-left: -25% !important;
-}
+  }
 }
 @media only screen and (min-width: 600px) {
   .custom-input {
