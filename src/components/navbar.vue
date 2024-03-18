@@ -73,10 +73,10 @@
             <v-list-item prepend-icon="mdi-folder" title="ลงทะเบียน" value="myfiles" class="white-text"></v-list-item>
           </RouterLink>
           <RouterLink to="/addFaculty">
-            <v-list-item prepend-icon="mdi-star" title="เพิ่มคณะ" value="starred" class="white-text"></v-list-item>
+            <v-list-item prepend-icon="mdi-star" title="เพิ่มคณะ" value="AddFaculty" class="white-text"></v-list-item>
           </RouterLink>
           <RouterLink to="/addSubject">
-            <v-list-item prepend-icon="mdi-star" title="เพิ่มวิชา" value="starred" class="white-text"></v-list-item>
+            <v-list-item prepend-icon="mdi-star" title="เพิ่มวิชา" value="AddSubject" class="white-text"></v-list-item>
           </RouterLink>  
         </v-list>
 
