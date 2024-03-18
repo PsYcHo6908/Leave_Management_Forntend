@@ -11,140 +11,140 @@
           <img src="../../assets/logo-1.png" />
         </div>
       </div>
-        <!-- Card -->
-        <v-container fluid>
-          <v-row align="center">
-            <v-col cols="12" md="6" offset-md="3">
-              <v-card
-                class="mx-auto pa-12 pb-8"
-                rounded="xl"
-                color="rgba(255, 255, 255, 0.5)"
-                style="padding: 20px"
-              >
-                <v-card-title style="color: #757575; padding: 0px; border: 30">
-                  Registation
-                </v-card-title>
+      <!-- Card -->
+      <v-container fluid>
+        <v-row align="center">
+          <v-col cols="12" md="6" offset-md="3">
+            <v-card
+              class="mx-auto pa-12 pb-8"
+              rounded="xl"
+              color="rgba(255, 255, 255, 0.5)"
+              style="padding: 20px"
+            >
+              <v-card-title style="color: #757575; padding: 0px; border: 30">
+                Registation
+              </v-card-title>
 
-                <!-- Form -->
-                <v-form @submit.prevent="submitform">
-                  <!-- Username prefix -->
-                  <v-row>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">ชื่อวิชา</div>
-                      <v-text-field
-                        type="text"
-                        v-model="formData.username"
-                        variant="underlined"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">รหัสวิชา</div>
-                      <v-text-field
-                        type="text"
-                        v-model="formData.prefix"
-                        variant="underlined"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">คณะ</div>
-                      <v-select
-                        v-model="selectedFaculty"
-                        :items="faculties"
-                        :item-props="facultyItemProps"
-                        style="width: 100%"
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">ภาควิชา</div>
-                      <v-select
-                        v-model="selectedDepartment"
-                        :items="departments"
-                        :item-props="departmentItemProps"
-                        style="width: 100%"
-                      ></v-select>
-                    </v-col>
-                  </v-row>
-                  <!-- name lastname -->
-                  <v-row>
-                    <v-col cols="12">
-                      <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
-                      <v-combobox
-                        v-model="selectedTeachers"
-                        :items="teachers"
-                        :item-props="teachersItemProps"
-                        multiple
-                        chips
-                        outlined
-                        @keydown.prevent
-                        @click.right.prevent
-                        @click.middle.prevent
-                        class="no-placeholder"
-                      ></v-combobox>
-                    </v-col>
-                  </v-row>
+              <!-- Form -->
+              <v-form @submit.prevent="submitform">
+                <!-- Username prefix -->
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">ชื่อวิชา!</div>
+                    <v-text-field
+                      type="text"
+                      v-model="formData.name"
+                      variant="underlined"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">รหัสวิชา!</div>
+                    <v-text-field
+                      type="text"
+                      v-model="formData.course_id"
+                      variant="underlined"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">คณะ!</div>
+                    <v-select
+                      v-model="selectedFaculty"
+                      :items="faculties"
+                      :item-props="facultyItemProps"
+                      style="width: 100%"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">ภาควิชา!</div>
+                    <v-select
+                      v-model="selectedDepartment"
+                      :items="departments"
+                      :item-props="departmentItemProps"
+                      style="width: 100%"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <!-- name lastname -->
+                <v-row>
+                  <v-col cols="12">
+                    <div class="content-head mt-3">ชื่ออาจารย์ประจำวิชา</div>
+                    <v-combobox
+                      v-model="selectedTeachers"
+                      :items="teachers"
+                      :item-props="teachersItemProps"
+                      multiple
+                      chips
+                      outlined
+                      @keydown.prevent
+                      @click.right.prevent
+                      @click.middle.prevent
+                      class="no-placeholder"
+                    ></v-combobox>
+                  </v-col>
+                </v-row>
 
-                  <!-- รหัสนิสิต อีเมล -->
-                  <v-row>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">หมู่เรียน</div>
-                      <v-text-field
-                        v-model="formData.user_id"
-                        variant="underlined"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">ภาคเรียน</div>
-                      <v-select
-                        v-model="formData.department"
-                        :items="departments"
-                        style="width: 100%"
-                      ></v-select>
-                    </v-col>
-                  </v-row>
+                <!-- รหัสนิสิต อีเมล -->
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">หมู่เรียน!</div>
+                    <v-text-field
+                      v-model="formData.section"
+                      variant="underlined"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">ภาคเรียน</div>
+                    <v-select
+                      v-model="formData.department_id"
+                      :items="departments"
+                      style="width: 100%"
+                    ></v-select>
+                  </v-col>
+                </v-row>
 
-                  <!-- faculty department -->
-                  <v-row>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">สถานะ</div>
-                      <v-select
-                        v-model="formData.status"
-                        :items="status"
-                        style="width: 100%"
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <div class="content-head mt-3">วันที่เรียน</div>
-                      <v-combobox
-                        v-model="formData.selectedDays"
-                        :items="days"
-                        multiple
-                        chips
-                        outlined
-                        @keydown.prevent
-                        @click.right.prevent
-                        @click.middle.prevent
-                        class="no-placeholder"
-                      ></v-combobox>
-                    </v-col>
-                  </v-row>
+                <!-- faculty department -->
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">สถานะ</div>
+                    <v-select
+                      v-model="formData.status"
+                      :items="status"
+                      style="width: 100%"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <div class="content-head mt-3">วันที่เรียน</div>
+                    <v-combobox
+                      v-model="selectedDays"
+                      :items="days"
+                      multiple
+                      chips
+                      outlined
+                      @keydown.prevent
+                      @click.right.prevent
+                      @click.middle.prevent
+                      class="no-placeholder"
+                    ></v-combobox>
+                  </v-col>
+                </v-row>
 
-                  <!-- notification error section -->
-                  <template v-if="errors.length > 0">
-                    <div class="bg-red-300 text-white rounded-lg p-6">
-                      <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
-                    </div>
-                  </template>
+                <!-- notification error section -->
+                <template v-if="errors.length > 0">
+                  <div class="bg-red-300 text-white rounded-lg p-6">
+                    <p v-for="i in errors" v-bind:key="i">{{ i }}</p>
+                  </div>
+                </template>
 
-                  <v-btn class="logInButton" type="submit">Register</v-btn>
-                </v-form>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
+                <v-btn class="logInButton" type="submit">Register</v-btn>
+              </v-form>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
+  </div>
 </template>
 
 <script>
@@ -163,10 +163,17 @@ export default {
 
   data: () => ({
     formData: {
-      faculty: '',
-      department: '',
-      selectedDays: []
+      faculty_id: '',
+      department_id: '',
+      name: '',
+      course_id: '',
+      section: ''
     },
+    formTeacherInstructorData: {
+      teacher_id: '',
+      course_id: ''
+    },
+    selectedDays: [],
     errors: [],
     show2: false,
     show1: false,
@@ -201,7 +208,7 @@ export default {
   }),
   components: {
     TopNavBar,
-    Navbar,
+    Navbar
   },
   mounted() {
     this.getFaculties()
@@ -280,64 +287,61 @@ export default {
         this.teachers = []
       }
     },
-    submitform() {
+    async submitTeacherInstructorform(id_course) {
+      this.formTeacherInstructorData.course_id = id_course
+      this.formTeacherInstructorData.teacher_id = this.selectedTeachers.id
+      await axios
+        .post('/instructorCourse/', this.formData)
+        .then((response) => {
+          this.submitTeacherInstructorform(response)
+          this.toastStore.showToast(
+            10000,
+            'The Subject is registered',
+            'bg-emerald-500'
+          )
+
+          this.selectedTeachers = []
+          this.formTeacherInstructorData.course_id = ''
+          this.formTeacherInstructorData.teacher_id = ''
+        })
+        .catch((error) => {
+          this.toastStore.showToast(10000, 'Server Problem', 'bg-red-300')
+          console.log('error', error)
+        })
+    },
+    async submitform() {
+      // class Course(models.Model):
+      // name = models.CharField(max_length=100)
+      // course_id = models.CharField(max_length=20)
+      // faculty_id = models.ForeignKey(
+      //     Faculty, on_delete=models.CASCADE, null=True, blank=True)
+      // department_id = models.ForeignKey(
+      //     Department, on_delete=models.CASCADE,null=True, blank=True)
+      // section = models.CharField(max_length=10)
+
       console.log(this.formData)
+      this.formData.faculty_id = this.selectedFaculty.id
+      this.formData.department_id = this.selectedDepartment.id
       this.errors = []
 
-      if (this.formData.email === '') {
-        this.errors.push('Your e-mail is missing')
-      }
-
-      if (this.formData.fname === '') {
-        this.errors.push('Your fname is missing')
-      }
-      if (this.formData.lname === '') {
-        this.errors.push('Your lname is missing')
-      }
-
-      if (this.formData.password1 === '') {
-        this.errors.push('Your password is missing')
-      }
-
-      if (this.formData.password1 !== this.formData.password2) {
-        this.errors.push('The password does not match')
-      }
-
       if (this.errors.length === 0) {
-        axios
-          .post('/api/signup/', this.formData)
+        await axios
+          .post('/education/course/', this.formData)
           .then((response) => {
-            if (response.data.message === 'success') {
-              this.toastStore.showToast(
-                10000,
-                'The user is registered. Please login.',
-                'bg-emerald-500'
-              )
-
-              this.formData.email = ''
-              this.formData.fname = ''
-              this.formData.lname = ''
-              this.formData.password1 = ''
-              this.formData.password2 = ''
-              this.formData.role = ''
-              this.formData.username = ''
-              this.formData.user_id = ''
-              this.formData.prefix = ''
-              this.formData.faculty = ''
-              this.formData.department = ''
-            } else {
-              console.error(response.data.message)
-              const data = JSON.parse(response.data.message)
-              for (const key in data) {
-                this.errors.push(data[key][0].message)
-              }
-
-              this.toastStore.showToast(
-                5000,
-                'Something went wrong. Please try again',
-                'bg-red-300'
-              )
-            }
+            // ค่อยแก้ ให้ add TeacherInstructor จาก postman ไปก่อน
+            // const id_course = response.id
+            // this.submitTeacherInstructorform(id_course)
+            this.toastStore.showToast(
+              10000,
+              'The Subject is registered',
+              'bg-emerald-500'
+            )
+            this.formData.course_id = ''
+            this.formData.name = ''
+            this.selectedFaculty = []
+            this.selectedDepartment = []
+            this.formData.faculty_id = ''
+            this.formData.department_id = ''
           })
           .catch((error) => {
             this.toastStore.showToast(10000, 'Server Problem', 'bg-red-300')
