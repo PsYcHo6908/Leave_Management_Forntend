@@ -13,6 +13,10 @@ import 'vuetify/styles'
 
 import '@mdi/font/css/materialdesignicons.min.css';
 
+// VueSweetalert2
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+
 axios.defaults.baseURL = 'http://127.0.0.1:8000' // Set the base URL to your Django server
 
 const app = createApp(App)
@@ -21,6 +25,7 @@ const vuetify = createVuetify({
   components,
   directives
 })
+app.use(VueSweetalert2);
 app.use(createPinia())
 app.use(router, axios) //install axios
 app.use(vuetify)

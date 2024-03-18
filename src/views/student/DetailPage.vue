@@ -100,7 +100,7 @@
             <v-btn
               small
               color="red"
-              @click.stop="cancelRequest(request)"
+              @click.stop="cancelRequest(leaveRequest)"
               style="margin-left: 5%"
               v-if="leaveRequest.status === 'pending'"
             >
@@ -118,6 +118,7 @@ import axios from 'axios'
 import TopNavBar from '../../components/TopNavBar.vue'
 import Navbar from '../../components/navbar.vue'
 
+
 export default {
   components: {
     Navbar,
@@ -126,9 +127,11 @@ export default {
   data() {
     return {
       leaveRequest: {
+        id: '',
         student_data: { fname: '', lname: '' },
-        course_data: { name: '' },
+        course_data: { name: '', id: '' },
         leave_request_data: {
+          id: '',
           start_date: '',
           end_date: '',
           leave_type: '',
@@ -161,8 +164,45 @@ export default {
             error
           )
         })
+    },
+    async cancelRequest(request) {
+      const { value: confirmed } = await this.$swal.fire({
+        title: 'ยืนยันการลบ',
+        text: 'คุณต้องการลบรายการนี้หรือไม่?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'ใช่, ลบ!',
+        cancelButtonText: 'ยกเลิก'
+      });
+
+      if (confirmed) {
+        // ทำการลบรายการตามต้องการ
+        const leave_request_id = request.leave_request_data.id;
+        const course_id = request.course_data.id;
+        const url = `/leaveDetail/delete_multiple/`;
+        const params = {
+          course_id: course_id,
+          leave_request_id: leave_request_id
+        };
+
+        try {
+          const response = await axios.delete(url, { params: params });
+          console.log('Requests cancelled successfully:', response.data);
+          // แสดงข้อความเมื่อลบสำเร็จ
+          this.$swal.fire('ลบสำเร็จ', 'ลบรายการเรียบร้อยแล้ว', 'success');
+          // สามารถทำการ redirect ไปยังหน้าที่ต้องการหลังจากลบสำเร็จได้ที่นี่
+          // const router = useRouter();
+          // router.push('/deleted-page'); // เปลี่ยน '/desired-page' เป็น path ของหน้าที่ต้องการ redirect ไป
+          this.$router.push('/deleted-page')
+        } catch (error) {
+          console.error('Error cancelling requests:', error.response || error.message);
+          // แสดงข้อความเมื่อเกิดข้อผิดพลาดในการลบ
+          this.$swal.fire('เกิดข้อผิดพลาด', 'เกิดข้อผิดพลาดในการลบรายการ', 'error');
+        }
+      }
     }
-    // Add methods for approve and reject actions
   }
 }
 </script>
@@ -178,10 +218,6 @@ export default {
   font-weight: 600;
   margin: 0% 2.5%;
   padding: 1% 0% 2% 0%;
-}
-.leaveblock1 {
-  display: flex;
-  padding: 0% 0% 0.5% 0%;
 }
 .leaveblock2 {
   display: flex;

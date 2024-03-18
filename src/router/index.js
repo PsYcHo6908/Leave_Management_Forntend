@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/user'
 
 // system
 import LogInView from '../views/LogInView.vue'
+import DeletedPage from '../views/DeletedPage.vue';
 //student
 import RequestView from '../views/RequestView.vue'
 //admin
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: LogInView
+    },
+    {
+      path: '/deleted-page',
+      name: 'DeletedPage',
+      component: DeletedPage // Use the imported component for the deleted page
     },
     // Admin
     {

@@ -500,6 +500,12 @@ export default {
         this.formDataLeaveRequest.end_date = lastDate
         this.formDataLeaveRequest.leave_type = this.selectedLeaveType
         console.log(this.formDataLeaveRequest)
+        const { value: confirmed } = await this.$swal.fire({
+                title: 'บันทึกสำเร็จ',
+                text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว',
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+              });
 
         await axios
           .post('/leaveRequest/', this.formDataLeaveRequest)
@@ -522,11 +528,16 @@ export default {
               this.formDataLeaveRequest.description = ''
               this.selectedDates = []
               this.serverItems = []
+              console.log('Requests cancelled successfully:', response.data);
+              // แสดงข้อความเมื่อลบสำเร็จ
+              // alert('บันทึกสำเร็จ');
+              // แสดงข้อความเมื่อลบสำเร็จ
             }
           })
           .catch((error) => {
             // if doesnt save LeaveRequest
             console.log('error', error)
+            this.$swal.fire('เกิดข้อผิดพลาด', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล', 'error');
           })
 
         //create LeaveRequest
@@ -635,7 +646,6 @@ export default {
   background-color: transparent !important;
   border: none !important;
 }
-#input-11,
 #input-14,
 #input-63 {
   display: none;
@@ -671,10 +681,7 @@ export default {
   margin: 0% 2.5%;
   padding: 1% 0% 2% 0%;
 }
-.leaveblock1 {
-  display: flex;
-  padding: 0% 0% 0.5% 0%;
-}
+
 .leaveblock2 {
   display: flex;
   padding: 0% 0% 2.5% 0%;
