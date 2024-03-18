@@ -504,7 +504,8 @@ export default {
                 title: 'บันทึกสำเร็จ',
                 text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว',
                 icon: 'success',
-                confirmButtonText: 'ตกลง'
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#02bc77',
               });
 
         await axios
@@ -681,7 +682,10 @@ export default {
   margin: 0% 2.5%;
   padding: 1% 0% 2% 0%;
 }
-
+.leaveblock1 {
+  display: flex;
+  padding: 0% 0% 0.5% 0%;
+}
 .leaveblock2 {
   display: flex;
   padding: 0% 0% 2.5% 0%;

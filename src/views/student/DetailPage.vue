@@ -171,7 +171,7 @@ export default {
         text: 'คุณต้องการลบรายการนี้หรือไม่?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#02bc77',
         cancelButtonColor: '#d33',
         confirmButtonText: 'ใช่, ลบ!',
         cancelButtonText: 'ยกเลิก'
