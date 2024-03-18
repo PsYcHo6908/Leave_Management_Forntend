@@ -9,6 +9,8 @@ import RequestView from '../views/RequestView.vue'
 import SignupView from '../views/admin/SignupView.vue'
 import SignupTeacherView from '../views/admin/SignupTeacherView.vue'
 import AddSubject from '../views/admin/AddSubject.vue'
+//teacher
+import RequestTeacherView from '../views/teacher/RequestTeacherView.vue'
 //test
 import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
@@ -75,6 +77,11 @@ const router = createRouter({
       path: '/details/:id',
       name: 'DetailPage',
       component: () => import(/* webpackChunkName: "details" */ '../views/student/DetailPage.vue')
+    },
+    {
+      path: '/requestTeacher',
+      name: 'RequestTeacherView',
+      comments: RequestTeacherView
     },
     // TESTS 
     {
