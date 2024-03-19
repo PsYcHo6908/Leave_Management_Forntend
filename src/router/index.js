@@ -1,15 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 
 // system
+import DeletedPage from '../views/DeletedPage.vue'
 import LogInView from '../views/LogInView.vue'
-import DeletedPage from '../views/DeletedPage.vue';
 //student
 import RequestView from '../views/RequestView.vue'
 //admin
-import SignupView from '../views/admin/SignupView.vue'
-import SignupTeacherView from '../views/admin/SignupTeacherView.vue'
 import AddSubject from '../views/admin/AddSubject.vue'
+import SignupTeacherView from '../views/admin/SignupTeacherView.vue'
+import SignupView from '../views/admin/SignupView.vue'
 //teacher
 import RequestTeacherView from '../views/teacher/RequestTeacherView.vue'
 //test
@@ -87,7 +86,7 @@ const router = createRouter({
     {
       path: '/requestTeacher',
       name: 'RequestTeacherView',
-      comments: RequestTeacherView
+      component: RequestTeacherView
     },
     // TESTS 
     {

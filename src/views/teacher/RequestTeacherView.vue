@@ -15,6 +15,11 @@
           <v-col cols="12" md="6"> </v-col>
           <v-col cols="12" md="6">
             <v-row>
+              <v-col cols="6" sm="3" class="field-container">
+                <div class="label-input-pair">
+                  <input type="text" placeholder="ชื่อนิสิต" v-model="nameSearch" />
+                </div>
+              </v-col>
               <!-- Adjusted each input field with its label -->
               <v-col cols="6" sm="3" class="field-container">
                 <div class="label-input-pair">
@@ -70,6 +75,8 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>รหัสประจำตัว</th>
+                <th>รายชื่อนิสิต</th>
                 <th>Course Name</th>
                 <th>Course Section</th>
                 <th>Leave Type</th>
@@ -86,54 +93,22 @@
                 class="request-row"
               >
                 <td>{{ request.id }}</td>
+                <td>{{ request.student_data.user_data.user_id }}</td>
+                <td>{{ request.student_data.fname }} {{ request.student_data.lname }}</td>
                 <td>{{ request.course_data.name }}</td>
                 <td>{{ request.course_data.section }}</td>
                 <td>{{ request.leave_request_data.leave_type }}</td>
                 <td>{{ request.leave_request_data.start_date }}</td>
                 <td>{{ request.leave_request_data.end_date }}</td>
                 <td class="actions-cell">
-                  <v-btn
-                    small
-                    :color="
-                      request.status === 'approve'
-                        ? 'green'
-                        : request.status === 'reject'
-                          ? 'grey'
-                          : 'primary'
-                    "
-                    @click.stop="
-                      request.status === 'pending'
-                        ? onPending(request)
-                        : request.status === 'approve'
-                          ? onApproved(request)
-                          : approveRequest(request)
-                    "
-                    :disabled="
-                      request.status === 'approve' ||
-                      request.status === 'reject' ||
-                      request.status === 'pending'
-                    "
-                  >
-                    {{
-                      request.status === 'approve'
-                        ? 'Approved'
-                        : request.status === 'reject'
-                          ? 'Rejected'
-                          : request.status === 'pending'
-                            ? 'Pending'
-                            : 'Approve'
-                    }}
-                  </v-btn>
-                  <!-- Condition for Cancel button -->
-                  <v-btn
-                    small
-                    color="red"
-                    @click.stop="cancelRequest(request)"
-                    style="margin-left: 5%"
-                    v-if="request.status === 'pending'"
-                  >
-                    Cancel
-                  </v-btn>
+                  <template v-if="request.status === 'pending'">
+                    <v-btn small color="#02BC77" @click.stop="onApprove(request)" >
+                      อนุมัติ
+                    </v-btn>
+                    <v-btn small color="red" @click.stop="onReject(request)" style="margin-left: 5%" >
+                      ไม่อนุมัติ
+                    </v-btn>
+                  </template>
                 </td>
               </tr>
             </tbody>
@@ -194,7 +169,11 @@ export default {
               .toLowerCase()
               .includes(this.statusSearch.toLowerCase())
           : true
-        return matchesCourse && matchesLeaveType && matchesStatus
+        // ... other match conditions ...
+        const fullName = `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase();
+        const searchTerms = this.nameSearch.toLowerCase().split(' ').filter(Boolean);
+        const matchesName = searchTerms.every(term => fullName.includes(term));
+        return matchesCourse && matchesLeaveType && matchesStatus && matchesName 
       })
     }
   },
@@ -214,17 +193,19 @@ export default {
       ],
       // getStudentLogin
       testId: '',
-      testStudentId: '',
-      student: [],
+      testeacherId: '',
+      teacher: [],
       user: [],
       // for Search
       search: '',
       selectedOption: '', // For leave type
-      statusSearch: '' // New property for status
+      statusSearch: '', // New property for status
+      nameSearch: '',
+
     }
   },
   methods: {
-    async getStudentLogin() {
+    async getTeacherLogin() {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
@@ -234,14 +215,14 @@ export default {
       //who is login student from user_id = 6
       // console.log("277: "+ this.user[0])
       if (this.testId) {
-        const url = `/student/?user_id=${this.testId}`
+        const url = `/teacher/?user_id=${this.testId}`
         await axios
           .get(url)
           .then((response) => {
-            this.student = response.data[0]
+            this.teacher = response.data[0]
             // console.log('fname285:  ' + this.student.fname)
             // console.log('IdStudent285:  ' + this.student.id)
-            this.testStudentId = this.student.id // student_id = 1 Panisra
+            this.testeacherId = this.teacher.id // student_id = 1 Panisra
             // this.nameStudentLogin = this.student.fname + " " + this.student.lname
             // this.userIdStudentLogin = this.userStore.user.user_id
           })
@@ -265,18 +246,18 @@ export default {
     },
     async fetchLeaveRequests() {
       this.loading = true // เริ่มต้นการโหลด
-      await this.getStudentLogin() // เรียกใช้ getStudentLogin()
-      console.log('test Student ID: ' + this.testStudentId) // ตรวจสอบค่า testStudentId
+      await this.getTeacherLogin() // เรียกใช้ getStudentLogin()
+      console.log('testeacher ID: ' + this.testeacherId) // ตรวจสอบค่า testStudentId
       try {
-        if (this.testStudentId) {
+        if (this.testeacherId) {
           // ตรวจสอบว่ามีค่า testStudentId หรือไม่
           const response = await axios.get(
-            `/leaveDetail/?student_id=${this.testStudentId}`
+            `/leaveDetail/?teacher_id=${this.testeacherId}&status=pending`
           )
           this.leaveRequests = response.data
           this.leaveRequests = this.getUniqueSubjects(response.data)
         } else {
-          console.log("Doesn't have Student ID:  " + this.testStudentId)
+          console.log("Doesn't have Teacher ID:  " + this.testeacherId)
         }
       } catch (error) {
         console.error('There was an error fetching the leave requests:', error)
@@ -284,48 +265,48 @@ export default {
         this.loading = false // เสร็จสิ้นการโหลด
       }
     },
-    onPending(request) {
-      // Logic for handling a pending request
-    },
-    onApproved(request) {
-      // Logic for handling an already approved request
-    },
-    approveRequest(request) {
-      // Logic for approving a request
-    },
-    async cancelRequest(request) {
-      // Extract the needed identifiers from the request object
-      const leave_request_id = request.leave_request_data.id // Make sure you use the correct property
-      const course_id = request.course_data.id // Make sure you use the correct property
-
-      // Construct the URL with the custom action and query parameters
-      const url = `/leaveDetail/delete_multiple/`
-      const params = {
-        course_id: course_id,
-        leave_request_id: leave_request_id
-      }
-
+    // async updateData(id, dataToUpdate) {
+    //   try {
+    //     const response = await axios.put(`/leaveRequestDetail/${id}/`, dataToUpdate);
+    //     console.log('Updated data:', response.data);
+    //     return response.data; // Return the updated data if needed
+    //   } catch (error) {
+    //     console.error('Error updating data:', error);
+    //     throw error; // Handle the error as needed
+    //   }
+    // },
+    async onApprove(request) {
+      const updatedData = {
+        status: 'approve'
+      };
       try {
-        // Send a DELETE request using axios with query parameters
-        const response = await axios.delete(url, { params: params })
-        console.log('Requests cancelled successfully:', response.data)
+        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
 
-        // If you want to update the UI or state to reflect the deletion, do it here
-        // e.g., remove the requests from the leaveRequests array
-        this.leaveRequests = this.leaveRequests.filter((r) => {
-          return (
-            r.leave_request_data.id !== leave_request_id ||
-            r.course_data.id !== course_id
-          )
-        })
+        // Handle the response as needed
+        console.log('Data approved successfully:', response.data);
+        // Reload or update the data in your front-end application
+        this.fetchLeaveRequests();
       } catch (error) {
-        // Handle any errors that occur during the HTTP request
-        console.error(
-          'Error cancelling requests:',
-          error.response || error.message
-        )
+        // Handle errors, such as displaying an error message to the user
+        console.error('Error approving data:', error);
       }
-    }
+    },
+    async onReject(request) {
+      const updatedData = {
+        status: 'reject'
+      };
+      try {
+        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
+
+        // Handle the response as needed
+        console.log('Data approved successfully:', response.data);
+        // Reload or update the data in your front-end application
+        this.fetchLeaveRequests();
+      } catch (error) {
+        // Handle errors, such as displaying an error message to the user
+        console.error('Error approving data:', error);
+      }
+    },
   }
 }
 </script>

@@ -43,7 +43,7 @@
           <RouterLink to="/home">
             <v-list-item prepend-icon="mdi-home" title="หน้าแรก" value="home" class="white-text"></v-list-item>
           </RouterLink>
-          <RouterLink to="/request">
+          <RouterLink to="/requestTeacher">
             <v-list-item prepend-icon="mdi-file-document-edit-outline" title="คำขอลาทั้งหมด" value="leavepaper" class="white-text"></v-list-item>
           </RouterLink>
           <RouterLink to="/home">

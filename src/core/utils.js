@@ -37,3 +37,14 @@ export function validateSelectedDates(selectedDates) {
   // All selected dates are after or equal to the current date, return true
   return true;
 }
+
+export async function updateLeaveDetailData(id, dataToUpdate) {
+  try {
+    const response = await axios.put(`/api/leaveRequestDetail/${id}/`, dataToUpdate);
+    console.log('Updated data:', response.data);
+    return response.data; // Return the updated data if needed
+  } catch (error) {
+    console.error('Error updating data:', error);
+    throw error; // Handle the error as needed
+  }
+}
