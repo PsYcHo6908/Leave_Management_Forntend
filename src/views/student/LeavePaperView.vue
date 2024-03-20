@@ -310,9 +310,9 @@ export default {
     // Demo,
   },
   beforeCreate() {},
-  mounted() {
-    this.getStudentLogin()
-    this.getSubjects()
+  async mounted() {
+    await this.getStudentLogin()
+    await this.getSubjects()
   },
   created() {
     // console.log('DOM Created')
@@ -421,7 +421,13 @@ export default {
     },
 
     async getSubjects() {
-      const url = `/studentRegister/?student_id=${this.testStudentId}` //student_id = 1 Panisra
+      if (!this.testStudentId) {
+        console.error('Missing student ID')
+        // return
+      }
+
+      const url = `/studentRegister/?student_id=${this.student.id}`
+      
       // Fetch faculty data from your server API
       await axios
         .get(url)
@@ -435,7 +441,6 @@ export default {
           console.error('Error fetching subjects data:', error)
         })
     },
-
     async getTeachers() {
       // console.log('selectSubject: ' + this.selectedSubjects)
       // console.log('selectSubject: ' + this.selectedSubjects.id)
