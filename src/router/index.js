@@ -83,10 +83,16 @@ const router = createRouter({
       name: 'DetailPage',
       component: () => import(/* webpackChunkName: "details" */ '../views/student/DetailPage.vue')
     },
+    // Teacher
     {
       path: '/requestTeacher',
       name: 'RequestTeacherView',
       component: RequestTeacherView
+    },
+    {
+      path: '/detailsTeacher/:id',
+      name: 'DetailTeacherPage',
+      component: () => import(/* webpackChunkName: "details" */ '../views/teacher/DetailTeacherPage.vue')
     },
     // TESTS 
     {

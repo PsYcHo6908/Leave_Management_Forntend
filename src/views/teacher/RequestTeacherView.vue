@@ -139,7 +139,7 @@ export default {
       // if (!event.target.closest('.actions-cell')) {
       //   router.push({ name: 'DetailPage', params: { id } });
       // }
-      router.push({ name: 'DetailPage', params: { id } })
+      router.push({ name: 'DetailTeacherPage', params: { id } })
     }
     return {
       navigateToDetail,
