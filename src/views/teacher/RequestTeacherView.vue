@@ -12,47 +12,51 @@
       <div class="content">
         <!-- Search fields in a single row -->
         <v-row>
-          <v-col cols="12" md="6"> </v-col>
-          <v-col cols="12" md="6">
-            <v-row>
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <input type="text" placeholder="รหัสนิสิต" v-model="idStudentSearch" />
-                </div>
-              </v-col>
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <input type="text" placeholder="ชื่อนิสิต" v-model="nameSearch" />
-                </div>
-              </v-col>
-              <!-- Adjusted each input field with its label -->
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <input type="text" placeholder="วิชา" v-model="search" />
-                </div>
-              </v-col>
-              <!-- Repeated for other fields, ensure ID and for attributes are unique -->
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <select v-model="selectedOption">
-                    <option value="" disabled selected>
-                      -- ประเภทการลา --
-                    </option>
-                    <option value="">None</option>
-                    <option value="ลากิจ">ลากิจ</option>
-                    <option value="ลาป่วย">ลาป่วย</option>
-                    <option value="อื่นๆ">อื่นๆ</option>
-                    <!-- <option value="">1234</option> -->
-                  </select>
-                  <!-- <template v-slot:append>
-                    <v-icon>mdi-home</v-icon>
-                  </template> -->
-                </div>
-              </v-col>
-              <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
-            </v-row>
+          <v-col cols="12" md="3">
+            <!-- First search field -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <input type="text" placeholder="รหัสนิสิต" v-model="idStudentSearch" />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="3">
+            <!-- Second search field -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <input type="text" placeholder="ชื่อนิสิต" v-model="nameSearch" />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="2">
+            <!-- Third search field -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <input type="text" placeholder="วิชา" v-model="search" />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="2">
+            <!-- Fifth search field for section -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <input type="text" placeholder="หมู่เรียน" v-model="sectionSearch" />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="2">
+            <!-- Fourth search field -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <select v-model="selectedOption">
+                  <option value="" disabled selected>-- ประเภทการลา --</option>
+                  <option value="">None</option>
+                  <option value="ลากิจ">ลากิจ</option>
+                  <option value="ลาป่วย">ลาป่วย</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+              </div>
+            </div>
           </v-col>
         </v-row>
 
@@ -378,6 +382,10 @@ export default {
   padding-right: 30px !important;
   margin-left: 0% !important;
   background-color: #fff !important;
+}
+.label-input-pair select {
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
 }
 
 @media screen and (max-width: 1899px) {
