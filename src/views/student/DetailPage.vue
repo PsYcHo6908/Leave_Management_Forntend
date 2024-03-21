@@ -38,8 +38,7 @@
           <v-col cols="12" md="6">
             <!-- content -->
             <div>
-              วันที่: {{ leaveRequest.leave_request_data.start_date }} -
-              {{ leaveRequest.leave_request_data.end_date }}
+              หมู่เรียน: {{ leaveRequest.course_data.section }}
             </div>
           </v-col>
         </v-row>
@@ -49,16 +48,31 @@
           <v-col cols="12" md="6">
             <!-- content -->
             <div>
+              วันที่: {{ leaveRequest.leave_request_data.start_date }} -
+              {{ leaveRequest.leave_request_data.end_date }}
+            </div>
+          </v-col>
+          <v-col cols="12" md="6">
+            <!-- content -->
+            <div>
               ประเภทการลา: {{ leaveRequest.leave_request_data.leave_type }}
             </div>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
+            <v-card>
+                <v-card-title>คำอธิบาย:</v-card-title>
+                <v-card-text>
+                  <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
+                    <div>{{ leaveRequest.leave_request_data.description.slice((index - 1) * 100, index * 100) }}</div>
+                  </template>
+                </v-card-text>
+              </v-card>
             <!-- content -->
-            <div>
+            <!-- <div class="description-container">
               คำอธิบาย: {{ leaveRequest.leave_request_data.description }}
-            </div>
+            </div> -->
           </v-col>
         </v-row>
         <v-row>
@@ -237,5 +251,10 @@ export default {
 .leaveblock2 {
   display: flex;
   padding: 0% 0% 2.5% 0%;
+}
+.description-container {
+  max-width: 100%; /* หรือจำนวน pixel ที่ต้องการ */
+  max-height: 100px; /* หรือจำนวน pixel ที่ต้องการ */
+  overflow: auto;
 }
 </style>

@@ -97,11 +97,44 @@
             </div>
           </v-col>
           <v-col cols="12" md="6">
-            <!-- content -->
-            <div>
-              คำอธิบาย: {{ leaveRequest.leave_request_data.description }}
-            </div>
+            <v-card>
+                <v-card-title>คำอธิบาย:</v-card-title>
+                <v-card-text>
+                  <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
+                    <div>{{ leaveRequest.leave_request_data.description.slice((index - 1) * 100, index * 100) }}</div>
+                  </template>
+                </v-card-text>
+              </v-card>
           </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <!-- content -->
+              <!-- <v-card style="max-height: 70px; overflow-y: auto;">
+                <v-card-title>คำอธิบาย:</v-card-title>
+                <v-card-text>
+                  {{ leaveRequest.leave_request_data.description }}
+                </v-card-text>
+              </v-card> -->
+              <!-- <v-card>
+                <v-card-title>คำอธิบาย:</v-card-title>
+                <v-card-text style="word-wrap: break-word;">
+                  {{ leaveRequest.leave_request_data.description }}
+                </v-card-text>
+              </v-card> -->
+              <!-- <v-card>
+                <v-card-title>คำอธิบาย:</v-card-title>
+                <v-card-text>
+                  <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
+                    <div>{{ leaveRequest.leave_request_data.description.slice((index - 1) * 100, index * 100) }}</div>
+                  </template>
+                </v-card-text>
+              </v-card> -->
+            <!-- <div>
+              คำอธิบาย: {{ leaveRequest.leave_request_data.description }}
+            </div> -->
+          </v-col>
+          <v-col cols="12" md="6"></v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
