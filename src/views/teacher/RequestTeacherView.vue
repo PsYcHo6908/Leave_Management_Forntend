@@ -17,6 +17,11 @@
             <v-row>
               <v-col cols="6" sm="3" class="field-container">
                 <div class="label-input-pair">
+                  <input type="text" placeholder="รหัสนิสิต" v-model="idStudentSearch" />
+                </div>
+              </v-col>
+              <v-col cols="6" sm="3" class="field-container">
+                <div class="label-input-pair">
                   <input type="text" placeholder="ชื่อนิสิต" v-model="nameSearch" />
                 </div>
               </v-col>
@@ -39,24 +44,6 @@
                     <option value="ลากิจ">ลากิจ</option>
                     <option value="ลาป่วย">ลาป่วย</option>
                     <option value="อื่นๆ">อื่นๆ</option>
-                    <!-- <option value="">1234</option> -->
-                  </select>
-                  <!-- <template v-slot:append>
-                    <v-icon>mdi-home</v-icon>
-                  </template> -->
-                </div>
-              </v-col>
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <!-- <input type="text" placeholder="สถานะ" v-model="statusSearch"/> -->
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <select v-model="statusSearch">
-                    <option value="" disabled selected>-- สถานะ --</option>
-                    <option value="">None</option>
-                    <option value="pending">Pending</option>
-                    <option value="approve">Approved</option>
-                    <option value="reject">Rejected</option>
                     <!-- <option value="">1234</option> -->
                   </select>
                   <!-- <template v-slot:append>
@@ -164,16 +151,17 @@ export default {
         const matchesLeaveType = this.selectedOption
           ? request.leave_request_data.leave_type === this.selectedOption
           : true
-        const matchesStatus = this.statusSearch
-          ? request.status
-              .toLowerCase()
-              .includes(this.statusSearch.toLowerCase())
-          : true
+        const matchesIdStudentSearch = request.student_data.user_data.user_id.includes(this.idStudentSearch);
+        // const matchesStatus = this.statusSearch
+        //   ? request.status
+        //       .toLowerCase()
+        //       .includes(this.statusSearch.toLowerCase())
+        //   : true
         // ... other match conditions ...
         const fullName = `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase();
         const searchTerms = this.nameSearch.toLowerCase().split(' ').filter(Boolean);
         const matchesName = searchTerms.every(term => fullName.includes(term));
-        return matchesCourse && matchesLeaveType && matchesStatus && matchesName 
+        return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName 
       })
     }
   },
@@ -201,6 +189,7 @@ export default {
       selectedOption: '', // For leave type
       statusSearch: '', // New property for status
       nameSearch: '',
+      idStudentSearch: '',
 
     }
   },
