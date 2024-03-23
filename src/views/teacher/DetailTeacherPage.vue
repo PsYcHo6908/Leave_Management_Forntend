@@ -261,7 +261,7 @@ export default {
           console.log('Data approved successfully:', response.data);
           // Reload or update the data in your front-end application
           await this.approveBy(request);
-          await this.fetchLeaveRequests();
+          await this.fetchLeaveRequest();
         } catch (error) {
           // Handle errors, such as displaying an error message to the user
           console.error('Error approving data:', error);
@@ -290,7 +290,7 @@ export default {
           console.log('Data approved successfully:', response.data);
           // Reload or update the data in your front-end application
           await this.approveBy(request);
-          await this.fetchLeaveRequests();
+          await this.fetchLeaveRequest();
         } catch (error) {
           // Handle errors, such as displaying an error message to the user
           console.error('Error approving data:', error);
