@@ -37,9 +37,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <!-- content -->
-            <div>
-              หมู่เรียน: {{ leaveRequest.course_data.section }}
-            </div>
+            <div>หมู่เรียน: {{ leaveRequest.course_data.section }}</div>
           </v-col>
         </v-row>
 
@@ -61,18 +59,36 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
-            <v-card>
-                <v-card-title>คำอธิบาย:</v-card-title>
-                <v-card-text>
-                  <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
-                    <div>{{ leaveRequest.leave_request_data.description.slice((index - 1) * 100, index * 100) }}</div>
-                  </template>
-                </v-card-text>
-              </v-card>
+            <v-card class="card columns">
+              <v-card-title>คำอธิบาย:</v-card-title>
+              <v-card-text>
+                <template
+                  v-for="index in Math.ceil(
+                    leaveRequest.leave_request_data.description.length / 100
+                  )"
+                >
+                  <div>
+                    {{
+                      leaveRequest.leave_request_data.description.slice(
+                        (index - 1) * 100,
+                        index * 100
+                      )
+                    }}
+                  </div>
+                </template>
+              </v-card-text>
+            </v-card>
             <!-- content -->
             <!-- <div class="description-container">
               คำอธิบาย: {{ leaveRequest.leave_request_data.description }}
             </div> -->
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <div v-if="leaveRequest.status === 'approve'">
+              อนุมัติโดย: อาจารย์
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -106,7 +122,7 @@
                   : leaveRequest.status === 'reject'
                     ? 'Rejected'
                     : leaveRequest.status === 'pending'
-                      ? 'Pending'
+                      ? 'รออนุมัติ'
                       : 'Approve'
               }}
             </v-btn>
@@ -118,7 +134,7 @@
               style="margin-left: 5%"
               v-if="leaveRequest.status === 'pending'"
             >
-              Cancel
+              ยกเลิก
             </v-btn>
           </v-col>
         </v-row>
@@ -210,7 +226,7 @@ export default {
             text: 'ลบรายการเรียบร้อยแล้ว',
             icon: 'success',
             customClass: {
-              confirmButton: 'btn btn-success', // เพิ่มคลาส CSS สำหรับปุ่มยืนยัน
+              confirmButton: 'btn btn-success' // เพิ่มคลาส CSS สำหรับปุ่มยืนยัน
             },
             confirmButtonColor: '#02bc77'
           })
@@ -256,5 +272,28 @@ export default {
   max-width: 100%; /* หรือจำนวน pixel ที่ต้องการ */
   max-height: 100px; /* หรือจำนวน pixel ที่ต้องการ */
   overflow: auto;
+}
+.columns {
+  width: 100%;
+  position: relative;
+  border-radius: 10px;
+  border: 2px solid #10b981;
+  transition: all 0.4s;
+}
+
+.columns:hover {
+  box-shadow: 4px 4px 0 1px #10b981;
+}
+.columns {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.columns:hover {
+  box-shadow: 2px 2px 0 1px #10b981;
+}
+
+.columns:hover {
+  color: black;
+  border-color: #10b981;
 }
 </style>
