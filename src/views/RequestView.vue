@@ -399,7 +399,16 @@ export default {
   margin-left: 0% !important;
   background-color: #fff !important;
 }
-
+.leave-requests-table th {
+    background-color: #02BC77 !important;
+    color: white !important;
+    font-weight: 100 !important;
+}
+.leave-requests-table td {
+    border: 1px solid #02BC77 !important;
+    padding: 8px;
+    text-align: left;
+}
 @media screen and (max-width: 1899px) {
   .content-Page {
     display: flex;

@@ -87,7 +87,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <div v-if="leaveRequest.status === 'approve'">
-              อนุมัติโดย: อาจารย์
+              อนุมัติโดย: {{ leaveRequest.approve_id_by }}
             </div>
           </v-col>
         </v-row>
