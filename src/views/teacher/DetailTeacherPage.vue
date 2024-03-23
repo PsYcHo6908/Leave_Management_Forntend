@@ -97,7 +97,11 @@
             </div>
           </v-col>
           <v-col cols="12" md="6">
-            <v-card>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-card class="card columns">
                 <v-card-title>คำอธิบาย:</v-card-title>
                 <v-card-text>
                   <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
@@ -105,34 +109,6 @@
                   </template>
                 </v-card-text>
               </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="6">
-            <!-- content -->
-              <!-- <v-card style="max-height: 70px; overflow-y: auto;">
-                <v-card-title>คำอธิบาย:</v-card-title>
-                <v-card-text>
-                  {{ leaveRequest.leave_request_data.description }}
-                </v-card-text>
-              </v-card> -->
-              <!-- <v-card>
-                <v-card-title>คำอธิบาย:</v-card-title>
-                <v-card-text style="word-wrap: break-word;">
-                  {{ leaveRequest.leave_request_data.description }}
-                </v-card-text>
-              </v-card> -->
-              <!-- <v-card>
-                <v-card-title>คำอธิบาย:</v-card-title>
-                <v-card-text>
-                  <template v-for="index in Math.ceil(leaveRequest.leave_request_data.description.length / 100)">
-                    <div>{{ leaveRequest.leave_request_data.description.slice((index - 1) * 100, index * 100) }}</div>
-                  </template>
-                </v-card-text>
-              </v-card> -->
-            <!-- <div>
-              คำอธิบาย: {{ leaveRequest.leave_request_data.description }}
-            </div> -->
           </v-col>
           <v-col cols="12" md="6"></v-col>
         </v-row>
@@ -391,5 +367,28 @@ export default {
 
 .leave-addBtn:active {
   filter: brightness(0.8);
+}
+.columns {
+  width: 100%;
+  position: relative;
+  border-radius: 10px;
+  border: 2px solid #10b981;
+  transition: all 0.4s;
+}
+
+.columns:hover {
+  box-shadow: 4px 4px 0 1px #10b981;
+}
+.columns {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.columns:hover {
+  box-shadow: 2px 2px 0 1px #10b981;
+}
+
+.columns:hover {
+  color: black;
+  border-color: #10b981;
 }
 </style>
