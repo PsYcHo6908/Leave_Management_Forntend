@@ -277,12 +277,48 @@ export default {
 
         // Handle the response as needed
         console.log('Data approved successfully:', response.data);
+        await this.approveBy(request);
         // Reload or update the data in your front-end application
-        this.fetchLeaveRequests();
+        await this.fetchLeaveRequests();
       } catch (error) {
         // Handle errors, such as displaying an error message to the user
         console.error('Error approving data:', error);
       }
+    },
+    async approveBy(request){
+      const newApproveIdBy = this.testeacherId;
+      const updatedData = {
+        approve_id_by: newApproveIdBy
+      };
+      try {
+        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
+
+        // Handle the response as needed
+        console.log('Data approved successfully:', response.data);
+        // Reload or update the data in your front-end application
+      } catch (error) {
+        // Handle errors, such as displaying an error message to the user
+        console.error('Error approving data:', error);
+      }
+
+
+      // // Assume you have the ID of the LeaveRequest and the new approve_id_by value
+      // const leaveRequestId = request.leave_request_id; // Example ID
+      // const newApproveIdBy = this.testeacherId; // Example new value
+
+      // // Create the data object with the new approve_id_by value
+      // const data = {
+      //   approve_id_by: newApproveIdBy,
+      // };
+
+      // // Make the PUT request using axios
+      // await axios.put(`/leaveRequest/${leaveRequestId}/update_approve_id_by/`, data)
+      //   .then(response => {
+      //     console.log(response.data); // Handle successful response
+      //   })
+      //   .catch(error => {
+      //     console.error(error); // Handle error
+      //   });
     },
     async onReject(request) {
       const updatedData = {
@@ -294,7 +330,8 @@ export default {
         // Handle the response as needed
         console.log('Data approved successfully:', response.data);
         // Reload or update the data in your front-end application
-        this.fetchLeaveRequests();
+        await this.approveBy(request);
+        await this.fetchLeaveRequests();
       } catch (error) {
         // Handle errors, such as displaying an error message to the user
         console.error('Error approving data:', error);
