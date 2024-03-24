@@ -11,6 +11,8 @@ import SignupTeacherView from '../views/admin/SignupTeacherView.vue'
 import SignupView from '../views/admin/SignupView.vue'
 //teacher
 import RequestTeacherView from '../views/teacher/RequestTeacherView.vue'
+import SummeryReportView from '../views/teacher/SummeryReportView.vue'
+import SearchLeaveView from '../views/teacher/SearchLeaveView.vue'
 //test
 import TestRequestView from '../views/TestRequestView.vue'
 import TestJew from '../views/test/TestJew.vue'
@@ -88,6 +90,16 @@ const router = createRouter({
       path: '/requestTeacher',
       name: 'RequestTeacherView',
       component: RequestTeacherView
+    },
+    {
+      path: '/summeryReport',
+      name: 'SummeryReportView',
+      component: SummeryReportView
+    },
+    {
+      path: '/searchLeave',
+      name: 'SearchLeaveView',
+      component: SearchLeaveView
     },
     {
       path: '/detailsTeacher/:id',

@@ -46,7 +46,7 @@
           <RouterLink to="/requestTeacher">
             <v-list-item prepend-icon="mdi-file-document-edit-outline" title="คำขอลาทั้งหมด" value="leavepaper" class="white-text"></v-list-item>
           </RouterLink>
-          <RouterLink to="/home">
+          <RouterLink to="/searchLeave">
             <v-list-item 
             prepend-icon="mdi-magnify" 
             title="ค้นหาการลาตามเงื่อนไข" 
@@ -55,7 +55,7 @@
             >
           </v-list-item>
           </RouterLink>
-          <RouterLink to="/home">
+          <RouterLink to="/summeryReport">
             <v-list-item 
             prepend-icon="mdi-file-document-multiple-outline
             " title="รายงานสรุปการลา" 
