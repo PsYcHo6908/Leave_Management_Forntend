@@ -8,13 +8,30 @@
         class="black-background"
         style="position: fixed"
       >
-        <v-list>
+        <!-- <v-list>
           <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            title="Sandra Adams"
-            subtitle="sandra_a88@gmailcom"
+            :prepend-avatar="userAvatarUrl"
+            :title="name"
+            :subtitle="userLoginRole"
             class="white-text"
-          ></v-list-item>
+          >
+          <template>
+          <v-avatar>
+            <v-icon>mdi-account</v-icon>
+          </v-avatar>
+        </template>
+          </v-list-item>
+        </v-list> -->
+        <v-list>
+          <v-list-item class="white-text">
+            <v-list-item-avatar>
+              <v-icon>mdi-account</v-icon> <!-- Ensure this is directly within <v-list-item-avatar> -->
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{ userName }}</v-list-item-title>
+              <v-list-item-subtitle>{{ userLoginRole }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
 
         <v-divider class="white-text" ></v-divider>
@@ -103,6 +120,8 @@ export default {
     return {
       leftSectionWidth: 'auto',
       userLoginRole: '',
+      userAvatarUrl: '', // This could be dynamically fetched
+      userName: ''
     };
   },
   mounted() {
@@ -118,6 +137,7 @@ export default {
     userLogin() {
       this.userStore.initStore()
       this.userLoginRole = this.userStore.user.role
+      this.userName = this.userStore.user.username
     }
   },
 };
