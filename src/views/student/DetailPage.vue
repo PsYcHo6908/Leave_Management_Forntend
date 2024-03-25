@@ -85,9 +85,28 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col cols="12">
+            <!-- content -->
+            <div>
+              หลักฐานการลา: 
+              <span v-for="file in files">
+                <!-- {{ file.pdf}} -->
+                <!-- <br><br> -->
+                <v-btn class="leave-addBtn" type="submit" @click="dowloadWithAxios(file.pdf, file.id)">Dowload</v-btn>
+              </span>              
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12" md="6">
             <div v-if="leaveRequest.status === 'approve'">
-              อนุมัติโดย: {{ leaveRequest.approve_id_by }}
+              อนุมัติโดย: {{ leaveRequest.approve_id_by_data.prefix }} {{ leaveRequest.approve_id_by_data.fname }} {{ leaveRequest.approve_id_by_data.lname }}
+            </div>
+            <div v-if="leaveRequest.status === 'reject'">
+              ไม่อนุมัติโดย: {{ leaveRequest.approve_id_by_data.prefix }} {{ leaveRequest.approve_id_by_data.fname }} {{ leaveRequest.approve_id_by_data.lname }}
+            </div>
+            <div v-if="leaveRequest.status === 'pending'">
+              อนุมัติโดย: รอดำเนินการ
             </div>
           </v-col>
         </v-row>
@@ -168,12 +187,15 @@ export default {
         }
         // ...other expected properties
       },
-      requestId: null // To store the ID from the URL
+      requestId: null, // To store the ID from the URL
+      files: [],
+      upload_status: '',
     }
   },
-  created() {
+  async created() {
     this.requestId = this.$route.params.id // Assign the ID from the URL to the variable
-    this.fetchLeaveRequest()
+    await this.fetchLeaveRequest()
+    await this.getFile()
   },
   methods: {
     async fetchLeaveRequest() {
@@ -247,7 +269,37 @@ export default {
           )
         }
       }
-    }
+    },
+    async getFile() {
+      await axios.get(`/files/?leave_request_id=${this.leaveRequest.leave_request_data.id}`).then(
+        response => {
+          console.log(response.data)
+          this.files = response.data
+
+        }
+      ).catch(error => {
+        this.upload_status= 'File NOt Upload Success'
+      })
+    },
+    dowloadWithAxios(url, title){
+      axios({
+        method: 'get',
+        url,
+        responseType: 'arraybuffer',
+
+      }).then(response =>{
+        this.forceDownload(response, title)
+      }).catch((error) => console.log(error))
+    },
+    forceDownload(response, title){
+      const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}))
+      const link = document.createElement('a')
+      link.href = url
+      // link.setAttribute('download', title+'.pdf') // Corrected the typo here
+      link.setAttribute('download', `${title}.pdf`);
+      document.body.appendChild(link)
+      link.click()
+    },
   }
 }
 </script>
@@ -295,5 +347,64 @@ export default {
 .columns:hover {
   color: black;
   border-color: #10b981;
+}
+
+/* leave-addBtn */
+.leave-addBtn {
+  --color: #00a97f;
+  padding: 0.8em 1.7em;
+  background-color: transparent;
+  border-radius: 0.3em;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.5s;
+  font-weight: 400;
+  font-size: 13px;
+  border: 1px solid;
+  font-family: inherit;
+  text-transform: uppercase;
+  color: var(--color);
+  z-index: 1;
+}
+
+.leave-addBtn::before,
+.leave-addBtn::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  background-color: var(--color);
+  transition: 1s ease;
+  background-color: transparent;
+}
+
+.leave-addBtn::before {
+  top: -1em;
+  left: -1em;
+}
+
+.leave-addBtn::after {
+  left: calc(100% + 1em);
+  top: calc(100% + 1em);
+}
+
+.leave-addBtn:hover::before,
+.leave-addBtn:hover::after {
+  height: 410px;
+  width: 410px;
+  background-color: var(--color); /* กำหนดสีเมื่อ hover */
+}
+
+.leave-addBtn:hover {
+  color: rgb(10, 25, 30);
+}
+
+.leave-addBtn:active {
+  filter: brightness(0.8);
 }
 </style>

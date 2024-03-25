@@ -9,22 +9,150 @@
         <div class="head">รายงานสรุปผลการลา</div>
       </div>
       <div class="content">
-        <div class="layout-summeryReport">
+        <!-- Search fields in a single row -->
+        <v-row>
+          <v-col cols="12" md="3"></v-col>
+          <v-col cols="12" md="3"></v-col>
+          <v-col cols="12" md="3">
+            <!-- Fourth search field -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <select v-model="selectedSubject">
+                  <option value="" disabled selected>-- วิชา --</option>
+                  <option value="" >-</option>
+                  <option v-for="item in subjects" :value="item.course_data.name" :key="item.id">{{ item.course_data.name }}</option>
+                </select>
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="2">
+            <!-- Fifth search field for section -->
+            <div class="field-container">
+              <div class="label-input-pair">
+                <input type="text" placeholder="หมู่เรียน" v-model="sectionSearch" />
+              </div>
+            </div>
+          </v-col>
+          <v-col cols="12" md="1">
+            <v-btn
+              
+              color="blue"
+              variant="tonal"
+              @click="findBysection(this.sectionSearch)"
+            >
+              ค้นหา
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!-- <div class="layout-summeryReport">
           <div class="head-summeryReport1">รายชื่อวิชา</div>
           <div class="head-summeryReport1">หมู่เรียน</div>
           <div class="head-summeryReport1">ประเภทการลา</div>
           <div class="head-summeryReport1">ทั้งหมด</div>
           <div class="head-summeryReport1">อนุมัติ</div>
           <div class="head-summeryReport1">ไม่อนุมัติ</div>
-        </div>
-        <v-expansion-panels variant="accordion">
+        </div> -->
+
+        <!-- <v-expansion-panels variant="accordion">
+          <v-expansion-panel v-for="(subject, index) in subjects" :key="index" :title="subject.course_data.name">
+            <v-expansion-panel-text>
+              <table>
+                <thead>
+                  <tr>
+                    <th>วิชา</th>
+                    <th>หมู่เรียน</th>
+                    <th>ประเภทการลา</th>
+                    <th>ทั้งหมด</th>
+                    <th>อนุมัติ</th>
+                    <th>ไม่อนุมัติ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ subject.course_data.name }}</td>
+                    <td>{{ subject.course_data.section }}</td>
+                    <td> leaveType </td>
+                    <td>total</td>
+                    <td>approved</td>
+                    <td>rejected</td>
+                  </tr>
+                </tbody>
+              </table>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+      </v-expansion-panels> -->
+
+
+        <!-- <v-expansion-panels variant="accordion">
           <v-expansion-panel
             v-for="i in 3"
             :key="i"
-            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             title="วิชา"
-          ></v-expansion-panel>
-        </v-expansion-panels>
+          >
+          <v-expansion-panel-text>
+
+          Subject   Section   leaveType  numOfTotal numOfApprove numofRejects
+        </v-expansion-panel-text>
+        </v-expansion-panel>
+        </v-expansion-panels> -->
+        <v-expansion-panels variant="accordion">
+          <v-expansion-panel v-for="(summary, index) in leaveRequests" :key="index" :title="`${summary.course_name} - (sec: ${summary.section})`">
+            <!-- <template v-slot:header>
+              <div> {{ item.course_name }} </div>
+            </template> -->
+            <v-expansion-panel-content>
+              <v-expansion-panel-text>
+                <table>
+                  <thead>
+                    <tr>
+                      <!-- <th>วิชา</th> -->
+                      <!-- <th>หมู่เรียน</th> -->
+                      <th>ประเภทการลา</th>
+                      <th>ทั้งหมด</th>
+                      <th>อนุมัติ</th>
+                      <th>ไม่อนุมัติ</th>
+                      <th>รอดำเนินการ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- ลาป่วย -->
+                    <tr>
+                      <!-- <td>{{ summary.course_name }}</td> -->
+                      <!-- <td>{{ summary.section }}</td> -->
+                      <td>ลาป่วย</td>
+                      <td>{{ summary.total }}</td>
+                      <td>{{ summary.approve }}</td>
+                      <td>{{ summary.reject }}</td>
+                      <td>{{ summary.pending }}</td>
+                    </tr>
+                    <!-- ลากิจ -->
+                    <tr>
+                      <!-- <td>{{ summary.course_name }}</td> -->
+                      <!-- <td>{{ summary.section }}</td> -->
+                      <td>ลากิจ</td>
+                      <td>{{ summary.total }}</td>
+                      <td>{{ summary.approve }}</td>
+                      <td>{{ summary.reject }}</td>
+                      <td>{{ summary.pending }}</td>
+                    </tr>
+                    <!-- อื่นๆ -->
+                    <tr>
+                      <!-- <td>{{ summary.course_name }}</td> -->
+                      <!-- <td>{{ summary.section }}</td> -->
+                      <td>อื่นๆ</td>
+                      <td>{{ summary.total }}</td>
+                      <td>{{ summary.approve }}</td>
+                      <td>{{ summary.reject }}</td>
+                      <td>{{ summary.pending }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </v-expansion-panel-text>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+      </v-expansion-panels>
+
+
       </div>
     </div>
   </div>
@@ -35,13 +163,6 @@
 <script>
 import Navbar from '../../components/navbar.vue'
 import TopNavBar from '../../components/TopNavBar.vue'
-// import Demo from "../../components/Demo.vue";
-import {
-  formatDate,
-  sortSelectedDates,
-  validateConsecutiveDates,
-  validateSelectedDates
-} from '@/core/utils'
 import { useToastStore } from '@/stores/toast'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
@@ -57,59 +178,24 @@ export default {
   },
   data() {
     return {
-      // Option
-      leaveTypes: ['ลากิจ', 'ลาป่วย', 'อื่น ๆ'],
 
-      // getStudentLogin
+
+      // getTeacherLogin
       testId: '',
-      testStudentId: '',
-      student: [],
+      testeacherId: '',
+      teacher: [],
       user: [],
-      nameStudentLogin: '',
-      userIdStudentLogin: '',
-      // getSubject
+      sectionSearch: '',
+      selectedSubject: '',
+
+      // leave Detail
+      leaveRequests: [],
+
+      // fetchInstructorCourse
       subjects: [],
-      // getTechers
-      teachers: [],
 
-      // Input
-      selectedTeachers: {},
-      selectedSubjects: {},
-      selectedDates: [],
-      selectedLeaveType: '',
-      files: [],
 
-      // playload
-      errors: [],
-      formDataLeaveRequest: {
-        approve_id_by: '',
-        start_date: '',
-        end_date: '',
-        leave_type: '',
-        description: '',
-        status: 'pending'
-      },
-      leaveRequestId: '',
-      formDataLeaveDetails: {
-        leave_request_id: '',
-        student_id: '',
-        course_id: '',
-        teacher_id: ''
-      },
 
-      // app table
-      serverItems: [], // This will hold the table entries
-      headers: [
-        { text: 'Subject', value: 'coursesItem' },
-        { text: 'Teacher', value: 'teachersItem' },
-        { text: 'Actions', value: 'actions', sortable: false }
-        // ... other headers
-      ],
-
-      // file
-      files: [],
-      upload_status: '',
-      filename: ''
     }
   },
   components: {
@@ -119,86 +205,25 @@ export default {
   },
   beforeCreate() {},
   async mounted() {
-    await this.getStudentLogin()
-    await this.getSubjects()
+    await this.fetchLeaveRequests()
+    await this.fetchInstructorCourse()
   },
   created() {
-    // console.log('DOM Created')
-    // this.getFile()
+
   },
   watch: {
-    selectedSubjects: {
-      handler() {
-        this.selectedTeachers = []
-        // This code will run every time selectedSubjects changes
-        this.getTeachers()
+     sectionSearch: {
+      async handler() {
+        if (this.sectionSearch=== "") {
+          await this.fetchLeaveRequests()
+        }
         // Reset selectedTeachers to an empty array whenever selectedSubjects changes
       },
       immediate: true
     }
   },
   methods: {
-    deleteItem(item) {
-      const index = this.serverItems.indexOf(item)
-      if (index > -1) {
-        this.serverItems.splice(index, 1)
-      }
-    },
-    addItem() {
-      // Check if a subject is selected
-      if (!this.selectedSubjects || !this.selectedSubjects.id) {
-        console.log('No subject selected, item not added.')
-        // Optionally, show a user-facing error message here.
-        return
-      }
-
-      // Check if any teachers are selected
-      if (!this.selectedTeachers || this.selectedTeachers.length === 0) {
-        console.log('No teacher selected, item not added.')
-        // Optionally, show a user-facing error message here.
-        return
-      }
-
-      // Check if the selected subject is already in the serverItems array.
-      const isSubjectExists = this.serverItems.some(
-        (item) =>
-          item.coursesItem && item.coursesItem.id === this.selectedSubjects.id
-      )
-
-      // If the subject is already present, do not add it again.
-      if (isSubjectExists) {
-        console.log('This subject is already in the table.')
-        // Optionally show a user-facing message or toast notification here.
-        return
-      }
-
-      // If the subject is not already present and at least one teacher is selected, add it to the serverItems.
-      const newItem = {
-        coursesItem: this.selectedSubjects,
-        teachersItem: this.selectedTeachers
-      }
-      this.serverItems.push(newItem)
-      console.log('New item added:', newItem)
-
-      // Clear the inputs if necessary.
-      this.selectedSubjects = {}
-      this.selectedTeachers = []
-    },
-
-    teachersItemProps(item) {
-      const name = item.fname + ' ' + item.lname
-      return {
-        title: name,
-        subtitle: item.id
-      }
-    },
-    subjectsItemProps(item) {
-      return {
-        title: item.name,
-        subtitle: item.course_id
-      }
-    },
-    async getStudentLogin() {
+    async getTeacherLogin() {
       this.userStore.initStore()
       this.user = this.userStore.user
       this.testId = this.userStore.user.id //user_id
@@ -208,17 +233,16 @@ export default {
       //who is login student from user_id = 6
       // console.log("277: "+ this.user[0])
       if (this.testId) {
-        const url = `/student/?user_id=${this.testId}`
+        const url = `/teacher/?user_id=${this.testId}`
         await axios
           .get(url)
           .then((response) => {
-            this.student = response.data[0]
+            this.teacher = response.data[0]
             // console.log('fname285:  ' + this.student.fname)
             // console.log('IdStudent285:  ' + this.student.id)
-            this.testStudentId = this.student.id // student_id = 1 Panisra
-            this.nameStudentLogin =
-              this.student.fname + ' ' + this.student.lname
-            this.userIdStudentLogin = this.userStore.user.user_id
+            this.testeacherId = this.teacher.id // student_id = 1 Panisra
+            // this.nameStudentLogin = this.student.fname + " " + this.student.lname
+            // this.userIdStudentLogin = this.userStore.user.user_id
           })
           .catch((error) => {
             console.log('error', error)
@@ -227,228 +251,91 @@ export default {
         this.student = []
       }
     },
-
-    async getSubjects() {
-      if (!this.testStudentId) {
-        console.error('Missing student ID')
-        // return
-      }
-
-      const url = `/studentRegister/?student_id=${this.student.id}`
-
-      // Fetch faculty data from your server API
-      await axios
-        .get(url)
-        .then((response) => {
-          // this.subjects = response.data
-          this.subjects = response.data.map((item) => item.course_data)
-          console.log('GetSubject' + this.subjects)
-        })
-        .catch((error) => {
-          // Handle errors here
-          console.error('Error fetching subjects data:', error)
-        })
-    },
-    async getTeachers() {
-      // console.log('selectSubject: ' + this.selectedSubjects)
-      // console.log('selectSubject: ' + this.selectedSubjects.id)
-
-      // console.log("selectSubject: "+ this.selectedSubjects[0].id)
-
-      // console.log('selectSubject: ' + this.selectedSubjects.id)
-      if (this.selectedSubjects && this.selectedSubjects.id) {
-        const url = `/instructorCourse/?course_id=${this.selectedSubjects.id}`
-        await axios
-          .get(url)
-          .then((response) => {
-            // this.teachers = response.data
-            // console.log("teacher:" + this.teachers[0])
-
-            // หาก response.data เป็นอาร์เรย์ของข้อมูลคอร์ส, และแต่ละคอร์สมี `teacher_data`
-            this.teachers = response.data.map((item) => item.teacher_data)
-            // console.log('TeachersGetTeacher:', this.teachers)
-          })
-          .catch((error) => {
-            console.log('error', error)
-          })
-      } else {
-        this.teachers = []
-      }
-    },
-
-    async submitForm() {
-      this.errors = []
-      // console.log('Form submitted')
-      console.log('days', this.selectedDates)
-
-      // เรียงลำดับวันที่ใน selectedDates
-      this.selectedDates = sortSelectedDates(this.selectedDates)
-
-      //ถ้าเลือกวันไม่เรียงต่อกัน
-      if (!validateConsecutiveDates(this.selectedDates)) {
-        this.errors.push('Please select consecutive dates only.')
-        console.log('Please select consecutive dates only.')
-        return
-      }
-      // If selected dates are not after the current date
-      if (!validateSelectedDates(this.selectedDates)) {
-        this.errors.push('Please select dates from today onwards.')
-        console.log('Please select dates from today onwards.')
-        return
-      }
-
-      const firstDate = formatDate(new Date(this.selectedDates[0]))
-      const lastDate = formatDate(
-        new Date(this.selectedDates[this.selectedDates.length - 1])
-      )
-      // console.log('First Date (formatted):', firstDate)
-      // console.log('Last Date (formatted):', lastDate)
-
-      // Prepare PlayLoad: ( approve_id_by
-      //  file_id, start_date, end_date, leave_type, description, status)
-
-      console.log('Preparing PlayLoad')
-      if (firstDate !== 'NaN-NaN-NaN') {
-        this.formDataLeaveRequest.start_date = firstDate
-        this.formDataLeaveRequest.end_date = lastDate
-        this.formDataLeaveRequest.leave_type = this.selectedLeaveType
-        console.log(this.formDataLeaveRequest)
-        const { value: confirmed } = await this.$swal.fire({
-          title: 'บันทึกสำเร็จ',
-          text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว',
-          icon: 'success',
-          confirmButtonText: 'ตกลง',
-          confirmButtonColor: '#02bc77'
-        })
-
-        await axios
-          .post('/leaveRequest/', this.formDataLeaveRequest)
-          .then((response) => {
-            console.log('response: ')
-            console.log(response.data)
-            // const leaveRequestId = response.data.leaveRequest_id
-            this.leaveRequestId = response.data.leaveRequest_id
-            if (this.leaveRequestId) {
-              console.log('leaveRequestId: ' + this.leaveRequestId)
-              this.formDataLeaveDetails.leave_request_id = this.leaveRequestId
-              this.formDataLeaveDetails.student_id = this.testStudentId
-              //save Detail
-              this.addLeaveRequestDetail()
-              //save File
-              this.saveFile()
-              // Clear Data here
-              this.selectedLeaveType = ''
-              this.files = ''
-              this.formDataLeaveRequest.description = ''
-              this.selectedDates = []
-              this.serverItems = []
-              console.log('Requests cancelled successfully:', response.data)
-              // แสดงข้อความเมื่อลบสำเร็จ
-              // alert('บันทึกสำเร็จ');
-              // แสดงข้อความเมื่อลบสำเร็จ
-            }
-          })
-          .catch((error) => {
-            // if doesnt save LeaveRequest
-            console.log('error', error)
-            this.$swal.fire(
-              'เกิดข้อผิดพลาด',
-              'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
-              'error'
-            )
-          })
-
-        //create LeaveRequest
-
-        // console.log('this.selectedTeachers: ')
-        // console.log(this.selectedTeachers)
-
-        // console.log('Table items')
-        // this.serverItems.forEach((item, index) => {
-        //   // console.log(item);
-        //   if (item && item.coursesItem && item.teachersItem) {  // ตรวจสอบทั้งสองค่า
-        //     let courseId = item.coursesItem.course_id; //01418332
-        //     let couseOfId = item.coursesItem.id; //1 2 3
-        //     let teachersId = item.teachersItem.map(teacher => teacher.id);  // สมมติว่า teachersItem เป็นอาร์เรย์
-        //     // console.log(courseId);
-        //     // console.log(teachersId);  // แสดงอาร์เรย์ของ ids ex [2, 4]
-        //     teachersId.forEach((id) => {
-        //       console.log("Item Row")
-        //       console.log("course id: " + courseId);
-        //       console.log("Id of Course: " + couseOfId);
-        //       console.log("Id of Teacher: " + id);  //index0=2, index1=4
-
-        //     });
-        //   } else {
-        //     console.log('this.item or this.item.coursesItem or this.item.teachersItem is undefined');
-        //   }
-        // });
-      } else {
-        this.errors.push('Please select dates')
-      }
-    },
-    async addLeaveRequestDetail() {
-      console.log('Table items')
-      for (const item of this.serverItems) {
-        if (item && item.coursesItem && item.teachersItem) {
-          let courseId = item.coursesItem.course_id
-          let couseOfId = item.coursesItem.id
-          let teachersId = item.teachersItem.map((teacher) => teacher.id)
-
-          for (const id of teachersId) {
-            console.log('Item Row')
-            console.log('course id: ' + courseId)
-            console.log('Id of Course: ' + couseOfId)
-            console.log('Id of Teacher: ' + id)
-            this.formDataLeaveDetails.teacher_id = id
-            this.formDataLeaveDetails.course_id = couseOfId
-
-            // const response = await axios.get(url);
-            await axios
-              .post('/leaveDetail/', this.formDataLeaveDetails)
-              .then((response) => {
-                console.log('Leave details')
-                console.log(response.data)
-              })
-              .catch((error) => {
-                console.log('error', error)
-              })
-          }
-        } else {
-          console.log(
-            'this.item or this.item.coursesItem or this.item.teachersItem is undefined'
+    async fetchInstructorCourse() {
+      this.loading = true // เริ่มต้นการโหลด
+      await this.getTeacherLogin() // เรียกใช้ getStudentLogin()
+      console.log('testeacher ID: ' + this.testeacherId) // ตรวจสอบค่า testStudentId
+      try {
+        if (this.testeacherId) {
+          // ตรวจสอบว่ามีค่า testStudentId หรือไม่
+          const response = await axios.get(
+            `/instructorCourse/?teacher_id=${this.testeacherId}`
           )
+          let filteredSubjects = response.data.filter((item, index, self) =>
+            index === self.findIndex((t) => (
+              t.course_data.name === item.course_data.name
+            ))
+          );
+          this.subjects = filteredSubjects;
+          console.log(this.subjects)
+        } else {
+          console.log("Doesn't have Teacher ID:  " + this.testeacherId)
         }
+      } catch (error) {
+        console.error('There was an error fetching the leave requests:', error)
+      } finally {
+        this.loading = false // เสร็จสิ้นการโหลด
       }
     },
-    // File method
-    async saveFile() {
-      let formData = new FormData()
-      formData.append('pdf', this.filename)
-      formData.append('leave_request_id', this.leaveRequestId)
-
-      let axiosConfig = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    async fetchLeaveRequests() {
+    this.loading = true; // Start loading
+    await this.getTeacherLogin(); // Assume this sets `this.testeacherId`
+    console.log('Teacher ID: ' + this.testeacherId);
+    try {
+      // /leave_request_details/?section=200&teacher_id=1
+      if (this.testeacherId) {
+        const response = await axios.get(`/leave_request_details/?teacher_id=${this.testeacherId}&section=${this.sectionSearch}&course_name=${this.selectedSubject}`);
+        const rawData = response.data;
+        const summarizedData = this.summarizeLeaveRequests(rawData);
+        this.leaveRequests = summarizedData;
+        console.log(this.leaveRequests);
+      } else {
+        console.log("No Teacher ID: " + this.testeacherId);
       }
-      await axios
-        .post('/files/', formData, axiosConfig)
-        .then((response) => {
-          console.log(response)
-          this.upload_status = 'File Upload Success'
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    uploadedFile() {
-      // Clear previous filename
-      this.filename = ''
-      // Set new filename
-      this.filename = this.$refs.file.files[0]
-      console.log(this.filename)
+    } catch (error) {
+      console.error('Error fetching the leave requests:', error);
+    } finally {
+      this.loading = false; // Loading complete
     }
+  },
+
+  summarizeLeaveRequests(data) {
+    const summary = {};
+
+    data.forEach(request => {
+      const { course_data } = request; // Assuming course_data contains a name and id
+      const key = course_data.id + '-' + course_data.name; // Unique key for each course and leave type
+
+      if (!summary[key]) {
+        summary[key] = {
+          course_id: course_data.id,
+          course_name: course_data.name, // Store the course name
+          leaveType: request.type, // Assuming you have a 'type' property
+          total: 0,
+          approve: 0,
+          reject: 0,
+          pending: 0,
+          section: course_data.section
+        };
+      }
+
+      summary[key].total++; // Increment the total number of leave requests
+      if (request.status === 'approve') {
+        summary[key].approve++; // Increment approved count
+      } else if (request.status === 'reject') {
+        summary[key].reject++; // Increment rejected count
+      } else if (request.status === 'pending') {
+        summary[key].pending++; // Increment pending count
+      }
+    });
+
+    return Object.values(summary); // Convert the summary object to an array
+  },
+  async findBysection (sectionSearch) {
+    await this.fetchLeaveRequests()
+
+  }
+
   }
 }
 </script>
@@ -475,5 +362,33 @@ export default {
     margin-bottom: 3%;
     font-weight: 600;
     font-size: 18px;
+}
+table {
+    width: 100%; /* Ensure table takes full width */
+    table-layout: fixed; /* This can help with column width consistency */
+  }
+
+  th, td {
+    text-align: left; /* Adjust text alignment as needed */
+    padding: 8px; /* Add padding to prevent text from touching cell borders */
+    border-bottom: 1px solid #eee; /* Optional: adds a line between rows */
+  }
+
+  th {
+    background-color: #f5f5f5; /* Optional: differentiates the header */
+    font-weight: bold;
+  }
+  /* search bar */
+  .v-col-md-1.v-col-12 {
+    display: flex;
+    /* padding: 0%; */
+    align-items: center;
+    margin: 0%;
+  }
+  .v-col-md-3.v-col-12 {
+    padding-right: 0;
+  }
+  .v-col-md-2.v-col-12 {
+    padding-left: 0;
 }
 </style>

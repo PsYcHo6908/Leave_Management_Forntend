@@ -12,58 +12,43 @@
       <div class="content">
         <!-- Search fields in a single row -->
         <v-row>
-          <v-col cols="12" md="6"> </v-col>
-          <v-col cols="12" md="6">
-            <v-row>
-              <!-- Adjusted each input field with its label -->
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <input type="text" placeholder="วิชา" v-model="search"/>
-                </div>
-              </v-col>
-              <!-- Repeated for other fields, ensure ID and for attributes are unique -->
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <select v-model="selectedOption">
-                    <option value="" disabled selected>
-                      -- ประเภทการลา --
-                    </option>
-                    <option value="">None</option>
-                    <option value="ลากิจ">ลากิจ</option>
-                    <option value="ลาป่วย">ลาป่วย</option>
-                    <option value="อื่นๆ">อื่นๆ</option>
-                    <!-- <option value="">1234</option> -->
-                  </select>
-                  <!-- <template v-slot:append>
-                  <v-icon>mdi-home</v-icon>
-                </template> -->
-                </div>
-              </v-col>
-              <v-col cols="6" sm="3" class="field-container">
-                <div class="label-input-pair">
-                  <!-- <label for="cars">Choose a car:</label> -->
-                  <!-- <input type="text" placeholder="สถานะ" v-model="statusSearch"/> -->
-                                    <!-- <label for="cars">Choose a car:</label> -->
-                  <select v-model="statusSearch">
-                    <option value="" disabled selected>
-                      -- สถานะ --
-                    </option>
-                    <option value="">None</option>
-                    <option value="pending">Pending</option>
-                    <option value="approve">Approved</option>
-                    <option value="reject">Rejected</option>
-                    <!-- <option value="">1234</option> -->
-                  </select>
-                  <!-- <template v-slot:append>
-                  <v-icon>mdi-home</v-icon>
-                </template> -->
+          <v-col cols="12" md="2"> </v-col>
+          <v-col cols="12" md="3"></v-col>
+          <v-col cols="12" md="3" class="field-container">
+            <div class="label-input-pair">
+              <input type="text" placeholder="วิชา" v-model="search"/>
+            </div>
+          </v-col>
+          
+          <v-col cols="12" md="2" class="field-container">
+            <div class="label-input-pair">
+              
+              <select v-model="selectedOption">
+                <option value="" disabled selected>
+                  -- ประเภทการลา --
+                </option>
+                <option value="">None</option>
+                <option value="ลากิจ">ลากิจ</option>
+                <option value="ลาป่วย">ลาป่วย</option>
+                <option value="อื่นๆ">อื่นๆ</option>
 
-                </div>
-              </v-col>
-              <!-- Adjust the IDs and labels accordingly for the rest of the input fields -->
-            </v-row>
+              </select>
+            </div>
+          </v-col>
+          <v-col cols="12" md="2" class="field-container">
+            <div class="label-input-pair">
+
+                <select v-model="statusSearch">
+                  <option value="" disabled selected>
+                    -- สถานะ --
+                  </option>
+                  <option value="">-</option>
+                  <option value="pending">รอดำเนินการ</option>
+                  <option value="approve">อนุมัติแล้ว</option>
+                  <option value="reject">ไม่อนุมัติ</option>
+
+                </select>
+            </div>
           </v-col>
         </v-row>
 
@@ -72,12 +57,13 @@
           <table class="leave-requests-table">
             <thead>
               <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Course Name</th>
                 <th>Course Section</th>
                 <th>Leave Type</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -88,12 +74,13 @@
                 @click="navigateToDetail(request.id)"
                 class="request-row"
               >
-                <td>{{ request.id }}</td>
+                <!-- <td>{{ request.id }}</td> -->
                 <td>{{ request.course_data.name }}</td>
                 <td>{{ request.course_data.section }}</td>
                 <td>{{ request.leave_request_data.leave_type }}</td>
                 <td>{{ request.leave_request_data.start_date }}</td>
                 <td>{{ request.leave_request_data.end_date }}</td>
+                <td>{{ getRequestDescription(request.leave_request_data.description) }}</td>
                 <td class="actions-cell">
                   <v-btn
                     small
@@ -119,24 +106,25 @@
                   >
                     {{
                       request.status === 'approve'
-                        ? 'Approved'
+                        ? 'อนุมัติแล้ว'
                         : request.status === 'reject'
-                          ? 'Rejected'
+                          ? 'ไม่อนุมัติ'
                           : request.status === 'pending'
-                            ? 'Pending'
+                            ? 'รอดำเนินการ'
                             : 'Approve'
                     }}
                   </v-btn>
-                  <!-- Condition for Cancel button -->
-                  <v-btn
-                    small
-                    color="red"
-                    @click.stop="cancelRequest(request)"
-                    style="margin-left: 5%"
-                    v-if="request.status === 'pending'"
-                  >
-                    Cancel
-                  </v-btn>
+                  <div>
+                    <v-btn
+                      small
+                      color="red"
+                      @click.stop="cancelRequest(request)"
+                      style="margin-top: 4%"
+                      v-if="request.status === 'pending'"
+                    >
+                      ยกเลิก
+                    </v-btn>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -185,14 +173,39 @@ export default {
   },
   computed: {
   filteredRequests() {
-    return this.leaveRequests.filter(request => {
-      const matchesCourse = request.course_data.name.toLowerCase().includes(this.search.toLowerCase());
-      const matchesLeaveType = this.selectedOption ? request.leave_request_data.leave_type === this.selectedOption : true;
-      const matchesStatus = this.statusSearch ? request.status.toLowerCase().includes(this.statusSearch.toLowerCase()) : true;
-      return matchesCourse && matchesLeaveType && matchesStatus;
-    });
-  }
-},
+      // Start by filtering the array
+      let filtered = this.leaveRequests.filter(request => {
+        const matchesCourse = this.search
+        ? request.course_data.name.toLowerCase().includes(this.search.toLowerCase())
+        : true;
+        const matchesLeaveType = this.selectedOption ? request.leave_request_data.leave_type === this.selectedOption : true;
+        const matchesStatus = this.statusSearch ? request.status.toLowerCase().includes(this.statusSearch.toLowerCase()) : true;
+        return matchesCourse && matchesLeaveType && matchesStatus;
+      });
+      
+      // Define the order of the statuses
+      const statusOrder = {
+        'pending': 1,
+        'approve': 2,
+        'reject': 3
+      };
+
+      // Sort the filtered array
+      filtered = filtered.sort((a, b) => {
+        const orderA = statusOrder[a.status] || 999;
+        const orderB = statusOrder[b.status] || 999;
+
+        if (orderA === orderB) {
+          return a.id - b.id; // Secondary sort condition if statuses are equal
+        }
+
+        return orderA - orderB;
+      });
+
+      // Return the sorted and filtered array
+      return filtered;
+    }
+  },
   data() {
     return {
       leaveRequests: [],
@@ -219,6 +232,16 @@ export default {
     }
   },
   methods: {
+    getRequestDescription(description) {
+      if (description) {
+        if (description.length > 20) {
+          return description.slice(0, 20) + '...'; // แสดงเฉพาะ 20 ตัวอักษรแรกและเติม ...
+        } else {
+          return description; // ถ้าความยาวน้อยกว่าหรือเท่ากับ 20 ตัวอักษร
+        }
+      }
+      return '';
+    },
     async getStudentLogin() {
       this.userStore.initStore()
       this.user = this.userStore.user

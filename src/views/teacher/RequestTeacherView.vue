@@ -96,7 +96,7 @@
                     <v-btn small color="#02BC77" @click.stop="onApprove(request)" >
                       อนุมัติ
                     </v-btn>
-                    <v-btn small color="red" @click.stop="onReject(request)" style="margin-left: 5%" >
+                    <v-btn small color="red" @click.stop="onReject(request)" style="margin-top: 4%" >
                       ไม่อนุมัติ
                     </v-btn>
                   </template>
@@ -149,24 +149,26 @@ export default {
   computed: {
     filteredRequests() {
       return this.leaveRequests.filter((request) => {
-        const matchesCourse = request.course_data.name
-          .toLowerCase()
-          .includes(this.search.toLowerCase())
+        const searchTermLower = this.search.toLowerCase();
+        const matchesCourse = request.course_data.name.toLowerCase().includes(searchTermLower);
         const matchesLeaveType = this.selectedOption
           ? request.leave_request_data.leave_type === this.selectedOption
-          : true
-        const matchesIdStudentSearch = request.student_data.user_data.user_id.includes(this.idStudentSearch);
-        // const matchesStatus = this.statusSearch
-        //   ? request.status
-        //       .toLowerCase()
-        //       .includes(this.statusSearch.toLowerCase())
-        //   : true
-        // ... other match conditions ...
+          : true;
+        const matchesIdStudentSearch = this.idStudentSearch
+          ? request.student_data.user_data.user_id.includes(this.idStudentSearch)
+          : true;
+        // Match the section if sectionSearch is not empty, otherwise return true
+        const matchesSection = this.sectionSearch
+          ? request.course_data.section.toString() === this.sectionSearch
+          : true;
         const fullName = `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase();
         const searchTerms = this.nameSearch.toLowerCase().split(' ').filter(Boolean);
-        const matchesName = searchTerms.every(term => fullName.includes(term));
-        return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName 
-      })
+        const matchesName = searchTerms.length
+          ? searchTerms.every(term => fullName.includes(term))
+          : true;
+
+        return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName && matchesSection;
+      });
     }
   },
   data() {
@@ -194,6 +196,7 @@ export default {
       statusSearch: '', // New property for status
       nameSearch: '',
       idStudentSearch: '',
+      sectionSearch: '',
 
     }
   },

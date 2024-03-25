@@ -37,7 +37,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="2">
-              <!-- Fifth search field for section -->
+              <!-- Fourth search field -->
               <div class="field-container">
                 <div class="label-input-pair">
                   <input type="text" placeholder="หมู่เรียน" v-model="sectionSearch" />
@@ -45,27 +45,30 @@
               </div>
             </v-col>
             <v-col cols="12" md="2">
-              <!-- Fourth search field -->
+              <!-- Fifth search field for status -->
               <div class="field-container">
                 <div class="label-input-pair">
-                  <select v-model="selectedOption">
-                    <option value="" disabled selected>-- ประเภทการลา --</option>
-                    <option value="">None</option>
-                    <option value="ลากิจ">ลากิจ</option>
-                    <option value="ลาป่วย">ลาป่วย</option>
-                    <option value="อื่นๆ">อื่นๆ</option>
+                  <select v-model="statusSearch">
+                    <option value="" disabled selected>
+                      -- สถานะ --
+                    </option>
+                    <option value="">-</option>
+                    <option value="pending">รอดำเนินการ</option>
+                    <option value="approve">อนุมัติแล้ว</option>
+                    <option value="reject">ไม่อนุมัติ</option>
+                    <!-- <option value="">1234</option> -->
                   </select>
                 </div>
               </div>
             </v-col>
           </v-row>
-  
+            
           <!-- table -->
           <v-row>
             <table class="leave-requests-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <!-- <th>ID</th> -->
                   <th>รหัสประจำตัว</th>
                   <th>รายชื่อนิสิต</th>
                   <th>Course Name</th>
@@ -78,12 +81,12 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="request in filteredRequests"
+                  v-for="request in sortedAndFilteredLeaveRequests"
                   :key="request.id"
                   @click="navigateToDetail(request.id)"
                   class="request-row"
                 >
-                  <td>{{ request.id }}</td>
+                  <!-- <td>{{ request.id }}</td> -->
                   <td>{{ request.student_data.user_data.user_id }}</td>
                   <td>{{ request.student_data.fname }} {{ request.student_data.lname }}</td>
                   <td>{{ request.course_data.name }}</td>
@@ -96,7 +99,19 @@
                       <v-btn small color="#02BC77" @click.stop="onApprove(request)" >
                         อนุมัติ
                       </v-btn>
-                      <v-btn small color="red" @click.stop="onReject(request)" style="margin-left: 5%" >
+                      <div>
+                        <v-btn small color="red" @click.stop="onReject(request)" style="margin-top: 4%">
+                          ไม่อนุมัติ
+                        </v-btn>
+                      </div>
+                    </template>
+                    <template v-if="request.status === 'approve'">
+                      <v-btn small color="#02BC77"  disabled=True>
+                        อนุมัติแล้ว
+                      </v-btn>
+                    </template>
+                    <template v-if="request.status === 'reject'">
+                      <v-btn small color="grey"  disabled=True>
                         ไม่อนุมัติ
                       </v-btn>
                     </template>
@@ -147,6 +162,43 @@
       this.fetchLeaveRequests()
     },
     computed: {
+      sortedAndFilteredLeaveRequests() {
+        // First, apply the filtering logic.
+        let filtered = this.leaveRequests.filter((request) => {
+          const matchesCourse = request.course_data.name.toLowerCase().includes(this.search.toLowerCase());
+          const matchesLeaveType = this.selectedOption ? request.leave_request_data.leave_type === this.selectedOption : true;
+          const matchesIdStudentSearch = this.idStudentSearch ? request.student_data.user_data.user_id.includes(this.idStudentSearch) : true;
+          const matchesSection = this.sectionSearch
+          ? request.course_data.section.toString() === this.sectionSearch
+          : true;
+          const matchesStatus = this.statusSearch ? request.status.toLowerCase().includes(this.statusSearch.toLowerCase()) : true;
+          const fullName = `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase();
+          const searchTerms = this.nameSearch.toLowerCase().split(' ').filter(Boolean);
+          const matchesName = searchTerms.every(term => fullName.includes(term));
+          return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName && matchesSection && matchesStatus;
+        });
+
+        // Then, sort the filtered results.
+        const statusOrder = {
+          'pending': 1,
+          'approve': 2,
+          'reject': 3
+        };
+
+        // Note: We use `filtered` which is the result of the above filter operation.
+        filtered.sort((a, b) => {
+          const orderA = statusOrder[a.status] || 999;
+          const orderB = statusOrder[b.status] || 999;
+
+          if (orderA === orderB) {
+            return a.id - b.id; // or any other secondary sort condition
+          }
+
+          return orderA - orderB;
+        });
+
+        return filtered;
+      },
       filteredRequests() {
         return this.leaveRequests.filter((request) => {
           const matchesCourse = request.course_data.name
@@ -167,6 +219,27 @@
           const matchesName = searchTerms.every(term => fullName.includes(term));
           return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName 
         })
+      },
+      sortedLeaveRequestsByStatus() {
+        const statusOrder = {
+          'pending': 1,
+          'approve': 2,
+          'reject': 3
+        };
+
+        return this.leaveRequests.slice().sort((a, b) => {
+          // Get the order number for each status, defaulting to a large number if not found
+          const orderA = statusOrder[a.status] || 999;
+          const orderB = statusOrder[b.status] || 999;
+
+          // If statuses are the same, sort by ID or another attribute to have a consistent order
+          if (orderA === orderB) {
+            return a.id - b.id;
+          }
+
+          // Sort by status order
+          return orderA - orderB;
+        });
       }
     },
     data() {
@@ -194,6 +267,7 @@
         statusSearch: '', // New property for status
         nameSearch: '',
         idStudentSearch: '',
+        sectionSearch: '',
   
       }
     },
@@ -245,10 +319,12 @@
           if (this.testeacherId) {
             // ตรวจสอบว่ามีค่า testStudentId หรือไม่
             const response = await axios.get(
-              `/leaveDetail/?teacher_id=${this.testeacherId}&status=pending`
+              `/leaveDetail/?teacher_id=${this.testeacherId}`
             )
             this.leaveRequests = response.data
+            this.leaveRequests = this.sortLeaveRequestsByStatus(data); // Now the array is sorted
             this.leaveRequests = this.getUniqueSubjects(response.data)
+            
           } else {
             console.log("Doesn't have Teacher ID:  " + this.testeacherId)
           }
@@ -424,6 +500,7 @@
     margin-top: 16px !important;
     margin-bottom: 16px !important;
   }
+
   
   @media screen and (max-width: 1899px) {
     .content-Page {
