@@ -65,7 +65,7 @@
           <table class="leave-requests-table">
             <thead>
               <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>รหัสประจำตัว</th>
                 <th>รายชื่อนิสิต</th>
                 <th>Course Name</th>
@@ -83,7 +83,7 @@
                 @click="navigateToDetail(request.id)"
                 class="request-row"
               >
-                <td>{{ request.id }}</td>
+                <!-- <td>{{ request.id }}</td> -->
                 <td>{{ request.student_data.user_data.user_id }}</td>
                 <td>{{ request.student_data.fname }} {{ request.student_data.lname }}</td>
                 <td>{{ request.course_data.name }}</td>
@@ -96,9 +96,12 @@
                     <v-btn small color="#02BC77" @click.stop="onApprove(request)" >
                       อนุมัติ
                     </v-btn>
-                    <v-btn small color="red" @click.stop="onReject(request)" style="margin-top: 4%" >
-                      ไม่อนุมัติ
-                    </v-btn>
+                    <div>
+                      <v-btn small color="red" @click.stop="onReject(request)" style="margin-top: 4%" >
+                        ไม่อนุมัติ
+                      </v-btn>
+                    </div>
+
                   </template>
                 </td>
               </tr>
