@@ -131,12 +131,27 @@ export default {
 </script>
 
 <style>
-#input-0,
-#input-5 {
+.v-field__input,
+.v-select .v-field .v-field__input > input  {
   border: none !important;
   background-color: transparent !important;
 }
 .v-combobox__selection {
+  border: none !important;
+  background-color: transparent !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox input {
+  background-color: transparent !important;
+  border: none !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox:not(.v-input--is-disabled) .v-input__control {
+  background-color: transparent !important;
+  border: none !important;
+}
+#input-0,
+#input-5 {
   border: none !important;
   background-color: transparent !important;
 }

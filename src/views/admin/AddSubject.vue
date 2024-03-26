@@ -354,33 +354,27 @@ export default {
 </script>
 
 <style>
-#input-0,
-#input-2,
-#input-4,
-#input-6,
-#input-7,
-#input-8,
-#input-9,
-#input-10,
-#input-12,
-#input-13,
-#input-14,
-#input-15,
-#input-16,
-#input-18,
-#input-20,
-#input-21,
-#input-23,
-#input-22 {
+.v-field__input,
+.v-select .v-field .v-field__input > input  {
   border: none !important;
   background-color: transparent !important;
-}
-#input-23 {
-  margin: 0 !important;
 }
 .v-combobox__selection {
   border: none !important;
   background-color: transparent !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox input {
+  background-color: transparent !important;
+  border: none !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox:not(.v-input--is-disabled) .v-input__control {
+  background-color: transparent !important;
+  border: none !important;
+}
+#input-23 {
+  margin: 0 !important;
 }
 .img1 {
   display: flex;

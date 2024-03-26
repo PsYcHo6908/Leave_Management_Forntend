@@ -2,7 +2,7 @@
   <div class="layout-container">
     <Navbar />
     <div class="right-section">
-      <TopNavBarSignup />
+      <TopNavBar />
       <div class="content-Page">
         <slot></slot>
 
@@ -175,7 +175,7 @@
 <script>
 import { useToastStore } from '@/stores/toast'
 import axios from 'axios'
-import TopNavBarSignup from '../../components/TopNavBarSignup.vue'
+import TopNavBar from '../../components/TopNavBar.vue'
 import Navbar from '../../components/navbar.vue'
 export default {
   setup() {
@@ -220,7 +220,7 @@ export default {
     roles: ['student', 'teacher']
   }),
   components: {
-    TopNavBarSignup,
+    TopNavBar,
     Navbar,
   },
   mounted() {
@@ -351,24 +351,24 @@ export default {
 </script>
 
 <style>
-#input-0,
-#input-2,
-#input-4,
-#input-6,
-#input-8,
-#input-10,
-#input-12,
-#input-14,
-#input-16,
-#input-17,
-#input-18,
-#input-20,
-#input-21,
-#input-22,
-#input-23,
-#input-25 {
+.v-field__input,
+.v-select .v-field .v-field__input > input  {
   border: none !important;
   background-color: transparent !important;
+}
+.v-combobox__selection {
+  border: none !important;
+  background-color: transparent !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox input {
+  background-color: transparent !important;
+  border: none !important;
+}
+/* ลบสีเทาข้างใน v-combobox */
+.v-combobox:not(.v-input--is-disabled) .v-input__control {
+  background-color: transparent !important;
+  border: none !important;
 }
 #input-10 {
   margin: 0% !important;
@@ -379,10 +379,6 @@ export default {
 #input-21,
 #input-25 {
     margin: 0% !important;
-}
-.v-combobox__selection {
-  border: none !important;
-  background-color: transparent !important;
 }
 .img1 {
   display: flex;
