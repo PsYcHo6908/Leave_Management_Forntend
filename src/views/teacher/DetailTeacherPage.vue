@@ -22,12 +22,21 @@
             </div>
             <div class="leaveblock2">
               <div v-if="leaveRequest.student_data">
-                รหัสนิสิต: {{ leaveRequest.student_data.id }}
+                รหัสนิสิต: {{ leaveRequest.student_data.user_data.user_id }}
               </div>
             </div>
           </v-col>
         </v-row>
-
+        <v-row>
+          <v-col cols="12" md="6">
+            <!-- content -->
+            <div v-if="leaveRequest.course_data">
+              รหัสวิชา: {{ leaveRequest.course_data.course_id }}
+            </div>
+          </v-col>
+          <v-col cols="12" md="6">
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <!-- content -->
@@ -116,14 +125,37 @@
           <v-col cols="12" md="6">
             <!-- content -->
             <template v-if="leaveRequest.status === 'pending'">
-                    <v-btn small color="#02BC77" @click.stop="onApprove(leaveRequest)" >
-                      อนุมัติ
-                    </v-btn>
-                    <v-btn small color="red" @click.stop="onReject(leaveRequest)" style="margin-left: 5%" >
-                      ไม่อนุมัติ
-                    </v-btn>
-                  </template>
+                <v-btn small color="#02BC77" @click.stop="onApprove(leaveRequest)" >
+                  อนุมัติ
+                </v-btn>
+                <v-btn small color="red" @click.stop="onReject(leaveRequest)" style="margin-left: 5%" >
+                  ไม่อนุมัติ
+                </v-btn>
+            </template>
+            <template v-if="leaveRequest.status === 'approve'">
+                <v-btn small color="green" disabled=True>
+                  อนุมัติแล้ว
+                </v-btn>
+            </template>
+            <template v-if="leaveRequest.status === 'reject'">
+                <v-btn small color="grey"   disabled=True>
+                  ไม่อนุมัติ
+                </v-btn>
+            </template>
           </v-col>
+          <v-col cols="12" md="6">
+            <div v-if="leaveRequest.status === 'approve'">
+              อนุมัติโดย: {{ leaveRequest.approve_id_by_data.prefix }} {{ leaveRequest.approve_id_by_data.fname }} {{ leaveRequest.approve_id_by_data.lname }}
+            </div>
+            <div v-if="leaveRequest.status === 'reject'">
+              ไม่อนุมัติโดย: {{ leaveRequest.approve_id_by_data.prefix }} {{ leaveRequest.approve_id_by_data.fname }} {{ leaveRequest.approve_id_by_data.lname }}
+            </div>
+            <div v-if="leaveRequest.status === 'pending'">
+              อนุมัติโดย: รอดำเนินการ
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
         </v-row>
       </div>
     </div>
@@ -144,8 +176,8 @@ export default {
     return {
       leaveRequest: {
         id: '',
-        student_data: { fname: '', lname: '' },
-        course_data: { name: '', id: '', section: '' },
+        student_data: { fname: '', lname: '', user_data: {user_id: '',}, },
+        course_data: { name: '', id: '', section: '', course_id: '' },
         leave_request_data: {
           id: '',
           start_date: '',

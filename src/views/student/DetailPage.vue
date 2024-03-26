@@ -22,12 +22,22 @@
             </div>
             <div class="leaveblock2">
               <div v-if="leaveRequest.student_data">
-                รหัสนิสิต: {{ leaveRequest.student_data.id }}
+                รหัสนิสิต: {{ leaveRequest.student_data.user_data.user_id }}
               </div>
             </div>
           </v-col>
         </v-row>
 
+        <v-row>
+          <v-col cols="12" md="6">
+            <!-- content -->
+            <div v-if="leaveRequest.course_data">
+              รหัสวิชา: {{ leaveRequest.course_data.course_id }}
+            </div>
+          </v-col>
+          <v-col cols="12" md="6">
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <!-- content -->
@@ -46,14 +56,14 @@
           <v-col cols="12" md="6">
             <!-- content -->
             <div>
-              วันที่: {{ leaveRequest.leave_request_data.start_date }} -
-              {{ leaveRequest.leave_request_data.end_date }}
+              ประเภทการลา: {{ leaveRequest.leave_request_data.leave_type }}
             </div>
           </v-col>
           <v-col cols="12" md="6">
             <!-- content -->
             <div>
-              ประเภทการลา: {{ leaveRequest.leave_request_data.leave_type }}
+              วันที่: {{ leaveRequest.leave_request_data.start_date }} -
+              {{ leaveRequest.leave_request_data.end_date }}
             </div>
           </v-col>
         </v-row>
@@ -176,8 +186,8 @@ export default {
     return {
       leaveRequest: {
         id: '',
-        student_data: { fname: '', lname: '' },
-        course_data: { name: '', id: '' },
+        student_data: { fname: '', lname: '', user_data: {user_id: '',}, },
+        course_data: { name: '', id: '', course_id: '' },
         leave_request_data: {
           id: '',
           start_date: '',
