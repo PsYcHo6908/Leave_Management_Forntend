@@ -36,8 +36,9 @@
           <v-col cols="12" md="1">
             <v-btn
               
-              color="blue"
+              color="white"
               variant="tonal"
+              :style="{ backgroundColor: '#10b981' }"
               @click="findBysection(this.sectionSearch)"
             >
               ค้นหา
