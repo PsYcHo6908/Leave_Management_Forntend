@@ -120,6 +120,7 @@
                       color="red"
                       @click.stop="cancelRequest(request)"
                       v-if="request.status === 'pending'"
+                      style="margin-top: 4%"
                     >
                       ยกเลิก
                     </v-btn>
