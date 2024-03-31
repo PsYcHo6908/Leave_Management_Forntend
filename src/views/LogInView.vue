@@ -206,7 +206,7 @@ button.eye-icon {
   }
   label {
     /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-family: 'Prompt', sans-serif;
   }
   .logInButton {
@@ -265,7 +265,7 @@ button.eye-icon {
   }
   label {
     /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-family: 'Prompt', sans-serif;
   }
   .logInButton {
@@ -324,7 +324,7 @@ button.eye-icon {
   }
   label {
     /* padding: 0 0 30% 0; top right bottom left */
-    font-size: 18px;
+    font-size: 18px !important;
     font-family: 'Prompt', sans-serif;
   }
   .logInButton {

@@ -16,7 +16,11 @@
             <!-- First search field -->
             <div class="field-container">
               <div class="label-input-pair">
-                <input type="text" placeholder="รหัสนิสิต" v-model="idStudentSearch" />
+                <input
+                  type="text"
+                  placeholder="รหัสนิสิต"
+                  v-model="idStudentSearch"
+                />
               </div>
             </div>
           </v-col>
@@ -24,7 +28,11 @@
             <!-- Second search field -->
             <div class="field-container">
               <div class="label-input-pair">
-                <input type="text" placeholder="ชื่อนิสิต" v-model="nameSearch" />
+                <input
+                  type="text"
+                  placeholder="ชื่อนิสิต"
+                  v-model="nameSearch"
+                />
               </div>
             </div>
           </v-col>
@@ -40,7 +48,11 @@
             <!-- Fifth search field for section -->
             <div class="field-container">
               <div class="label-input-pair">
-                <input type="text" placeholder="หมู่เรียน" v-model="sectionSearch" />
+                <input
+                  type="text"
+                  placeholder="หมู่เรียน"
+                  v-model="sectionSearch"
+                />
               </div>
             </div>
           </v-col>
@@ -85,7 +97,10 @@
               >
                 <td>{{ request.id }}</td>
                 <td>{{ request.student_data.user_data.user_id }}</td>
-                <td>{{ request.student_data.fname }} {{ request.student_data.lname }}</td>
+                <td>
+                  {{ request.student_data.fname }}
+                  {{ request.student_data.lname }}
+                </td>
                 <td>{{ request.course_data.name }}</td>
                 <td>{{ request.course_data.section }}</td>
                 <td>{{ request.leave_request_data.leave_type }}</td>
@@ -93,15 +108,23 @@
                 <td>{{ request.leave_request_data.end_date }}</td>
                 <td class="actions-cell">
                   <template v-if="request.status === 'pending'">
-                    <v-btn small color="#02BC77" @click.stop="onApprove(request)" >
+                    <v-btn
+                      small
+                      color="#02BC77"
+                      @click.stop="onApprove(request)"
+                    >
                       อนุมัติ
                     </v-btn>
                     <div>
-                      <v-btn small color="red" @click.stop="onReject(request)" style="margin-top: 4%" >
+                      <v-btn
+                        small
+                        color="red"
+                        @click.stop="onReject(request)"
+                        style="margin-top: 4%"
+                      >
                         ไม่อนุมัติ
                       </v-btn>
                     </div>
-
                   </template>
                 </td>
               </tr>
@@ -152,26 +175,40 @@ export default {
   computed: {
     filteredRequests() {
       return this.leaveRequests.filter((request) => {
-        const searchTermLower = this.search.toLowerCase();
-        const matchesCourse = request.course_data.name.toLowerCase().includes(searchTermLower);
+        const searchTermLower = this.search.toLowerCase()
+        const matchesCourse = request.course_data.name
+          .toLowerCase()
+          .includes(searchTermLower)
         const matchesLeaveType = this.selectedOption
           ? request.leave_request_data.leave_type === this.selectedOption
-          : true;
+          : true
         const matchesIdStudentSearch = this.idStudentSearch
-          ? request.student_data.user_data.user_id.includes(this.idStudentSearch)
-          : true;
+          ? request.student_data.user_data.user_id.includes(
+              this.idStudentSearch
+            )
+          : true
         // Match the section if sectionSearch is not empty, otherwise return true
         const matchesSection = this.sectionSearch
           ? request.course_data.section.toString() === this.sectionSearch
-          : true;
-        const fullName = `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase();
-        const searchTerms = this.nameSearch.toLowerCase().split(' ').filter(Boolean);
+          : true
+        const fullName =
+          `${request.student_data.fname} ${request.student_data.lname}`.toLowerCase()
+        const searchTerms = this.nameSearch
+          .toLowerCase()
+          .split(' ')
+          .filter(Boolean)
         const matchesName = searchTerms.length
-          ? searchTerms.every(term => fullName.includes(term))
-          : true;
+          ? searchTerms.every((term) => fullName.includes(term))
+          : true
 
-        return matchesCourse && matchesLeaveType && matchesIdStudentSearch && matchesName && matchesSection;
-      });
+        return (
+          matchesCourse &&
+          matchesLeaveType &&
+          matchesIdStudentSearch &&
+          matchesName &&
+          matchesSection
+        )
+      })
     }
   },
   data() {
@@ -199,8 +236,7 @@ export default {
       statusSearch: '', // New property for status
       nameSearch: '',
       idStudentSearch: '',
-      sectionSearch: '',
-
+      sectionSearch: ''
     }
   },
   methods: {
@@ -277,36 +313,41 @@ export default {
     async onApprove(request) {
       const updatedData = {
         status: 'approve'
-      };
+      }
       try {
-        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
+        const response = await axios.put(
+          `/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`,
+          updatedData
+        )
 
         // Handle the response as needed
-        console.log('Data approved successfully:', response.data);
-        await this.approveBy(request);
+        console.log('Data approved successfully:', response.data)
+        await this.approveBy(request)
         // Reload or update the data in your front-end application
-        await this.fetchLeaveRequests();
+        await this.fetchLeaveRequests()
       } catch (error) {
         // Handle errors, such as displaying an error message to the user
-        console.error('Error approving data:', error);
+        console.error('Error approving data:', error)
       }
     },
-    async approveBy(request){
-      const newApproveIdBy = this.testeacherId;
+    async approveBy(request) {
+      const newApproveIdBy = this.testeacherId
       const updatedData = {
         approve_id_by: newApproveIdBy
-      };
+      }
       try {
-        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
+        const response = await axios.put(
+          `/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`,
+          updatedData
+        )
 
         // Handle the response as needed
-        console.log('Data approved successfully:', response.data);
+        console.log('Data approved successfully:', response.data)
         // Reload or update the data in your front-end application
       } catch (error) {
         // Handle errors, such as displaying an error message to the user
-        console.error('Error approving data:', error);
+        console.error('Error approving data:', error)
       }
-
 
       // // Assume you have the ID of the LeaveRequest and the new approve_id_by value
       // const leaveRequestId = request.leave_request_id; // Example ID
@@ -329,20 +370,23 @@ export default {
     async onReject(request) {
       const updatedData = {
         status: 'reject'
-      };
+      }
       try {
-        const response = await axios.put(`/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`, updatedData);
+        const response = await axios.put(
+          `/leaveDetail/update_multiple/?course_id=${request.course_id}&leave_request_id=${request.leave_request_id}`,
+          updatedData
+        )
 
         // Handle the response as needed
-        console.log('Data approved successfully:', response.data);
+        console.log('Data approved successfully:', response.data)
         // Reload or update the data in your front-end application
-        await this.approveBy(request);
-        await this.fetchLeaveRequests();
+        await this.approveBy(request)
+        await this.fetchLeaveRequests()
       } catch (error) {
         // Handle errors, such as displaying an error message to the user
-        console.error('Error approving data:', error);
+        console.error('Error approving data:', error)
       }
-    },
+    }
   }
 }
 </script>

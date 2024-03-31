@@ -27,7 +27,7 @@
                 <option value="" disabled selected>
                   -- ประเภทการลา --
                 </option>
-                <option value="">None</option>
+                <option value="">ทั้งหมด</option>
                 <option value="ลากิจ">ลากิจ</option>
                 <option value="ลาป่วย">ลาป่วย</option>
                 <option value="อื่นๆ">อื่นๆ</option>
@@ -42,7 +42,7 @@
                   <option value="" disabled selected>
                     -- สถานะ --
                   </option>
-                  <option value="">-</option>
+                  <option value="">ทั้งหมด</option>
                   <option value="pending">รอดำเนินการ</option>
                   <option value="approve">อนุมัติแล้ว</option>
                   <option value="reject">ไม่อนุมัติ</option>
@@ -119,7 +119,6 @@
                       small
                       color="red"
                       @click.stop="cancelRequest(request)"
-                      style="margin-top: 4%"
                       v-if="request.status === 'pending'"
                     >
                       ยกเลิก
@@ -359,6 +358,7 @@ export default {
 
 .leave-requests-table th {
   background-color: #f4f4f4;
+  font-size: 18px !important;
 }
 
 .cancel-btn {
@@ -454,6 +454,11 @@ export default {
   margin-top: 8%;
   }
 }
+/* td.actions-cell {
+    display: flex;
+    gap: 15%;
+    padding-bottom: 20px !important;
+} */
 @media screen and (min-width: 1440px) {
   .label-input-pair select {
   margin-top: 11%;
