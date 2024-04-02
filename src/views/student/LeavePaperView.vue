@@ -478,14 +478,14 @@ export default {
 
       //ถ้าเลือกวันไม่เรียงต่อกัน
       if (!validateConsecutiveDates(this.selectedDates)) {
-        this.errors.push('Please select consecutive dates only.')
-        console.log('Please select consecutive dates only.')
+        this.errors.push('โปรดเลือกวันที่ที่ติดต่อกันเท่านั้น')
+        console.log('โปรดเลือกวันที่ที่ติดต่อกันเท่านั้น')
         return
       }
       // If selected dates are not after the current date
       if (!validateSelectedDates(this.selectedDates)) {
-        this.errors.push('Please select dates from today onwards.')
-        console.log('Please select dates from today onwards.')
+        this.errors.push('โปรดเลือกวันที่ตั้งแต่วันนี้เป็นต้นไป')
+        console.log('โปรดเลือกวันที่ตั้งแต่วันนี้เป็นต้นไป')
         return
       }
 
@@ -572,7 +572,7 @@ export default {
         //   }
         // });
       } else {
-        this.errors.push('Please select dates')
+        this.errors.push('โปรดเลือกวันที่ต้องการลา')
       }
     },
     async addLeaveRequestDetail() {

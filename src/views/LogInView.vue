@@ -71,11 +71,11 @@ export default {
       this.errors = []
 
       if (this.formData.username === '') {
-        this.errors.push('Your username is missing')
+        this.errors.push('โปรดกรอกชื่อผู้ใช้ของคุณ')
       }
 
       if (this.formData.password === '') {
-        this.errors.push('Your password is missing')
+        this.errors.push('โปรดกรอกรหัสผ่านของคุณ')
       }
 
       if (this.errors.length === 0) {

@@ -15,6 +15,8 @@
 
           <div class="TopNavBarid">{{ userId }}</div>
 
+          <div class="TopNavBarid">{{ prefix }}</div>
+
           <div class="TopNavBarname">{{ userName }}</div>
 
           <button class="logout" @click="logout">
@@ -27,6 +29,7 @@
 </template>
 <script>
 import { useUserStore } from '@/stores/user'
+import axios from 'axios'
 export default {
   setup() {
     const userStore = useUserStore()
@@ -35,13 +38,16 @@ export default {
         userId: userStore.user.user_id,
         userRole: userStore.user.role,
         id: userStore.user.id,
+        // prefix: userStore.user.prefix,
     }
   },
   name: 'TopNavBar',
-  beforeCreate() {
+  async beforeCreate() {
       this.userStore.initStore()
-      // this.getUsername()
-
+      // await this.getPrefix()
+  },
+  async mounted() {
+    await this.getPrefix()
   },
   computed: {
     userName() {
@@ -49,10 +55,61 @@ export default {
     },
   },
   data: () => ({
+      // getStudentLogin
+      user: [],
+      userIdLogin: '',
+      userRole: '',
+
+      userLogin: [],
 
 
   }),
   methods: {
+    async getPrefix(){
+      this.userStore.initStore()
+      this.user = this.userStore.user
+      this.userIdLogin = this.userStore.user.id
+      this.userRole =this.userStore.user.role
+
+      if (this.userIdLogin) {
+        if(this.userRole==="student"){
+          const url = `/student/?user_id=${this.userIdLogin}`
+          await axios
+            .get(url)
+            .then((response) => {
+              this.userLogin = response.data[0]
+              this.prefix = this.userLogin.prefix
+              // this.nameStudentLogin =
+              //   this.student.fname + ' ' + this.student.lname
+              // this.userIdStudentLogin = this.userStore.user.user_id
+            })
+            .catch((error) => {
+              console.log('error', error)
+            })
+
+        }
+        if(this.userRole==="teacher"){
+          const url = `/teacher/?user_id=${this.userIdLogin}`
+          await axios
+            .get(url)
+            .then((response) => {
+              this.userLogin = response.data[0]
+              this.prefix = this.userLogin.prefix
+            })
+            .catch((error) => {
+              console.log('error', error)
+            })
+
+        }
+        if(this.userRole==="admin"){
+          this.prefix = "admin"
+        }
+
+      } else {
+        this.prefix = ""
+        this.userLogin = []
+      }
+    },
     logout(){
       this.userStore.removeToken()
       this.$router.push('/login')

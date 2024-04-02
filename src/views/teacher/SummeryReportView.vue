@@ -19,7 +19,7 @@
               <div class="label-input-pair">
                 <select v-model="selectedSubject">
                   <option value="" disabled selected>-- วิชา --</option>
-                  <option value="" >-</option>
+                  <option value="" >ทั้งหมด</option>
                   <option v-for="item in subjects" :value="item.course_data.name" :key="item.id">{{ item.course_data.name }}</option>
                 </select>
               </div>

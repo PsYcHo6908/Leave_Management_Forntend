@@ -52,7 +52,7 @@
                     <option value="" disabled selected>
                       -- สถานะ --
                     </option>
-                    <option value="">-</option>
+                    <option value="">ทั้งหมด</option>
                     <option value="pending">รอดำเนินการ</option>
                     <option value="approve">อนุมัติแล้ว</option>
                     <option value="reject">ไม่อนุมัติ</option>
