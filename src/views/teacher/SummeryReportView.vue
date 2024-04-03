@@ -45,57 +45,6 @@
             </v-btn>
           </v-col>
         </v-row>
-        <!-- <div class="layout-summeryReport">
-          <div class="head-summeryReport1">รายชื่อวิชา</div>
-          <div class="head-summeryReport1">หมู่เรียน</div>
-          <div class="head-summeryReport1">ประเภทการลา</div>
-          <div class="head-summeryReport1">ทั้งหมด</div>
-          <div class="head-summeryReport1">อนุมัติ</div>
-          <div class="head-summeryReport1">ไม่อนุมัติ</div>
-        </div> -->
-
-        <!-- <v-expansion-panels variant="accordion">
-          <v-expansion-panel v-for="(subject, index) in subjects" :key="index" :title="subject.course_data.name">
-            <v-expansion-panel-text>
-              <table>
-                <thead>
-                  <tr>
-                    <th>วิชา</th>
-                    <th>หมู่เรียน</th>
-                    <th>ประเภทการลา</th>
-                    <th>ทั้งหมด</th>
-                    <th>อนุมัติ</th>
-                    <th>ไม่อนุมัติ</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{{ subject.course_data.name }}</td>
-                    <td>{{ subject.course_data.section }}</td>
-                    <td> leaveType </td>
-                    <td>total</td>
-                    <td>approved</td>
-                    <td>rejected</td>
-                  </tr>
-                </tbody>
-              </table>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-      </v-expansion-panels> -->
-
-
-        <!-- <v-expansion-panels variant="accordion">
-          <v-expansion-panel
-            v-for="i in 3"
-            :key="i"
-            title="วิชา"
-          >
-          <v-expansion-panel-text>
-
-          Subject   Section   leaveType  numOfTotal numOfApprove numofRejects
-        </v-expansion-panel-text>
-        </v-expansion-panel>
-        </v-expansion-panels> -->
         <v-expansion-panels variant="accordion">
           <v-expansion-panel v-for="(summary, index) in leaveRequests" :key="index" :title="`${summary.course_name} - (sec: ${summary.section})`">
             <!-- <template v-slot:header>
@@ -121,30 +70,30 @@
                       <!-- <td>{{ summary.course_name }}</td> -->
                       <!-- <td>{{ summary.section }}</td> -->
                       <td>ลาป่วย</td>
-                      <td>{{ summary.total }}</td>
-                      <td>{{ summary.approve }}</td>
-                      <td>{{ summary.reject }}</td>
-                      <td>{{ summary.pending }}</td>
+                      <td>{{ summary.totalSick }}</td>
+                      <td>{{ summary.approveSick }}</td>
+                      <td>{{ summary.rejectSick }}</td>
+                      <td>{{ summary.pendingSick }}</td>
                     </tr>
                     <!-- ลากิจ -->
                     <tr>
                       <!-- <td>{{ summary.course_name }}</td> -->
                       <!-- <td>{{ summary.section }}</td> -->
                       <td>ลากิจ</td>
-                      <td>{{ summary.total }}</td>
-                      <td>{{ summary.approve }}</td>
-                      <td>{{ summary.reject }}</td>
-                      <td>{{ summary.pending }}</td>
+                      <td>{{ summary.totalBusiness }}</td>
+                      <td>{{ summary.approveBusiness }}</td>
+                      <td>{{ summary.rejectBusiness }}</td>
+                      <td>{{ summary.pendingBusiness }}</td>
                     </tr>
                     <!-- อื่นๆ -->
                     <tr>
                       <!-- <td>{{ summary.course_name }}</td> -->
                       <!-- <td>{{ summary.section }}</td> -->
                       <td>อื่นๆ</td>
-                      <td>{{ summary.total }}</td>
-                      <td>{{ summary.approve }}</td>
-                      <td>{{ summary.reject }}</td>
-                      <td>{{ summary.pending }}</td>
+                      <td>{{ summary.totalOther }}</td>
+                      <td>{{ summary.approveOther }}</td>
+                      <td>{{ summary.rejectOther }}</td>
+                      <td>{{ summary.pendingOther }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -299,39 +248,95 @@ export default {
       this.loading = false; // Loading complete
     }
   },
-
   summarizeLeaveRequests(data) {
-    const summary = {};
+  const summary = {};
 
-    data.forEach(request => {
-      const { course_data } = request; // Assuming course_data contains a name and id
-      const key = course_data.id + '-' + course_data.name; // Unique key for each course and leave type
+  data.forEach(request => {
+    const { course_data, leave_request_data } = request;
+    const key = `${course_data.id}-${course_data.name}-${course_data.section}`; // Unique key for each course, name, and section
 
-      if (!summary[key]) {
-        summary[key] = {
-          course_id: course_data.id,
-          course_name: course_data.name, // Store the course name
-          leaveType: request.type, // Assuming you have a 'type' property
-          total: 0,
-          approve: 0,
-          reject: 0,
-          pending: 0,
-          section: course_data.section
-        };
-      }
+    if (!summary[key]) {
+      summary[key] = {
+        course_id: course_data.id,
+        course_name: course_data.name,
+        section: course_data.section,
+        totalSick: 0,
+        totalBusiness: 0,
+        totalOther: 0,
+        approveSick: 0,
+        rejectSick: 0,
+        pendingSick: 0,
+        approveBusiness: 0,
+        rejectBusiness: 0,
+        pendingBusiness: 0,
+        approveOther: 0,
+        rejectOther: 0,
+        pendingOther: 0
+      };
+    }
 
-      summary[key].total++; // Increment the total number of leave requests
-      if (request.status === 'approve') {
-        summary[key].approve++; // Increment approved count
-      } else if (request.status === 'reject') {
-        summary[key].reject++; // Increment rejected count
-      } else if (request.status === 'pending') {
-        summary[key].pending++; // Increment pending count
-      }
-    });
 
-    return Object.values(summary); // Convert the summary object to an array
-  },
+    // Increment counters based on leaveType and status
+    const leaveType = leave_request_data.leave_type;
+    const status = request.status;
+    if (leaveType === 'ลาป่วย') {
+      summary[key].totalSick++;
+      if (status === 'approve') summary[key].approveSick++;
+      else if (status === 'reject') summary[key].rejectSick++;
+      else if (status === 'pending') summary[key].pendingSick++;
+    } else if (leaveType === 'ลากิจ') {
+      summary[key].totalBusiness++;
+      if (status === 'approve') summary[key].approveBusiness++;
+      else if (status === 'reject') summary[key].rejectBusiness++;
+      else if (status === 'pending') summary[key].pendingBusiness++;
+    } else if (leaveType === 'อื่น ๆ') {
+      summary[key].totalOther++;
+      if (status === 'approve') summary[key].approveOther++;
+      else if (status === 'reject') summary[key].rejectOther++;
+      else if (status === 'pending') summary[key].pendingOther++;
+    }
+  });
+
+  return Object.values(summary); // Convert the summary object to an array
+},
+  // summarizeLeaveRequests(data) {
+  //   const summary = {};
+
+  //   data.forEach(request => {
+  //     const { course_data } = request; // Assuming course_data contains a name and id
+  //     const key = course_data.id + '-' + course_data.name; // Unique key for each course and leave type
+
+  //     if (!summary[key]) {
+  //       summary[key] = {
+  //         course_id: course_data.id,
+  //         course_name: course_data.name, // Store the course name
+  //         leaveType: request.type, // Assuming you have a 'type' property
+  //         total: 0,
+  //         approveSick: 0,
+  //         rejectSick: 0,
+  //         pendingSick: 0,
+  //         approveBusiness: 0,
+  //         rejectBusiness: 0,
+  //         pendingBusiness: 0,
+  //         approveOther: 0,
+  //         rejectOther: 0,
+  //         pendingOther: 0,
+  //         section: course_data.section
+  //       };
+  //     }
+
+  //     summary[key].total++; // Increment the total number of leave requests
+  //     if (request.status === 'approve') {
+  //       summary[key].approve++; // Increment approved count
+  //     } else if (request.status === 'reject') {
+  //       summary[key].reject++; // Increment rejected count
+  //     } else if (request.status === 'pending') {
+  //       summary[key].pending++; // Increment pending count
+  //     }
+  //   });
+
+  //   return Object.values(summary); // Convert the summary object to an array
+  // },
   async findBysection (sectionSearch) {
     await this.fetchLeaveRequests()
 

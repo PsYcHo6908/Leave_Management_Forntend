@@ -90,7 +90,7 @@ export default {
           .catch((error) => {
             console.log('error', error)
             this.errors.push(
-              'The formData or password is incorrect! Or the user is not activated!'
+              'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
             )
           })
       }

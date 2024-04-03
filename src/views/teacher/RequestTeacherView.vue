@@ -65,7 +65,7 @@
                   <option value="">None</option>
                   <option value="ลากิจ">ลากิจ</option>
                   <option value="ลาป่วย">ลาป่วย</option>
-                  <option value="อื่นๆ">อื่นๆ</option>
+                  <option value="อื่น ๆ">อื่นๆ</option>
                 </select>
               </div>
             </div>
